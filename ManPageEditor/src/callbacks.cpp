@@ -232,7 +232,7 @@ void redo(GtkWidget* widget,gpointer data)
 	if(page==NULL)
 		return;
 
-	if(gtk_source_buffer_can_redo(page->buffer));
+	if(gtk_source_buffer_can_redo(page->buffer))
 	{
 		gtk_source_buffer_redo(page->buffer);
 		page->isFirst=true;
