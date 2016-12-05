@@ -18,6 +18,7 @@
  * along with ManPageEditor.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
 #include <gtksourceview/gtksourceview.h>
 
 #include "guis.h"
@@ -71,7 +72,7 @@ int show_question(char* filename)
 	char*		message;
 
 	asprintf(&message,"Save file %s before closing?",filename);
-	dialog=gtk_message_dialog_new(GTK_WINDOW(window),GTK_DIALOG_DESTROY_WITH_PARENT,GTK_MESSAGE_WARNING,GTK_BUTTONS_NONE,message);
+    dialog=gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_WARNING, GTK_BUTTONS_NONE, "%s", message);
 
 #ifdef _USEGTK3_
 	gtk_dialog_add_buttons((GtkDialog*)dialog,"Save",GTK_RESPONSE_YES,"Cancel",GTK_RESPONSE_CANCEL,"No",GTK_RESPONSE_NO,NULL);
