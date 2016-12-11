@@ -18,11 +18,11 @@
  * along with ManPageEditor.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "globals.h"
-#include "files.h"
-
 #ifndef _CALLBACKS_
 #define _CALLBACKS_
+
+#include "globals.h"
+#include "files.h"
 
 void doOpenFile(GtkWidget* widget,gpointer data);
 void closeTab(GtkWidget* widget,gpointer data);

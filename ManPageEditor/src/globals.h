@@ -18,6 +18,9 @@
  * along with ManPageEditor.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _GLOBALS_
+#define _GLOBALS_
+
 #include <stdlib.h>
 #include <gtk/gtk.h>
 #include <string.h>
@@ -44,10 +47,6 @@
 #ifdef _ASPELL_
 #include <aspell.h>
 #endif
-
-#ifndef _GLOBALS_
-#define _GLOBALS_
-
 
 #define REPLACE				100
 #define FINDNEXT			200

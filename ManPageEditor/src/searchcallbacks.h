@@ -18,11 +18,11 @@
  * along with ManPageEditor.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "globals.h"
-#include "files.h"
-
 #ifndef _FUNCCALLBACKS_
 #define _FUNCCALLBACKS_
+
+#include "globals.h"
+#include "files.h"
 
 void doFindReplace(GtkDialog *dialog,gint response_id,gpointer user_data);
 void find(GtkWidget* widget,gpointer data);
