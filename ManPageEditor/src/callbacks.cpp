@@ -358,10 +358,10 @@ void writeExitData(void)
 	gtk_widget_get_allocation(window,&alloc);
 	gtk_window_get_position((GtkWindow*)window,&winx,&winy);
 
-	asprintf(&filename,"%s/.ManPageEditor",getenv("HOME"));
+	asprintf(&filename,"%s/.config/ManPageEditor",getenv("HOME"));
 	g_mkdir_with_parents(filename,493);
 	g_free(filename);
-	asprintf(&filename,"%s/.ManPageEditor/editor.window.rc",getenv("HOME"));
+	asprintf(&filename,"%s/.config/ManPageEditor/editor.window.rc",getenv("HOME"));
 	fd=fopen(filename,"w");
 	if(fd!=NULL)
 		{
@@ -382,10 +382,10 @@ void writeConfig(void)
 	gtk_widget_get_allocation(window,&alloc);
 	gtk_window_get_position((GtkWindow*)window,&winx,&winy);
 
-	asprintf(&filename,"%s/.ManPageEditor",getenv("HOME"));
+	asprintf(&filename,"%s/.config/ManPageEditor",getenv("HOME"));
 	g_mkdir_with_parents(filename,493);
 	g_free(filename);
-	asprintf(&filename,"%s/.ManPageEditor/editor.rc",getenv("HOME"));
+	asprintf(&filename,"%s/.config/ManPageEditor/editor.rc",getenv("HOME"));
 	fd=fopen(filename,"w");
 	if(fd!=NULL)
 		{

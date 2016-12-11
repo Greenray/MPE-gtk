@@ -30,7 +30,7 @@ void readConfig(void)
 	int		intarg;
 	char	strarg[256];
 
-	asprintf(&filename,"%s/.ManPageEditor/editor.rc",getenv("HOME"));
+	asprintf(&filename,"%s/.config/ManPageEditor/editor.rc",getenv("HOME"));
 	fd=fopen(filename,"r");
 	if(fd!=NULL)
 		{
@@ -79,7 +79,7 @@ void readConfig(void)
 		}
 
 	g_free(filename);
-	asprintf(&filename,"%s/.ManPageEditor/editor.window.rc",getenv("HOME"));
+	asprintf(&filename,"%s/.config/ManPageEditor/editor.window.rc",getenv("HOME"));
 	fd=fopen(filename,"r");
 	if(fd!=NULL)
 		{
@@ -119,7 +119,7 @@ void init(void)
 	showLiveSearch=true;
 	gzipPages=false;
 
-	asprintf(&filename,"%s/.ManPageEditor",getenv("HOME"));
+	asprintf(&filename,"%s/.config/ManPageEditor",getenv("HOME"));
 	g_mkdir_with_parents(filename,493);
 	g_free(filename);
 
