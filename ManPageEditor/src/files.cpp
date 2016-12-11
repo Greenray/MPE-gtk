@@ -19,7 +19,9 @@
  */
 
 #include <glib.h>
-#include <gtksourceview/gtksourceview.h>
+#ifdef _USEGTK3_
+#include <gtksourceview/gtksource.h>
+#endif
 
 #include "callbacks.h"
 #include "script.h"

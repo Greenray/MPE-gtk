@@ -28,6 +28,7 @@
 
 #include "globals.h"
 #include "guis.h"
+#include "spellcheck.h"
 
 #ifdef _ASPELL_
 

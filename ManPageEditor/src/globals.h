@@ -22,27 +22,28 @@
 #define _GLOBALS_
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <gtk/gtk.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <gtksourceview/gtksourcebuffer.h>
-#include <gtksourceview/gtksourceview.h>
 
 #include "config.h"
-#include "internet.h"
 
 #ifndef _USEGTK3_
+#include <gtksourceview/gtksourceview.h>
+#include <gtksourceview/gtksourcebuffer.h>
 #include <gtksourceview/gtksourceiter.h>
 #else
-#define GTK_STOCK_NEW "document-new"
-#define GTK_STOCK_SAVE "document-save"
-#define GTK_STOCK_CUT "edit-cut"
-#define GTK_STOCK_COPY "edit-copy"
+#include <gtksourceview/gtksource.h>
+#define GTK_STOCK_NEW   "document-new"
+#define GTK_STOCK_SAVE  "document-save"
+#define GTK_STOCK_CUT   "edit-cut"
+#define GTK_STOCK_COPY  "edit-copy"
 #define GTK_STOCK_PASTE "edit-paste"
-#define GTK_STOCK_UNDO "edit-undo"
-#define GTK_STOCK_REDO "edit-redo"
-#define GTK_STOCK_FIND "edit-find"
-#endif
+#define GTK_STOCK_UNDO  "edit-undo"
+#define GTK_STOCK_REDO  "edit-redo"
+#define GTK_STOCK_FIND  "edit-find"
+#endif // _USEGTK3_
 
 #ifdef _ASPELL_
 #include <aspell.h>

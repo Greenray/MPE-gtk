@@ -18,10 +18,9 @@
  * along with ManPageEditor.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-#include <gtksourceview/gtksourceview.h>
-
+#include "globals.h"
 #include "guis.h"
+#include "callbacks.h"
 #include "searchcallbacks.h"
 #include "spellcheck.h"
 #include "script.h"

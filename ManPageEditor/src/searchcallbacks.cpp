@@ -18,7 +18,9 @@
  * along with ManPageEditor.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtksourceview/gtksourceview.h>
+#ifdef _USEGTK3_
+#include <gtksourceview/gtksource.h>
+#endif
 
 #include "globals.h"
 
