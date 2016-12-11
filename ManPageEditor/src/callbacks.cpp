@@ -24,6 +24,7 @@
 #include "searchcallbacks.h"
 #include "spellcheck.h"
 #include "script.h"
+#include "internet.h"
 
 GtkWidget*			tabMenu;
 GtkPrintSettings*	settings=NULL;
