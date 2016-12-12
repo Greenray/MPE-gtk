@@ -1,12 +1,9 @@
-.svn
-makepkg
 Makefile
-ManPageEditor/app/Makefile
-ManPageEditor/src/.deps/
-ManPageEditor/src/.dirstamp
+po/Makefile
+src/.deps/
+src/.dirstamp
 config.h
 config.log
 config.status
 stamp-h1
-
-
+.project

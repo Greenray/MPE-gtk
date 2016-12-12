@@ -1,3 +1,20 @@
+2016-12-12
+Created new branch: international
+Added internationalization of the application
+Added translation into Russian
+Added man page in Russian
+Added spec file to create installation package for ROSA Linux distribution
+New README.md
+
+2016-12-05
+Fixed "-Werror=format-security"
+Fixed "-Wempty-body"
+Fixed: Header is not guarded against multiple inclusions
+Config directory moved to ~/.config
+Fixed ambiguating declaration of tabPopUp()
+Fixed ambiguating declaration of tabPopUp()
+License is in $(docdir)/${PACKAGE}, so removed from $(pkgdatadir)/docs
+
 0.1.2
 Fixed wrongly labeled 'Save' menu.
 Added recent menu.

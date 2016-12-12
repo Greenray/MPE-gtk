@@ -20,6 +20,63 @@ You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically 'autoreconf'.])])
 
+# intlmacosx.m4 serial 5 (gettext-0.18.2)
+dnl Copyright (C) 2004-2014, 2016 Free Software Foundation, Inc.
+dnl This file is free software; the Free Software Foundation
+dnl gives unlimited permission to copy and/or distribute it,
+dnl with or without modifications, as long as this notice is preserved.
+dnl
+dnl This file can be used in projects which are not available under
+dnl the GNU General Public License or the GNU Library General Public
+dnl License but which still want to provide support for the GNU gettext
+dnl functionality.
+dnl Please note that the actual code of the GNU gettext library is covered
+dnl by the GNU Library General Public License, and the rest of the GNU
+dnl gettext package is covered by the GNU General Public License.
+dnl They are *not* in the public domain.
+
+dnl Checks for special options needed on Mac OS X.
+dnl Defines INTL_MACOSX_LIBS.
+AC_DEFUN([gt_INTL_MACOSX],
+[
+  dnl Check for API introduced in Mac OS X 10.2.
+  AC_CACHE_CHECK([for CFPreferencesCopyAppValue],
+    [gt_cv_func_CFPreferencesCopyAppValue],
+    [gt_save_LIBS="$LIBS"
+     LIBS="$LIBS -Wl,-framework -Wl,CoreFoundation"
+     AC_LINK_IFELSE(
+       [AC_LANG_PROGRAM(
+          [[#include <CoreFoundation/CFPreferences.h>]],
+          [[CFPreferencesCopyAppValue(NULL, NULL)]])],
+       [gt_cv_func_CFPreferencesCopyAppValue=yes],
+       [gt_cv_func_CFPreferencesCopyAppValue=no])
+     LIBS="$gt_save_LIBS"])
+  if test $gt_cv_func_CFPreferencesCopyAppValue = yes; then
+    AC_DEFINE([HAVE_CFPREFERENCESCOPYAPPVALUE], [1],
+      [Define to 1 if you have the Mac OS X function CFPreferencesCopyAppValue in the CoreFoundation framework.])
+  fi
+  dnl Check for API introduced in Mac OS X 10.3.
+  AC_CACHE_CHECK([for CFLocaleCopyCurrent], [gt_cv_func_CFLocaleCopyCurrent],
+    [gt_save_LIBS="$LIBS"
+     LIBS="$LIBS -Wl,-framework -Wl,CoreFoundation"
+     AC_LINK_IFELSE(
+       [AC_LANG_PROGRAM(
+          [[#include <CoreFoundation/CFLocale.h>]],
+          [[CFLocaleCopyCurrent();]])],
+       [gt_cv_func_CFLocaleCopyCurrent=yes],
+       [gt_cv_func_CFLocaleCopyCurrent=no])
+     LIBS="$gt_save_LIBS"])
+  if test $gt_cv_func_CFLocaleCopyCurrent = yes; then
+    AC_DEFINE([HAVE_CFLOCALECOPYCURRENT], [1],
+      [Define to 1 if you have the Mac OS X function CFLocaleCopyCurrent in the CoreFoundation framework.])
+  fi
+  INTL_MACOSX_LIBS=
+  if test $gt_cv_func_CFPreferencesCopyAppValue = yes || test $gt_cv_func_CFLocaleCopyCurrent = yes; then
+    INTL_MACOSX_LIBS="-Wl,-framework -Wl,CoreFoundation"
+  fi
+  AC_SUBST([INTL_MACOSX_LIBS])
+])
+
 # pkg.m4 - Macros to locate and utilise pkg-config.            -*- Autoconf -*-
 # serial 1 (pkg-config-0.24)
 # 
@@ -1077,14 +1134,14 @@ esac
 if (
    am_has_slept=no
    for am_try in 1 2; do
-     echo "timestamp, slept: $am_has_slept" > conftest.file
-     set X `ls -Lt "$srcdir/configure" conftest.file 2> /dev/null`
+     echo "timestamp, slept: $am_has_slept" > !conftest.file
+     set X `ls -Lt "$srcdir/configure" !conftest.file 2> /dev/null`
      if test "$[*]" = "X"; then
 	# -L didn't work.
-	set X `ls -t "$srcdir/configure" conftest.file`
+	set X `ls -t "$srcdir/configure" !conftest.file`
      fi
-     if test "$[*]" != "X $srcdir/configure conftest.file" \
-	&& test "$[*]" != "X conftest.file $srcdir/configure"; then
+     if test "$[*]" != "X $srcdir/configure !conftest.file" \
+	&& test "$[*]" != "X !conftest.file $srcdir/configure"; then
 
 	# If neither matched, then we have a broken ls.  This can happen
 	# if, for instance, CONFIG_SHELL is bash and it inherits a
@@ -1093,14 +1150,14 @@ if (
 	AC_MSG_ERROR([ls -t appears to fail.  Make sure there is not a broken
   alias in your environment])
      fi
-     if test "$[2]" = conftest.file || test $am_try -eq 2; then
+     if test "$[2]" = !conftest.file || test $am_try -eq 2; then
        break
      fi
      # Just in case.
      sleep 1
      am_has_slept=yes
    done
-   test "$[2]" = conftest.file
+   test "$[2]" = !conftest.file
    )
 then
    # Ok.
@@ -1113,7 +1170,7 @@ AC_MSG_RESULT([yes])
 # If we didn't sleep, we still need to ensure time stamps of config.status and
 # generated files are strictly newer.
 am_sleep_pid=
-if grep 'slept: no' conftest.file >/dev/null 2>&1; then
+if grep 'slept: no' !conftest.file >/dev/null 2>&1; then
   ( sleep 1 ) &
   am_sleep_pid=$!
 fi
@@ -1124,7 +1181,7 @@ AC_CONFIG_COMMANDS_PRE(
      wait $am_sleep_pid 2>/dev/null
    fi
    AC_MSG_RESULT([done])])
-rm -f conftest.file
+rm -f !conftest.file
 ])
 
 # Copyright (C) 2009-2014 Free Software Foundation, Inc.
@@ -1365,3 +1422,11 @@ AC_SUBST([am__tar])
 AC_SUBST([am__untar])
 ]) # _AM_PROG_TAR
 
+m4_include([m4/gettext.m4])
+m4_include([m4/iconv.m4])
+m4_include([m4/lib-ld.m4])
+m4_include([m4/lib-link.m4])
+m4_include([m4/lib-prefix.m4])
+m4_include([m4/nls.m4])
+m4_include([m4/po.m4])
+m4_include([m4/progtest.m4])

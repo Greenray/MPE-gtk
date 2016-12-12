@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<html>
+<head>
+    <title>Manpage Editor Linux help page</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+    <!-- <script type="text/javascript" src="CreateHTML5Elements.js"></script> -->
+</head>
+<body>
+    <div id="page">
+        <header><h1>Man Page Editor Short Manual</h1></header>
+        <nav>
+            <ul id="links">
+                <li><a href="#tabmenu">Tab Menu</a></li>
+                <li><a href="#filemenu">File Menu</a></li>
+                <li><a href="#toolbar">Tool Bar</a></li>
+                <li><a href="#prefs">Preferences</a></li>
+                <li><a href="#props">Properties</a></li>
+                <li><a href="#testformat">Text Formatting</a></li>
+                <li><a href="#todo">ToDo</a></li>
+                <li><a href="#getit">Get It</li>
+            </ul>
+        </nav>
+        <div id="posts">
+            <article>
+                <hgroup>
+                    <a name="tabmenu"></a>
+                    <h2>Tab Menu</h2>
+                </hgroup>
+                <img src="tabmenu.png" width="800" height="250" alt="" />
+                <p>The<span class="bold italic"> Tab Menu </span>allows you to change the section name etc.</p>
+            </article>
+            <article>
+                <hgroup>
+                    <a name="filemenu"></a>
+                    <h2>File Menu</h2>
+                </hgroup>
+                <img alt="" src="filemenu.png" width="800" height="454" />
+                <p>
+                    <span class="bold italic">New </span>- creates a new manpage.<br />
+                    <span class="bold italic">New Section </span>- adds a section to the manpage.<br />
+                    <span class="bold italic">New From Template </span>- opens a template file installed in <span class="bold green">PREFIX/share/ManPageEditor/examples</span>,
+                    called oddly enough template-1.mpz, you can change this template to suit your tastes or replace it with your own template,
+                    at some fut ure stage I will add more templates and possibly add a template folder.<br />
+                    <span class="bold italic">New Editor </span>- would you believe opens a new editor!<br />
+                    <span class="bold italic">Open </span>- opens a manpageeditor file (.mpz).<br />
+                    <span class="bold italic">Export </span>- exports to manpage format, sections are created in the order they are displayed in the editor,
+                    just drag the tabs to reorder. Export exports the man page to the same folder as the source file and names it as the lowercase name in properties
+                    and appends the section number.<br />
+                    <span class="bold italic">Export As </span>- allows you to select folder and file for the exported page. Properties set the main properties for the page.<br />
+                    Delete section does what it says, this can not be undone! so save first.<br />
+                    <span class="bold italic">Import Man Page </span>- allows you to manually select a manpage to import.<br />
+                    <span class="bold italic">Import System Manpage </span>- allows you to just type the name of the manpage that you want and optionally select
+                    a manpage section, like so:
+                    <img src="systemmanpage.png" width="429" height="207" alt="" /><br />
+                    <span class="bold italic">Save/Save As/Print/Quit </span>and<span class="bold italic"> Close </span>are standard.
+                </p>
+            </article>
+            <article>
+                <hgroup>
+                    <a name="toolbar"></a>
+                    <h2>ToolBar</h2>
+                </hgroup>
+                <img alt="" src="toolbar.png" width="670" height="216" />
+                <p>Pretty standard the entry box is a<span class="bold italic"> Live </span>search just start typing, press enter to go to the next match and shift for the previous.</p>
+            </article>
+            <article>
+                <hgroup>
+                    <a name="prefs"></a>
+                    <h2>Preferences</h2>
+                </hgroup>
+                <img src="prefs.png" width="464" height="318" alt="" />
+                <p>Self explanatory mostly<span class="bold italic"> Use Underline </span>uses underlining in the GUI to represent italic which is the same as most terminals.</p>
+            </article>
+            <article>
+            <hgroup>
+                <a name="props"></a>
+                <h2>Properties</h2>
+            </hgroup>
+                <img src="props.png" width="250" height="315" alt="" />
+                <p>
+                    The header and footer displayed in the man page like so:
+                    <img src="headandfoot.png" width="800" height="216" alt="" />
+                </p>
+            </article>
+            <article>
+                <hgroup>
+                    <a name="testformat"></a>
+                    <h2>Text Formatting</h2>
+                </hgroup>
+                <p>
+                    Simple text formatting is done via the 'Formatting' menu just select a piece of text and select bold/italic or clear,
+                    italic text tends to be shown in the terminal as underlined, this can be set in the prefs.<br />
+                    See the example file in <span class="bold green">PREFIX/share/ManPageEditor/examples</span>.
+                </p>
+            </article>
+            <article>
+                <hgroup>
+                    <a name="todo"></a>
+                    <h2>To Do</h2>
+                </hgroup>
+                <p>
+                    <strike>Write a proper help file.</strike><br />
+                    Add proper formatting instead of using text based tags --&gt; Mostly done need to add stuff like indents and paragraphs.<br />
+                    Add more templates and template folder.<br />
+                    <strike>Add optional zipping up of man pages.</strike><br />
+                    <strike>Add preview option.</strike><br />
+                    <strike>Add import manpage.</strike><br />
+                    <strike>Make a proper icon.</strike><br />
+                    <strike>Add a mime type for documents.</strike><br />
+                    <strike>Add document icon.</strike><br /><br /><br />
+                    Your help in the translation of the application into other languages is welcome!
+                </p>
+            </article>
+        </div>
+        <footer>
+            <a name="getit"></a>
+            <p><address><a href="http://gtk-apps.org/content/show.php?content=160219">Get ManPageEditor here!</a></address></p>
+            <p><address><a href="https://github.com/Greenray/ManPageEditor">ManPageEditor International Version</a></address></p>
+            <p><address><a href="http://khapplications.darktech.org">K.D.Hedger's Applications</a></address></p>
+        </footer>
+    </div>
+</body>
+</html>
