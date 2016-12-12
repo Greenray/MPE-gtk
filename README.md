@@ -5,7 +5,8 @@ This is the fork of the K.D.Hedger's ManPageEditor.
 
 #### VERSION / ВЕРСИЯ
 
-0.1.2
+0.1.2 international - see branch international.
+0.1.2 original - see. branch master.
 
 #### DESCRIPTION / ОПИСАНИЕ
 
@@ -40,8 +41,8 @@ nroff, aspell
 
 #### INSTALLATION / УСТАНОВКА
 
-See file INSTALL.
-Смотрите INSTALL.
+Please read the README, INSTALL, ABOUT-NLS and BUGS-ETC files.
+Пожалуйста, прочитайте файлы README, INSTALL, ABOUT-NLS и BUGS-ETC.
 
 #### COPYRIGHT AND LICENSE
 
