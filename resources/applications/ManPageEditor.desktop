@@ -9,5 +9,5 @@ Type=Application
 Categories=Development;Documentation;GTK;
 MimeType=application/x-maneditdoc;
 Exec=manpageeditor
-Icon=manpageeditor
+Icon=ManPageEditor
 Keywords=editor;man;help;
