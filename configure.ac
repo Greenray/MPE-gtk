@@ -1,4 +1,4 @@
-AC_INIT([manpageeditor],[0.1.2],[https://github.com/Greenray/ManPageEditor],[manpageeditor],[https://github.com/Greenray/ManPageEditor])
+AC_INIT(ManPageEditor, 0.1.2, https://github.com/Greenray/ManPageEditor, ManPageEditor, https://github.com/Greenray/ManPageEditor)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS(config.h)
 AC_PROG_CC

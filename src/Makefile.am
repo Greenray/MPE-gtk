@@ -49,15 +49,15 @@ sizes = 256x256 128x128 64x64 48x48 32x32 22x22 16x16
 install-data-hook:
 	for size in ${sizes}; do \
 		mkdir -p $(DESTDIR)${prefix}/share/icons/hicolor/"$$size"/apps||true; \
-		convert ../resources/pixmaps/manpageeditor.png -resize "$$size" $(DESTDIR)${prefix}/share/icons/hicolor/"$$size"/apps/manpageeditor.png; \
+		convert ../resources/pixmaps/ManPageEditor.png -resize "$$size" $(DESTDIR)${prefix}/share/icons/hicolor/"$$size"/apps/ManPageEditor.png; \
 	done
 
 	mkdir -p $(DESTDIR)${prefix}/share/icons||true
 	mkdir -p $(DESTDIR)${prefix}/share/icons/large||true
 	mkdir -p $(DESTDIR)${prefix}/share/icons/mini||true
-	convert ../resources/pixmaps/manpageeditor.png -resize 32x32 $(DESTDIR)${prefix}/share/icons/manpageeditor.png
-	convert ../resources/pixmaps/manpageeditor.png -resize 48x48 $(DESTDIR)${prefix}/share/icons/large/manpageeditor.png
-	convert ../resources/pixmaps/manpageeditor.png -resize 16x16 $(DESTDIR)${prefix}/share/icons/mini/manpageeditor.png
+	convert ../resources/pixmaps/ManPageEditor.png -resize 32x32 $(DESTDIR)${prefix}/share/icons/ManPageEditor.png
+	convert ../resources/pixmaps/ManPageEditor.png -resize 48x48 $(DESTDIR)${prefix}/share/icons/large/ManPageEditor.png
+	convert ../resources/pixmaps/ManPageEditor.png -resize 16x16 $(DESTDIR)${prefix}/share/icons/mini/ManPageEditor.png
 
 	mkdir -p $(DESTDIR)${prefix}/share/mime/packages||true
 	cp -p ../resources/mime/maneditdoc-mime.xml $(DESTDIR)${prefix}/share/mime/packages||true
@@ -68,12 +68,12 @@ install-data-hook:
 	
 uninstall-hook:
 	for size in ${sizes}; do \
-		rm $(DESTDIR)${prefix}/share/icons/hicolor/"$$size"/apps/manpageeditor.png||true; \
+		rm $(DESTDIR)${prefix}/share/icons/hicolor/"$$size"/apps/ManPageEditor.png||true; \
 	done
 
-	rm $(DESTDIR)${prefix}/share/icons/manpageeditor.png||true
-	rm $(DESTDIR)${prefix}/share/icons/large/manpageeditor.png||true
-	rm $(DESTDIR)${prefix}/share/icons/mini/manpageeditor.png||true
+	rm $(DESTDIR)${prefix}/share/icons/ManPageEditor.png||true
+	rm $(DESTDIR)${prefix}/share/icons/large/ManPageEditor.png||true
+	rm $(DESTDIR)${prefix}/share/icons/mini/ManPageEditor.png||true
 
 	rm $(DESTDIR)${prefix}/share/mime/maneditdoc-mime.xml
 

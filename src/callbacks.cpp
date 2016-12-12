@@ -518,7 +518,7 @@ void doAbout(GtkWidget* widget, gpointer data) {
         "website",            MANEDITPAGE,
         "program-name",       "ManPage Editor",
         "website-label",      _("Manpage Editor Page"),
-        "logo-icon-name",     "manpageeditor",
+        "logo-icon-name",     "ManPageEditor",
 		"license",            license,
 		"translator-credits", translators,
 		"wrap-license",       true,
