@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ManPageEditor 0.1.2\n"
-"Report-Msgid-Bugs-To: https://github.com/Greenray/ManPageEditor\n"
-"POT-Creation-Date: 2016-12-12 08:03+0300\n"
-"PO-Revision-Date: 2016-12-12 08:03+0300\n"
-"Last-Translator: Victor V. Nabatov <greenray.spb@gmail.com>\n"
+"Project-Id-Version: MPE-gtk2 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/Greenray/MPE-gtk2\n"
+"POT-Creation-Date: 2016-12-13 09:30+0300\n"
+"PO-Revision-Date: 2016-12-13 09:30+0300\n"
+"Last-Translator: Victor Nabatov <greenray.spb@gmail.com>\n"
 "Language-Team: RUSSIAN TEAM <greenray.spb@gmail.com>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -40,12 +40,12 @@ msgstr "Что Вы хотите сделать?"
 msgid "Save file %s before closing?"
 msgstr "Сохранить файл %s перед закрытием?"
 
-#: callbacks.cpp:102 files.cpp:212 guis.cpp:238
+#: callbacks.cpp:102 files.cpp:212 guis.cpp:237
 msgid "Save"
 msgstr "Сохранить"
 
 #: callbacks.cpp:103 callbacks.cpp:641 files.cpp:211 files.cpp:541
-#: files.cpp:624 files.cpp:877 files.cpp:1209 guis.cpp:134 guis.cpp:849
+#: files.cpp:624 files.cpp:877 files.cpp:1209 guis.cpp:134 guis.cpp:848
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -100,8 +100,8 @@ msgstr ""
 "http://github.com/KeithDHedger"
 
 #: callbacks.cpp:506
-msgid "ManPage Editor - Editor for linux manpages"
-msgstr "ManPage Editor - Редактор справочных страниц Linux"
+msgid "Editor for linux manpages"
+msgstr "Редактор справочных страниц"
 
 #: callbacks.cpp:508
 msgid "Russian: Victor Nabatov <greenray.spb@gmail.com>"
@@ -115,7 +115,7 @@ msgstr "Сайт редактора справочных страниц"
 msgid "Set Properties"
 msgstr "Свойства"
 
-#: callbacks.cpp:654 guis.cpp:464
+#: callbacks.cpp:654 guis.cpp:463
 msgid "Properties"
 msgstr "Свойства"
 
@@ -139,7 +139,7 @@ msgstr "Автор\t"
 msgid "Category\t"
 msgstr "Категория"
 
-#: files.cpp:210 files.cpp:215 guis.cpp:241
+#: files.cpp:210 files.cpp:215 guis.cpp:240
 msgid "Save File"
 msgstr "Сохранить файл"
 
@@ -171,15 +171,15 @@ msgstr "Файл  '%s' не существует"
 #: files.cpp:810
 #, c-format
 msgid ""
-"File '%s' isn't a ManPage Editor archive\n"
+"File '%s' isn't a man page\n"
 "Try using 'Import' instead"
 msgstr ""
-"Файл '%s'  не является архивом Редактора.\n"
-"Попробуйте использовать импорт."
+"Файл '%s' не является страницей man\n"
+"Попробуйте использовать \"Импорт\""
 
 #: files.cpp:867
-msgid "Manpage Editor Docs \"*.mpz\""
-msgstr "Документы Редактора \"*.mpz\""
+msgid "Man pages \"*.xz\""
+msgstr "Справочные страницы"
 
 #: files.cpp:868
 msgid "All Files"
@@ -241,11 +241,11 @@ msgstr "9. Подпрограммы ядра (нестандартные)"
 msgid "Manpage Name"
 msgstr "Название"
 
-#: files.cpp:1139 guis.cpp:440 guis.cpp:443
+#: files.cpp:1139 guis.cpp:439 guis.cpp:442
 msgid "Import System Manpage"
 msgstr "Импорт системного man"
 
-#: files.cpp:1208 files.cpp:1214 guis.cpp:429 guis.cpp:432
+#: files.cpp:1208 files.cpp:1214 guis.cpp:428 guis.cpp:431
 msgid "Import Manpage"
 msgstr "Импорт man"
 
@@ -285,226 +285,245 @@ msgstr "Шрифт"
 msgid "Terminal Command: "
 msgstr "Команда терминала:"
 
-#: guis.cpp:125 guis.cpp:827
+#: guis.cpp:125 guis.cpp:826
 msgid "Apply"
 msgstr "Применить"
 
-#: guis.cpp:206
-msgid "Manpage Editor"
-msgstr "Редактор справочных страниц"
+#: guis.cpp:205
+msgid "Man Pages Editor MPE-GTK2"
+msgstr "Редактор справочных страниц MPE-GTK2"
 
-#: guis.cpp:231
+#: guis.cpp:230
 msgid "New"
 msgstr "Новый"
 
-#: guis.cpp:234
+#: guis.cpp:233
 msgid "New File"
 msgstr "Новый файл"
 
-#: guis.cpp:248 guis.cpp:251
+#: guis.cpp:247 guis.cpp:250
 msgid "Cut"
 msgstr "Вырезать"
 
-#: guis.cpp:255 guis.cpp:258
+#: guis.cpp:254 guis.cpp:257
 msgid "Copy"
 msgstr "Копировать"
 
-#: guis.cpp:262 guis.cpp:265
+#: guis.cpp:261 guis.cpp:264
 msgid "Paste"
 msgstr "Вставить"
 
-#: guis.cpp:271 guis.cpp:274
+#: guis.cpp:270 guis.cpp:273
 msgid "Undo"
 msgstr "Отменить"
 
-#: guis.cpp:278 guis.cpp:281
+#: guis.cpp:277 guis.cpp:280
 msgid "Redo"
 msgstr "Повторить"
 
-#: guis.cpp:286 guis.cpp:741
+#: guis.cpp:285 guis.cpp:740
 msgid "Find"
 msgstr "Найти"
 
-#: guis.cpp:289 guis.cpp:715 guis.cpp:722
+#: guis.cpp:288 guis.cpp:714 guis.cpp:721
 msgid "Find/Replace"
 msgstr "Найти/Заменить"
 
-#: guis.cpp:298
+#: guis.cpp:297
 msgid "Live Search"
 msgstr "Живой поиск"
 
-#: guis.cpp:303
+#: guis.cpp:302
 msgid "File"
 msgstr "Файл"
 
-#: guis.cpp:310
+#: guis.cpp:309
 msgid "_New"
 msgstr "Новый"
 
-#: guis.cpp:321 guis.cpp:323
+#: guis.cpp:320 guis.cpp:322
 msgid "New Section"
 msgstr "Новый раздел"
 
-#: guis.cpp:333
+#: guis.cpp:332
 msgid "_Open"
 msgstr "Открыть"
 
-#: guis.cpp:346
+#: guis.cpp:345
 msgid "_Recent"
 msgstr "Недавние"
 
-#: guis.cpp:356 guis.cpp:358
+#: guis.cpp:355 guis.cpp:357
 msgid "New From Template"
 msgstr "Новый man из шаблона"
 
-#: guis.cpp:368 guis.cpp:370
+#: guis.cpp:367 guis.cpp:369
 msgid "New Editor"
 msgstr "Новый редактор"
 
-#: guis.cpp:383
+#: guis.cpp:382
 msgid "_Save"
 msgstr "Сохранить"
 
-#: guis.cpp:394
+#: guis.cpp:393
 msgid "Save As"
 msgstr "Сохранить как"
 
-#: guis.cpp:405 guis.cpp:408
+#: guis.cpp:404 guis.cpp:407
 msgid "Export Man Page"
 msgstr "Экспорт man"
 
-#: guis.cpp:417 guis.cpp:420
+#: guis.cpp:416 guis.cpp:419
 msgid "Export As"
 msgstr "Экспортировать как"
 
-#: guis.cpp:452 guis.cpp:455
+#: guis.cpp:451 guis.cpp:454
 msgid "Preview Page"
 msgstr "Предпросмотр"
 
-#: guis.cpp:477 guis.cpp:480
+#: guis.cpp:476 guis.cpp:479
 msgid "Print Manpage to LP"
 msgstr "Распечатать на принтере"
 
-#: guis.cpp:489 guis.cpp:492
+#: guis.cpp:488 guis.cpp:491
 msgid "Print Manpage To PDF"
 msgstr "Экпортировать в PDF"
 
-#: guis.cpp:504
+#: guis.cpp:503
 msgid "_Close"
 msgstr "Закрыть"
 
-#: guis.cpp:515 guis.cpp:518
+#: guis.cpp:514 guis.cpp:517
 msgid "Delete Section"
 msgstr "Удалить раздел"
 
-#: guis.cpp:530
+#: guis.cpp:529
 msgid "_Quit"
 msgstr "Выход"
 
-#: guis.cpp:540
+#: guis.cpp:539
 msgid "Edit"
 msgstr "Редактировать"
 
-#: guis.cpp:547
+#: guis.cpp:546
 msgid "_Undo"
 msgstr "Отменить"
 
-#: guis.cpp:558
+#: guis.cpp:557
 msgid "_Redo"
 msgstr "Повторить"
 
-#: guis.cpp:572
+#: guis.cpp:571
 msgid "_Cut"
 msgstr "Вырезать"
 
-#: guis.cpp:583
+#: guis.cpp:582
 msgid "_Copy"
 msgstr "Копировать"
 
-#: guis.cpp:594
+#: guis.cpp:593
 msgid "_Paste"
 msgstr "Вставить"
 
-#: guis.cpp:608
+#: guis.cpp:607
 msgid "_Find"
 msgstr "Найти"
 
-#: guis.cpp:622
+#: guis.cpp:621
 msgid "_Preferences"
 msgstr "Настройки"
 
-#: guis.cpp:631
+#: guis.cpp:630
 msgid "Formating"
 msgstr "Форматирование"
 
-#: guis.cpp:638
+#: guis.cpp:637
 msgid "_Bold"
 msgstr "Жирный"
 
-#: guis.cpp:649
+#: guis.cpp:648
 msgid "_Italic"
 msgstr "Курсив"
 
-#: guis.cpp:660
+#: guis.cpp:659
 msgid "_Clear"
 msgstr "Очистить"
 
-#: guis.cpp:670
+#: guis.cpp:669
 msgid "Help"
 msgstr "Помощь"
 
-#: guis.cpp:677
+#: guis.cpp:676
 msgid "_About"
 msgstr "О программе"
 
-#: guis.cpp:687
+#: guis.cpp:686
 msgid "_Help"
 msgstr "Помощь"
 
-#: guis.cpp:716
+#: guis.cpp:715
 msgid "Forward"
 msgstr "Вперёд"
 
-#: guis.cpp:717
+#: guis.cpp:716
 msgid "Back"
 msgstr "Назад"
 
-#: guis.cpp:718 guis.cpp:729 searchcallbacks.cpp:197
+#: guis.cpp:717 guis.cpp:728 searchcallbacks.cpp:198
 msgid "Replace"
 msgstr "Заменить"
 
-#: guis.cpp:750
+#: guis.cpp:749
 msgid "Replace With"
 msgstr "Заменить на"
 
-#: guis.cpp:759
+#: guis.cpp:758
 msgid "Case insensitive"
 msgstr "Без учета регистра"
 
-#: guis.cpp:765
+#: guis.cpp:764
 msgid "Wrap"
 msgstr "Перенос"
 
-#: guis.cpp:771 searchcallbacks.cpp:198
+#: guis.cpp:770 searchcallbacks.cpp:199
 msgid "Replace All"
 msgstr "Заменить всё"
 
-#: guis.cpp:807
+#: guis.cpp:806
 msgid "Spell check word"
 msgstr "Проверить слово"
 
-#: guis.cpp:815 spellcheck.cpp:68
+#: guis.cpp:814 spellcheck.cpp:62
 #, c-format
 msgid "Change <i><b>%s</b></i> to: "
 msgstr "Изменить <i><b>%s</b></i> на:"
 
-#: guis.cpp:834
+#: guis.cpp:833
 msgid "Ignore"
 msgstr "Игнорировать"
 
-#: guis.cpp:841
+#: guis.cpp:840
 msgid "Add"
 msgstr "Добавить"
+
+#~ msgid "MPE-GTK2 - Editor for linux manpages"
+#~ msgstr "MPE-GTK2 - Редактор справочных страниц"
+
+#~ msgid "ManPage Editor - Editor for linux manpages"
+#~ msgstr "ManPage Editor - Редактор справочных страниц Linux"
+
+#~ msgid ""
+#~ "File '%s' isn't a ManPage Editor archive\n"
+#~ "Try using 'Import' instead"
+#~ msgstr ""
+#~ "Файл '%s'  не является архивом Редактора.\n"
+#~ "Попробуйте использовать импорт."
+
+#~ msgid "Manpage Editor Docs \"*.mpz\""
+#~ msgstr "Документы Редактора \"*.mpz\""
+
+#~ msgid "Manpage Editor"
+#~ msgstr "Редактор справочных страниц"
 
 #~ msgid "<br><br>More by the same author<br>"
 #~ msgstr "<br><br>Ещё от автора<br>"

@@ -1,21 +1,21 @@
 /*
- * ©K. D. Hedger. Fri 27 Nov 11:45:02 GMT 2015 kdhedger68713@gmail.com
+ * ©K. D. Hedger. Fri 27 Nov 11:42:28 GMT 2015 kdhedger68713@gmail.com
  *  Victor Nabatov Sun 12 Dec 10:32:00 GMT 2016 greenray.spb@gmail.com
  *
- * This file (guis.cpp) is part of ManPageEditor.
+ * This file (callbacks.cpp) is part of MPE-gtk2.
  *
- * ManPageEditor is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * at your option) any later version.
+ * MPE-gtk2 is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or at your
+ * option any later version.
  *
- * ManPageEditor is distributed in the hope that it will be useful,
+ * MPE-gtk2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with ManPageEditor. If not, see <http://www.gnu.org/licenses/>.
+ * along with MPE-gtk2. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <gdk/gdkkeysyms.h>
@@ -186,7 +186,6 @@ void setupRecent(GtkMenuItem *menu) {
 
 	filter = gtk_recent_filter_new();
 	gtk_recent_filter_add_mime_type (filter, "application/x-maneditdoc");
-	//gtk_recent_filter_add_application(filter,"manpageeditor");
 	gtk_recent_chooser_set_filter(GTK_RECENT_CHOOSER(recent), filter);
 	g_signal_connect(recent, "item_activated", G_CALLBACK(recentFileMenu), NULL);
 
@@ -203,7 +202,7 @@ void buildMainGui(void) {
 	GtkWidget*     image;
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title((GtkWindow*)window, _("Manpage Editor"));
+	gtk_window_set_title((GtkWindow*)window, _("Man Pages Editor MPE-GTK2"));
 	gtk_window_set_default_size((GtkWindow*)window, windowWidth, windowHeight);
 	if (windowX != -1 && windowY != -1)
 		gtk_window_move((GtkWindow *)window, windowX, windowY);

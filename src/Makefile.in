@@ -89,7 +89,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = manpageeditor$(EXEEXT)
+bin_PROGRAMS = mpe-gtk2$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -104,16 +104,16 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)" \
-	"$(DESTDIR)$(appfilesdir)" "$(DESTDIR)$(examplefilesdir)" \
-	"$(DESTDIR)$(helpfilesdir)" "$(DESTDIR)$(pixfilesdir)"
+am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(appfilesdir)" \
+	"$(DESTDIR)$(examplefilesdir)" "$(DESTDIR)$(helpfilesdir)" \
+	"$(DESTDIR)$(pixfilesdir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__objects_1 = callbacks.$(OBJEXT) files.$(OBJEXT) globals.$(OBJEXT) \
 	guis.$(OBJEXT) main.$(OBJEXT) script.$(OBJEXT) \
 	searchcallbacks.$(OBJEXT) spellcheck.$(OBJEXT)
-am_manpageeditor_OBJECTS = $(am__objects_1)
-manpageeditor_OBJECTS = $(am_manpageeditor_OBJECTS)
-manpageeditor_LDADD = $(LDADD)
+am_mpe_gtk2_OBJECTS = $(am__objects_1)
+mpe_gtk2_OBJECTS = $(am_mpe_gtk2_OBJECTS)
+mpe_gtk2_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -143,8 +143,8 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(manpageeditor_SOURCES)
-DIST_SOURCES = $(manpageeditor_SOURCES)
+SOURCES = $(mpe_gtk2_SOURCES)
+DIST_SOURCES = $(mpe_gtk2_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -177,9 +177,6 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-man1dir = $(mandir)/man1
-NROFF = nroff
-MANS = $(man1_MANS)
 DATA = $(appfiles_DATA) $(examplefiles_DATA) $(helpfiles_DATA) \
 	$(pixfiles_DATA)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
@@ -355,12 +352,11 @@ COMMONSRC = callbacks.cpp \
 	searchcallbacks.cpp \
 	spellcheck.cpp
 
-manpageeditor_SOURCES = $(COMMONSRC)
+mpe_gtk2_SOURCES = $(COMMONSRC)
 appfilesdir = ${datarootdir}/applications
 appfiles_DATA = ../resources/applications/*
 pixfilesdir = ${datarootdir}/pixmaps
 pixfiles_DATA = ../resources/pixmaps/*
-man1_MANS = ../resources/man/manpageeditor.1
 helpfilesdir = $(pkgdatadir)/help
 helpfiles_DATA = ../resources/help/*
 examplefilesdir = $(pkgdatadir)/examples
@@ -442,9 +438,9 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
-manpageeditor$(EXEEXT): $(manpageeditor_OBJECTS) $(manpageeditor_DEPENDENCIES) $(EXTRA_manpageeditor_DEPENDENCIES) 
-	@rm -f manpageeditor$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(manpageeditor_OBJECTS) $(manpageeditor_LDADD) $(LIBS)
+mpe-gtk2$(EXEEXT): $(mpe_gtk2_OBJECTS) $(mpe_gtk2_DEPENDENCIES) $(EXTRA_mpe_gtk2_DEPENDENCIES) 
+	@rm -f mpe-gtk2$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(mpe_gtk2_OBJECTS) $(mpe_gtk2_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -476,47 +472,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-install-man1: $(man1_MANS)
-	@$(NORMAL_INSTALL)
-	@list1='$(man1_MANS)'; \
-	list2=''; \
-	test -n "$(man1dir)" \
-	  && test -n "`echo $$list1$$list2`" \
-	  || exit 0; \
-	echo " $(MKDIR_P) '$(DESTDIR)$(man1dir)'"; \
-	$(MKDIR_P) "$(DESTDIR)$(man1dir)" || exit 1; \
-	{ for i in $$list1; do echo "$$i"; done;  \
-	if test -n "$$list2"; then \
-	  for i in $$list2; do echo "$$i"; done \
-	    | sed -n '/\.1[a-z]*$$/p'; \
-	fi; \
-	} | while read p; do \
-	  if test -f $$p; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; echo "$$p"; \
-	done | \
-	sed -e 'n;s,.*/,,;p;h;s,.*\.,,;s,^[^1][0-9a-z]*$$,1,;x' \
-	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,' | \
-	sed 'N;N;s,\n, ,g' | { \
-	list=; while read file base inst; do \
-	  if test "$$base" = "$$inst"; then list="$$list $$file"; else \
-	    echo " $(INSTALL_DATA) '$$file' '$(DESTDIR)$(man1dir)/$$inst'"; \
-	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(man1dir)/$$inst" || exit $$?; \
-	  fi; \
-	done; \
-	for i in $$list; do echo "$$i"; done | $(am__base_list) | \
-	while read files; do \
-	  test -z "$$files" || { \
-	    echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(man1dir)'"; \
-	    $(INSTALL_DATA) $$files "$(DESTDIR)$(man1dir)" || exit $$?; }; \
-	done; }
-
-uninstall-man1:
-	@$(NORMAL_UNINSTALL)
-	@list='$(man1_MANS)'; test -n "$(man1dir)" || exit 0; \
-	files=`{ for i in $$list; do echo "$$i"; done; \
-	} | sed -e 's,.*/,,;h;s,.*\.,,;s,^[^1][0-9a-z]*$$,1,;x' \
-	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,'`; \
-	dir='$(DESTDIR)$(man1dir)'; $(am__uninstall_files_from_dir)
 install-appfilesDATA: $(appfiles_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(appfiles_DATA)'; test -n "$(appfilesdir)" || list=; \
@@ -686,9 +641,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS) $(MANS) $(DATA)
+all-am: Makefile $(PROGRAMS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(appfilesdir)" "$(DESTDIR)$(examplefilesdir)" "$(DESTDIR)$(helpfilesdir)" "$(DESTDIR)$(pixfilesdir)"; do \
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(appfilesdir)" "$(DESTDIR)$(examplefilesdir)" "$(DESTDIR)$(helpfilesdir)" "$(DESTDIR)$(pixfilesdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -744,7 +699,7 @@ info: info-am
 info-am:
 
 install-data-am: install-appfilesDATA install-examplefilesDATA \
-	install-helpfilesDATA install-man install-pixfilesDATA
+	install-helpfilesDATA install-pixfilesDATA
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 install-dvi: install-dvi-am
@@ -762,7 +717,7 @@ install-info: install-info-am
 
 install-info-am:
 
-install-man: install-man1
+install-man:
 
 install-pdf: install-pdf-am
 
@@ -793,11 +748,9 @@ ps-am:
 
 uninstall-am: uninstall-appfilesDATA uninstall-binPROGRAMS \
 	uninstall-examplefilesDATA uninstall-helpfilesDATA \
-	uninstall-man uninstall-pixfilesDATA
+	uninstall-pixfilesDATA
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
-uninstall-man: uninstall-man1
-
 .MAKE: install-am install-data-am install-exec-am install-strip \
 	uninstall-am
 
@@ -810,15 +763,14 @@ uninstall-man: uninstall-man1
 	install-dvi-am install-examplefilesDATA install-exec \
 	install-exec-am install-exec-hook install-helpfilesDATA \
 	install-html install-html-am install-info install-info-am \
-	install-man install-man1 install-pdf install-pdf-am \
-	install-pixfilesDATA install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-man install-pdf install-pdf-am install-pixfilesDATA \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
 	uninstall-am uninstall-appfilesDATA uninstall-binPROGRAMS \
 	uninstall-examplefilesDATA uninstall-helpfilesDATA \
-	uninstall-hook uninstall-man uninstall-man1 \
-	uninstall-pixfilesDATA
+	uninstall-hook uninstall-pixfilesDATA
 
 .PRECIOUS: Makefile
 
@@ -826,46 +778,29 @@ uninstall-man: uninstall-man1
 install-data-hook:
 	for size in ${sizes}; do \
 		mkdir -p $(DESTDIR)${prefix}/share/icons/hicolor/"$$size"/apps||true; \
-		convert ../resources/pixmaps/ManPageEditor.png -resize "$$size" $(DESTDIR)${prefix}/share/icons/hicolor/"$$size"/apps/ManPageEditor.png; \
+		convert ../resources/pixmaps/mpe-gtk2.png -resize "$$size" $(DESTDIR)${prefix}/share/icons/hicolor/"$$size"/apps/mpe-gtk2.png; \
 	done
 
 	mkdir -p $(DESTDIR)${prefix}/share/icons||true
 	mkdir -p $(DESTDIR)${prefix}/share/icons/large||true
 	mkdir -p $(DESTDIR)${prefix}/share/icons/mini||true
-	convert ../resources/pixmaps/ManPageEditor.png -resize 32x32 $(DESTDIR)${prefix}/share/icons/ManPageEditor.png
-	convert ../resources/pixmaps/ManPageEditor.png -resize 48x48 $(DESTDIR)${prefix}/share/icons/large/ManPageEditor.png
-	convert ../resources/pixmaps/ManPageEditor.png -resize 16x16 $(DESTDIR)${prefix}/share/icons/mini/ManPageEditor.png
-
-	mkdir -p $(DESTDIR)${prefix}/share/mime/packages||true
-	cp -p ../resources/mime/maneditdoc-mime.xml $(DESTDIR)${prefix}/share/mime/packages||true
-
-	mkdir -p $(DESTDIR)${prefix}/share/man/ru/man1||true
-	cp -p ../resources/man/ru/manpageeditor.1 $(DESTDIR)${prefix}/share/man/ru/man1||true
-	xz -f0 --text $(DESTDIR)${prefix}/share/man/ru/man1/manpageeditor.1||true
+	convert ../resources/pixmaps/mpe-gtk2.png -resize 32x32 $(DESTDIR)${prefix}/share/icons/mpe-gtk2.png
+	convert ../resources/pixmaps/mpe-gtk2.png -resize 48x48 $(DESTDIR)${prefix}/share/icons/large/mpe-gtk2.png
+	convert ../resources/pixmaps/mpe-gtk2.png -resize 16x16 $(DESTDIR)${prefix}/share/icons/mini/mpe-gtk2.png
 
 uninstall-hook:
 	for size in ${sizes}; do \
-		rm $(DESTDIR)${prefix}/share/icons/hicolor/"$$size"/apps/ManPageEditor.png||true; \
+		rm $(DESTDIR)${prefix}/share/icons/hicolor/"$$size"/apps/mpe-gtk2.png||true; \
 	done
 
-	rm $(DESTDIR)${prefix}/share/icons/ManPageEditor.png||true
-	rm $(DESTDIR)${prefix}/share/icons/large/ManPageEditor.png||true
-	rm $(DESTDIR)${prefix}/share/icons/mini/ManPageEditor.png||true
-
-	rm $(DESTDIR)${prefix}/share/mime/maneditdoc-mime.xml
+	rm $(DESTDIR)${prefix}/share/icons/mpe-gtk2.png||true
+	rm $(DESTDIR)${prefix}/share/icons/large/mpe-gtk2.png||true
+	rm $(DESTDIR)${prefix}/share/icons/mini/mpe-gtk2.png||true
 
 install-exec-hook:
-	@echo "*******************************************************"
-	@echo "* If you have built from source you must now run:     *"
-	@echo "* make install-mimetypes as root to install mimetypes *"
-	@echo "*******************************************************"
 
 uninstall-hook:
 	rm -r $(DESTDIR)${pkgdatadir}
-	@echo "***********************************************************"
-	@echo "* If you have built from source you should now run:       *"
-	@echo "* make uninstall-mimetypes as root to uninstall mimetypes *"
-	@echo "***********************************************************"
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

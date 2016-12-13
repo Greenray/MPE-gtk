@@ -2,20 +2,20 @@
  * ©K. D. Hedger. Fri 27 Nov 11:42:28 GMT 2015 kdhedger68713@gmail.com
  *  Victor Nabatov Sun 12 Dec 10:32:00 GMT 2016 greenray.spb@gmail.com
  *
- * This file (callbacks.cpp) is part of ManPageEditor.
+ * This file (callbacks.cpp) is part of MPE-gtk2.
  *
- * ManPageEditor is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * at your option) any later version.
+ * MPE-gtk2 is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or at your
+ * option any later version.
  *
- * ManPageEditor is distributed in the hope that it will be useful,
+ * MPE-gtk2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with ManPageEditor. If not, see <http://www.gnu.org/licenses/>.
+ * along with MPE-gtk2. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "globals.h"
@@ -371,10 +371,10 @@ void writeExitData(void) {
 	gtk_widget_get_allocation(window, &alloc);
 	gtk_window_get_position((GtkWindow*)window, &winx, &winy);
 
-	asprintf(&filename, "%s/.config/ManPageEditor", getenv("HOME"));
+	asprintf(&filename, "%s/.config/mpe-gtk2", getenv("HOME"));
 	g_mkdir_with_parents(filename, 493);
 	g_free(filename);
-	asprintf(&filename, "%s/.config/ManPageEditor/editor.window.rc", getenv("HOME"));
+	asprintf(&filename, "%s/.config/mpe-gtk2/editor.window.rc", getenv("HOME"));
 	fd = fopen(filename, "w");
 	if (fd != NULL) {
 		fprintf(fd, "windowsize	%i %i %i %i\n", alloc.width, alloc.height, winx, winy);
@@ -395,10 +395,10 @@ void writeConfig(void) {
 	gtk_widget_get_allocation(window, &alloc);
 	gtk_window_get_position((GtkWindow*)window, &winx, &winy);
 
-	asprintf(&filename, "%s/.config/ManPageEditor", getenv("HOME"));
+	asprintf(&filename, "%s/.config/mpe-gtk2", getenv("HOME"));
 	g_mkdir_with_parents(filename, 493);
 	g_free(filename);
-	asprintf(&filename, "%s/.config/ManPageEditor/editor.rc", getenv("HOME"));
+	asprintf(&filename, "%s/.config/mpe-gtk2/editor.rc", getenv("HOME"));
 	fd = fopen(filename, "w");
 	if (fd != NULL) {
 		fprintf(fd, "wrapline %i\n",             (int)lineWrap);
@@ -503,7 +503,7 @@ void doAbout(GtkWidget* widget, gpointer data) {
         _("\nDevelopment versions can be found here:\nhttp://github.com/KeithDHedger")
     };
 	const char* copyright      = COPYRIGHT "\n" MYEMAIL;
-	const char* aboutboxstring = _("ManPage Editor - Editor for linux manpages");
+	const char* aboutboxstring = _("Editor for linux manpages");
 	char*       license;
 	const char* translators    = _("Russian: Victor Nabatov <greenray.spb@gmail.com>");
 
@@ -516,9 +516,9 @@ void doAbout(GtkWidget* widget, gpointer data) {
         "copyright",          copyright,
         "version",            VERSION,
         "website",            MANEDITPAGE,
-        "program-name",       "ManPage Editor",
+        "program-name",       "MPE-GTK2",
         "website-label",      _("Manpage Editor Page"),
-        "logo-icon-name",     "ManPageEditor",
+        "logo-icon-name",     "mpe-gtk2",
 		"license",            license,
 		"translator-credits", translators,
 		"wrap-license",       true,
@@ -558,7 +558,7 @@ void printFile(GtkWidget* widget, gpointer data) {
 }
 
 void newEditor(GtkWidget* widget, gpointer data) {
-	system("manpageeditor &");
+	system("mpe-gtk2 &");
 }
 
 void doFormat(GtkWidget* widget, gpointer data) {

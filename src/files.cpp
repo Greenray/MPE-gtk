@@ -1,21 +1,21 @@
 /*
- * ©K. D. Hedger. Fri 27 Nov 11:42:58 GMT 2015 kdhedger68713@gmail.com
+ * ©K. D. Hedger. Fri 27 Nov 11:42:28 GMT 2015 kdhedger68713@gmail.com
  *  Victor Nabatov Sun 12 Dec 10:32:00 GMT 2016 greenray.spb@gmail.com
  *
- * This file (files.cpp) is part of ManPageEditor.
+ * This file (callbacks.cpp) is part of MPE-gtk2.
  *
- * ManPageEditor is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * at your option) any later version.
+ * MPE-gtk2 is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or at your
+ * option any later version.
  *
- * ManPageEditor is distributed in the hope that it will be useful,
+ * MPE-gtk2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with ManPageEditor. If not, see <http://www.gnu.org/licenses/>.
+ * along with MPE-gtk2. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <glib.h>
@@ -411,10 +411,10 @@ void saveManpage(GtkWidget* widget, gpointer data) {
 	if (manFilePath == NULL) {
         if (getSaveFile(false) == false)
             return;
-        if (g_str_has_suffix(saveFilePath, ".mpz"))
+        if (g_str_has_suffix(saveFilePath, ".xz"))
             manFilePath=strdup(saveFilePath);
         else
-            asprintf(&manFilePath, "%s.mpz", saveFilePath);
+            asprintf(&manFilePath, "%s.xz", saveFilePath);
     }
 
 	for (int loop = 0; loop < numpages; loop++) {
@@ -516,7 +516,7 @@ pageStruct* makeNewPage(void) {
 	return(page);
 }
 
-char tFileName[] = "/tmp/ManEditXXXXXX";
+char tFileName[] = "/tmp/mpe-gtk2XXXXXX";
 
 void newManpage(GtkWidget* widget, gpointer data) {
 	GtkWidget* dialog;
@@ -591,7 +591,7 @@ void newManpage(GtkWidget* widget, gpointer data) {
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 
 	if (result == GTK_RESPONSE_YES) {
-        sprintf(tFileName, "%s", "/tmp/ManEditXXXXXX");
+		sprintf(tFileName, "%s", "/tmp/mpe-gtk2XXXXXX");
 		manFilename = mkdtemp(tFileName);
 		manName     = strdup(gtk_entry_get_text((GtkEntry*)nameBox));
 		manSection  = strdup(gtk_entry_get_text((GtkEntry*)sectionBox));
@@ -795,7 +795,7 @@ void doOpenManpage(char* file) {
 		manFilename=NULL;
     }
 
-	sprintf(tFileName, "%s", "/tmp/ManEditXXXXXX");
+	sprintf(tFileName, "%s", "/tmp/mpe-gtk2XXXXXX");
 	manFilename = mkdtemp(tFileName);
 	g_mkdir_with_parents(manFilename, 493);
 	asprintf(&command, "tar -xC %s -f %s 2>/dev/null", manFilename, file);
@@ -807,7 +807,7 @@ void doOpenManpage(char* file) {
             (GtkWindow*)window,
             GTK_DIALOG_DESTROY_WITH_PARENT,
             GTK_MESSAGE_ERROR,GTK_BUTTONS_CLOSE,
-            _("File '%s' isn't a ManPage Editor archive\nTry using 'Import' instead"),
+            _("File '%s' isn't a man page\nTry using 'Import' instead"),
             file
         );
 		gtk_dialog_run(GTK_DIALOG(dialog));
@@ -862,14 +862,14 @@ void openManpage(GtkWidget* widget, gpointer data) {
 	GtkFileFilter* filter    = gtk_file_filter_new();
 	GtkFileFilter* filterall = gtk_file_filter_new();
 
-	gtk_file_filter_add_pattern(filter, "*.mpz");
+	gtk_file_filter_add_pattern(filter, "*.xz");
 	gtk_file_filter_add_pattern(filterall, "*");
-	gtk_file_filter_set_name(filter, _("Manpage Editor Docs \"*.mpz\""));
+	gtk_file_filter_set_name(filter, _("Man pages \"*.xz\""));
 	gtk_file_filter_set_name(filterall, _("All Files"));
 
 	if ((long)data == 1) {
 		closePage(NULL, NULL);
-        doOpenManpage((char*)DATADIR"/examples/template-1.mpz");
+        doOpenManpage((char*)DATADIR"/examples/template-1.xz");
     } else {
 #ifdef _USEGTK3_
 		dialog = gtk_file_chooser_dialog_new(
@@ -1231,7 +1231,7 @@ void importManpage(GtkWidget* widget, gpointer data) {
 
 	closePage(NULL, NULL);
 
-	sprintf(tFileName, "%s", "/tmp/ManEditXXXXXX");
+	sprintf(tFileName, "%s", "/tmp/mpe-gtk2XXXXXX");
 	manFilename = mkdtemp(tFileName);
 	g_mkdir_with_parents(manFilename, 493);
 

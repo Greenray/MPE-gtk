@@ -35,7 +35,7 @@ If you don't have aspell installed then don't enable it!
 
 If you have problems importing a manpage or a system manpage try:
 
-GROFF_SGR=1 manpageeditor
+GROFF_SGR=1 mpe-gtk2
 
 You can make this permenant by adding:
 export GROFF_SGR=1

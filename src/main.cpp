@@ -1,21 +1,21 @@
 /*
- * ©K. D. Hedger. Fri 27 Nov 11:45:21 GMT 2015 kdhedger68713@gmail.com
+ * ©K. D. Hedger. Fri 27 Nov 11:42:28 GMT 2015 kdhedger68713@gmail.com
  *  Victor Nabatov Sun 12 Dec 10:32:00 GMT 2016 greenray.spb@gmail.com
  *
- * This file (main.cpp) is part of ManPageEditor.
+ * This file (callbacks.cpp) is part of MPE-gtk2.
  *
- * ManPageEditor is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * at your option) any later version.
+ * MPE-gtk2 is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or at your
+ * option any later version.
  *
- * ManPageEditor is distributed in the hope that it will be useful,
+ * MPE-gtk2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with ManPageEditor. If not, see <http://www.gnu.org/licenses/>.
+ * along with MPE-gtk2. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "callbacks.h"
@@ -29,7 +29,7 @@ void readConfig(void) {
 	int   intarg;
 	char  strarg[256];
 
-	asprintf(&filename, "%s/.config/ManPageEditor/editor.rc", getenv("HOME"));
+	asprintf(&filename, "%s/.config/mpe-gtk2/editor.rc", getenv("HOME"));
 	fd = fopen(filename, "r");
 	if(fd != NULL) {
         while (feof(fd) == 0) {
@@ -57,7 +57,7 @@ void readConfig(void) {
 		fclose(fd);
 	}
 	g_free(filename);
-	asprintf(&filename, "%s/.config/ManPageEditor/editor.window.rc", getenv("HOME"));
+	asprintf(&filename, "%s/.config/mpe-gtk2/editor.window.rc", getenv("HOME"));
 	fd = fopen(filename, "r");
 	if (fd != NULL) {
         while (feof(fd) == 0) {
@@ -95,7 +95,7 @@ void init(void) {
 	showLiveSearch    = true;
 	gzipPages         = false;
 
-	asprintf(&filename, "%s/.config/ManPageEditor", getenv("HOME"));
+	asprintf(&filename, "%s/.config/mpe-gtk2", getenv("HOME"));
 	g_mkdir_with_parents(filename, 493);
 	g_free(filename);
 

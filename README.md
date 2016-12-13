@@ -1,12 +1,12 @@
 #### NAME / НАЗВАНИЕ
 
-ManPageEditor: Editor for linux manpages.
+MPE-gtk2: Editor for linux manpages.
 This is the fork of the K.D.Hedger's ManPageEditor.
 
 #### VERSION / ВЕРСИЯ
 
-0.1.2 international - see branch international.
-0.1.2 original - see. branch master.
+1.0.0 mpe-gtk2 - see branch mpe-gtk2.
+0.1.2 original - see branch master.
 
 #### DESCRIPTION / ОПИСАНИЕ
 
