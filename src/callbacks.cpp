@@ -18,6 +18,8 @@
  * along with MPE-gtk2. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <pango/pango-attributes.h>
+
 #include "globals.h"
 #include "guis.h"
 #include "callbacks.h"
@@ -56,14 +58,6 @@ int yesNo(char* question, char* file) {
         file
     );
 
-#ifdef _USEGTK3_
-	gtk_dialog_add_buttons(
-        (GtkDialog*)dialog,
-        _("Yes"), GTK_RESPONSE_YES,
-        _("No"),  GTK_RESPONSE_CANCEL,
-        NULL
-    );
-#else // not _USEGTK3_
 	gtk_dialog_add_buttons(
         (GtkDialog*)dialog,
          GTK_STOCK_YES,
@@ -72,7 +66,6 @@ int yesNo(char* question, char* file) {
          GTK_RESPONSE_CANCEL,
          NULL
     );
-#endif // _USEGTK3_
 
 	gtk_window_set_title(GTK_WINDOW(dialog), _("What Do You Want To Do?"));
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -96,15 +89,6 @@ int show_question(char* filename) {
         message
     );
 
-#ifdef _USEGTK3_
-	gtk_dialog_add_buttons(
-        (GtkDialog*)dialog,
-        _("Save"),   GTK_RESPONSE_YES,
-        _("Cancel"), GTK_RESPONSE_CANCEL,
-        _("No"),     GTK_RESPONSE_NO,
-        NULL
-    );
-#else // not _USEGTK3_
 	gtk_dialog_add_buttons(
         (GtkDialog*)dialog,
         GTK_STOCK_SAVE,
@@ -115,7 +99,6 @@ int show_question(char* filename) {
         GTK_RESPONSE_NO,
         NULL
     );
-#endif // _USEGTK3_
 
 	gtk_window_set_title(GTK_WINDOW(dialog), _("Warning: unsaved data!"));
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -125,15 +108,15 @@ int show_question(char* filename) {
 }
 
 void setSensitive(void) {
-//
-// Toolbar
-//
+	//
+	// Toolbar
+	//
 	gtk_widget_set_sensitive((GtkWidget*)undoButton, dirty);
 	gtk_widget_set_sensitive((GtkWidget*)redoButton, dirty);
 	gtk_widget_set_sensitive((GtkWidget*)saveButton, dirty);
-//
-// Menu
-//
+	//
+	// Menu
+	//
 	gtk_widget_set_sensitive((GtkWidget*)undoMenu, dirty);
 	gtk_widget_set_sensitive((GtkWidget*)redoMenu, dirty);
 	gtk_widget_set_sensitive((GtkWidget*)saveMenu, dirty);
@@ -286,22 +269,18 @@ void populatePopupMenu(GtkTextView *entry, GtkMenu *menu, gpointer user_data) {
 
 	if (gtk_text_buffer_get_selection_bounds((GtkTextBuffer*)page->buffer, &start, &end)) {
         selection = gtk_text_buffer_get_text((GtkTextBuffer*)page->buffer, &start, &end, false);
-		if (selection != NULL) {
 #ifdef _ASPELL_
-//
-// spell check
-//
-#ifdef _USEGTK3_
-			menuitem = gtk_menu_item_new_with_label(_("Check Spellling"));
-#else // _USEGTK3_
+		//
+		// spell check
+		//
+		if (selection != NULL) {
 			menuitem = gtk_image_menu_item_new_with_label(_("Check Spellling"));
 			image    = gtk_image_new_from_stock(GTK_STOCK_SPELL_CHECK, GTK_ICON_SIZE_MENU);
 			gtk_image_menu_item_set_image((GtkImageMenuItem *)menuitem, image);
-#endif // _USEGTK3_
 			gtk_menu_shell_prepend(GTK_MENU_SHELL(menu), menuitem);
 			g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(checkWord), NULL);
-#endif // _ASPELL
 		}
+#endif // _ASPELL
 	}
 	gtk_widget_show_all((GtkWidget*)menu);
 }
@@ -325,29 +304,21 @@ bool tabPopUp(GtkWidget* my_widget, GdkEventButton* event, gpointer user_data) {
 		tabMenu = gtk_menu_new();
 		page    = (pageStruct*)user_data;
 #ifdef _ASPELL_
-//
-// Check document
-//
-#ifdef _USEGTK3_
-		menuitem = gtk_menu_item_new_with_label(_("Spell Check Document"));
-#else // not _USEGTK3_
+		//
+		// Check document
+		//
 		image    = gtk_image_new_from_stock(GTK_STOCK_SPELL_CHECK, GTK_ICON_SIZE_MENU);
 		menuitem = gtk_image_menu_item_new_with_label(_("Spell Check Document"));
 		gtk_image_menu_item_set_image((GtkImageMenuItem*)menuitem, image);
-#endif // _USEGTK3_
 		gtk_menu_shell_append(GTK_MENU_SHELL(tabMenu), menuitem);
 		g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(doSpellCheckDoc), (void*)page->filePath);
 #endif // _ASPELL
-//
-// Rename
-//
-#ifdef _USEGTK3_
-		menuitem = gtk_menu_item_new_with_label(_("Rename Section"));
-#else
+		//
+		// Rename
+		//
 		image    = gtk_image_new_from_stock(GTK_STOCK_FIND_AND_REPLACE, GTK_ICON_SIZE_MENU);
 		menuitem = gtk_image_menu_item_new_with_label(_("Rename Section"));
 		gtk_image_menu_item_set_image((GtkImageMenuItem*)menuitem, image);
-#endif // _USEGTK3_
 		gtk_menu_shell_append(GTK_MENU_SHELL(tabMenu), menuitem);
 		g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(renameSection), (void*)page);
 
@@ -634,14 +605,6 @@ void redoProps(GtkWidget* widget, gpointer data) {
         _("Set Properties")
     );
 
-#ifdef _USEGTK3_
-	gtk_dialog_add_buttons(
-        (GtkDialog*)dialog,
-        "OK", GTK_RESPONSE_OK,
-        _("Cancel"), GTK_RESPONSE_CANCEL,
-        NULL
-    );
-#else // not _USEGTK3_
 	gtk_dialog_add_buttons(
         (GtkDialog*)dialog,
         GTK_STOCK_CANCEL,
@@ -650,7 +613,7 @@ void redoProps(GtkWidget* widget, gpointer data) {
         GTK_RESPONSE_YES,
         NULL
     );
-#endif // _USEGTK3_
+
 	gtk_window_set_title(GTK_WINDOW(dialog), _("Properties"));
 
 	content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));

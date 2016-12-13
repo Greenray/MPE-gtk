@@ -31,10 +31,10 @@ void readConfig(void) {
 
 	asprintf(&filename, "%s/.config/mpe-gtk2/editor.rc", getenv("HOME"));
 	fd = fopen(filename, "r");
-	if(fd != NULL) {
+	if (fd != NULL) {
         while (feof(fd) == 0) {
-			fgets(buffer,1024,fd);
-			sscanf(buffer,"%s %s",(char*)&name,(char*)&strarg);
+			fgets(buffer, 1024, fd);
+			sscanf(buffer, "%s %s", (char*)&name, (char*)&strarg);
 
 			if (strcasecmp(name, "wrapline")             == 0) lineWrap          = (bool)atoi(strarg);
 			if (strcasecmp(name, "gzip")                 == 0) gzipPages         = (bool)atoi(strarg);
@@ -63,7 +63,7 @@ void readConfig(void) {
         while (feof(fd) == 0) {
 			fgets(buffer, 1024, fd);
 			sscanf(buffer, "%s %s", (char*)&name, (char*)&strarg);
-			if (strcasecmp(name,"windowsize") ==0 )
+			if (strcasecmp(name, "windowsize") == 0)
 				sscanf(buffer, "%*s %i %i %i %i", (int*)&windowWidth, (int*)&windowHeight, (int*)&windowX, (int*)&windowY);
 			}
 		fclose(fd);
@@ -120,7 +120,7 @@ void init(void) {
 
 }
 
-int main(int argc,char **argv) {
+int main(int argc, char **argv) {
     setlocale(LC_ALL, "");
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);

@@ -1,12 +1,13 @@
 #### NAME / НАЗВАНИЕ
 
-MPE-gtk2: Editor for linux manpages.
+MPE-gtk: Editor for linux manpages.
 This is the fork of the K.D.Hedger's ManPageEditor.
 
 #### VERSION / ВЕРСИЯ
 
-1.0.0 mpe-gtk2 - see branch mpe-gtk2.
 0.1.2 original - see branch master.
+1.0.0 mpe-gtk2 - see branch mpe-gtk2.
+1.0.0 mpe-gtk3 - see branch mpe-gtk3.
 
 #### DESCRIPTION / ОПИСАНИЕ
 
@@ -16,7 +17,7 @@ An Editor for linux manpages.
 #### REQUIREMENTS / ТРЕБОВАНИЯ
 
 Minimum requirements/Минимальные требования:
-gcc-c++, glib2, gtk-2/gtk-3, gdk-2/gdk-3, gtksourceview-2/gtksourceview-3, pango, imagemagick(for installation)
+gcc-c++, glib2, gtk-2, gtksourceview-2, pango, imagemagick(for installation)
 
 For full functionality/Для полной функциональности:
 nroff, aspell

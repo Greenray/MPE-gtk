@@ -19,9 +19,8 @@
  */
 
 #include <glib.h>
-#ifdef _USEGTK3_
-#include <gtksourceview/gtksource.h>
-#endif
+#include <gtksourceview/gtksourceview.h>
+
 
 #include "callbacks.h"
 #include "script.h"
@@ -92,11 +91,9 @@ GtkWidget* makeNewTab(char* name, char* tooltip, pageStruct* page) {
 
 	gtk_box_pack_start(GTK_BOX(hbox), label, false, false, 0);
 	gtk_container_add(GTK_CONTAINER(evbox), hbox);
-#ifdef _USEGTK3_
+
 	g_signal_connect(G_OBJECT(evbox), "button-press-event", G_CALLBACK(tabPopUp), (void*)page);
-#else
-	g_signal_connect(G_OBJECT(evbox), "button-press-event", G_CALLBACK(tabPopUp), (void*)page);
-#endif
+
 	page->tabName = label;
 	gtk_widget_show_all(evbox);
 
@@ -117,21 +114,7 @@ void setFilePrefs(GtkSourceView* sourceview) {
 	gtk_source_view_set_tab_width(sourceview, tabWidth);
 
 	font_desc = pango_font_description_from_string(fontAndSize);
-#ifdef _USEGTK3_
-//	if(gtk_minor_version>=16)
-//		{
-//     printf("%d.%d.%d\n", gtk_major_version, gtk_minor_version, gtk_micro_version);
-//
-//			if(strstr(fontAndSize,"mono")!=NULL)
-//				gtk_text_view_set_monospace ((GtkTextView*)sourceview,true);
-//			else
-//				gtk_text_view_set_monospace ((GtkTextView*)sourceview,false);
-//		}
-//	gtk_widget_modify_font((GtkWidget*)sourceview,font_desc);
-	gtk_widget_override_font((GtkWidget*)sourceview, font_desc);
-#else // not _USEGTK3_
 	gtk_widget_modify_font((GtkWidget*)sourceview, font_desc);
-#endif // _USEGTK3_
 	pango_font_description_free(font_desc);
 }
 
@@ -205,12 +188,6 @@ bool getSaveFile(bool isExport) {
 	GtkWidget* dialog;
 	bool       retval = false;
 
-#ifdef _USEGTK3_
-	dialog = gtk_file_chooser_dialog_new(
-        _("Save File"), (GtkWindow*)window, GTK_FILE_CHOOSER_ACTION_SAVE,
-        _("Cancel"), GTK_RESPONSE_CANCEL,
-        _("Save"), GTK_RESPONSE_ACCEPT, NULL);
-#else // not _USEGTK3_
 	dialog = gtk_file_chooser_dialog_new(
         _("Save File"), (GtkWindow*)window,
          GTK_FILE_CHOOSER_ACTION_SAVE,
@@ -220,7 +197,6 @@ bool getSaveFile(bool isExport) {
          GTK_RESPONSE_ACCEPT,
          NULL
     );
-#endif // _USEGTK3_
 
 	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER (dialog), TRUE);
 	if ((isExport == false) && (saveFileName != NULL)) {
@@ -473,15 +449,10 @@ pageStruct* makeNewPage(void) {
 	pageStruct* page;
 
 	page = (pageStruct*) malloc(sizeof(pageStruct));
-
-#ifdef _USEGTK3_
-	page->pane = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
-#else
 	page->pane = gtk_vpaned_new();
-#endif // _USEGTK3_
-
 	page->pageWindow  = (GtkScrolledWindow*)gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(page->pageWindow),  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
 	page->pageWindow2 = (GtkScrolledWindow*)gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(page->pageWindow2), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
@@ -537,11 +508,7 @@ void newManpage(GtkWidget* widget, gpointer data) {
         _("Create New Manpage")
     );
 
-#ifdef _USEGTK3_
-	gtk_dialog_add_buttons((GtkDialog*)dialog, _("Cancel"), GTK_RESPONSE_CANCEL, "OK", GTK_RESPONSE_YES, NULL);
-#else // not _USEGTK3_
 	gtk_dialog_add_buttons((GtkDialog*)dialog, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_YES, NULL);
-#endif // _USEGTK3_
 	gtk_window_set_title(GTK_WINDOW(dialog), _("Details"));
 
 	content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -620,11 +587,7 @@ char* getNewSectionName(char* name) {
         _("Enter Section Name")
     );
 
-#ifdef _USEGTK3_
-	gtk_dialog_add_buttons((GtkDialog*)dialog, _("Cancel"), GTK_RESPONSE_CANCEL, "OK", GTK_RESPONSE_YES, NULL);
-#else // not _USEGTK3_
 	gtk_dialog_add_buttons((GtkDialog*)dialog, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_YES, NULL);
-#endif // _USEGTK3_
 	gtk_window_set_title(GTK_WINDOW(dialog), _("Section"));
 
 	content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -679,11 +642,10 @@ void newSection(GtkWidget* widget, gpointer data) {
 		/* move cursor to the beginning */
 		gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(page->buffer), &iter);
 		gtk_text_buffer_place_cursor(GTK_TEXT_BUFFER(page->buffer), &iter);
-//
-// Connect to notebook
-//
+		//
+		// Connect to notebook
+		//
 		gtk_box_pack_start ((GtkBox*)page->tabVbox, (GtkWidget*)page->pane, true, true, 0);
-//			gtk_container_add(GTK_CONTAINER(page->tabVbox),GTK_WIDGET(page->pane));
 
 		g_object_set_data(G_OBJECT(page->tabVbox), "pagedata", (gpointer)page);
 
@@ -747,9 +709,9 @@ void openConvertedFile(char* filepath) {
 
 	g_free(filename);
 	g_free(str);
-//
-// Connect to notebook
-//
+	//
+	// Connect to notebook
+	//
 	gtk_container_add(GTK_CONTAINER(page->tabVbox), GTK_WIDGET(page->pane));
 	g_object_set_data(G_OBJECT(page->tabVbox), "pagedata", (gpointer)page);
 
@@ -819,7 +781,7 @@ void doOpenManpage(char* file) {
 	fp = fopen(command, "r");
 	while (fgets(buffer, 4096, fp)) {
 		strarg[0] = 0;
-        sscanf(buffer, "%s %"VALIDFILENAMECHARS"s", (char*)&name, (char*)&strarg);
+        sscanf(buffer, "%s %" VALIDFILENAMECHARS "s", (char*)&name, (char*)&strarg);
 
 		if (strcasecmp(name, "manname")    == 0) manName     = strdup((char*)&strarg);
 		if (strcasecmp(name, "mansection") == 0) manSection  = strdup((char*)&strarg);
@@ -869,15 +831,8 @@ void openManpage(GtkWidget* widget, gpointer data) {
 
 	if ((long)data == 1) {
 		closePage(NULL, NULL);
-        doOpenManpage((char*)DATADIR"/examples/template-1.xz");
+        doOpenManpage((char*)DATADIR "/examples/template-1.xz");
     } else {
-#ifdef _USEGTK3_
-		dialog = gtk_file_chooser_dialog_new(
-            _("Open File"), NULL, GTK_FILE_CHOOSER_ACTION_OPEN,
-            _("Cancel"), GTK_RESPONSE_CANCEL,
-            _("Open"), GTK_RESPONSE_ACCEPT,NULL
-        );
-#else // not _USEGTK3_
 		dialog = gtk_file_chooser_dialog_new(
             _("Open File"),
             NULL,
@@ -888,7 +843,7 @@ void openManpage(GtkWidget* widget, gpointer data) {
             GTK_RESPONSE_ACCEPT,
             NULL
         );
-#endif // _USEGTK3_
+
 		gtk_file_chooser_add_filter((GtkFileChooser*)dialog, filter);
 		gtk_file_chooser_add_filter((GtkFileChooser*)dialog, filterall);
 		if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
@@ -1119,14 +1074,6 @@ char* getManpageName(void) {
         _("Manpage Name")
     );
 
-#ifdef _USEGTK3_
-	gtk_dialog_add_buttons(
-        (GtkDialog*)dialog,
-        _("Yes"), GTK_RESPONSE_YES,
-        _("No"),  GTK_RESPONSE_CANCEL,
-        NULL
-    );
-#else // not _USEGTK3_
 	gtk_dialog_add_buttons(
         (GtkDialog*)dialog,
         GTK_STOCK_YES,
@@ -1135,7 +1082,7 @@ char* getManpageName(void) {
         GTK_RESPONSE_CANCEL,
         NULL
     );
-#endif // _USEGTK3_
+
 	gtk_window_set_title(GTK_WINDOW(dialog), _("Import System Manpage"));
 	content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	entrybox     = gtk_entry_new();
@@ -1203,13 +1150,6 @@ void importManpage(GtkWidget* widget, gpointer data) {
 
 		filename = strndup((char*)&buffer[0], strlen((char*)&buffer[0]) - 1);
 	} else {
-#ifdef _USEGTK3_
-		dialog = gtk_file_chooser_dialog_new(
-            _("Import Manpage"), NULL, GTK_FILE_CHOOSER_ACTION_OPEN,
-            _("Cancel"), GTK_RESPONSE_CANCEL,
-            _("Open"),   GTK_RESPONSE_ACCEPT, NULL
-        );
-#else // not _USEGTK3_
         dialog = gtk_file_chooser_dialog_new(
             _("Import Manpage"),
             NULL,
@@ -1220,7 +1160,7 @@ void importManpage(GtkWidget* widget, gpointer data) {
             GTK_RESPONSE_ACCEPT,
             NULL
         );
-#endif // _USEGTK3_
+
  	    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
 			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		} else {
@@ -1308,9 +1248,9 @@ void importManpage(GtkWidget* widget, gpointer data) {
 
 	g_free(contents);
 	contents = strok;
-//
-// Clean bold/italic tags
-//
+	//
+	// Clean bold/italic tags
+	//
 	replaceAllSlice(&contents, (char*)"\x1b\[22m", (char*)"\x1b\[0m");
 	replaceAllSlice(&contents, (char*)"\x1b\[24m", (char*)"\x1b\[0m");
 	replaceAllSlice(&contents, (char*)"\x1b\[4m\x1b\[22m", (char*)"\x1b\[22m\x1b\[4m");

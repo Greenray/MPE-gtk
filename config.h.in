@@ -52,8 +52,5 @@
 /* Include spellchecker */
 #undef _ASPELL_
 
-/* Use GTK3 and gtksourceview3 */
-#undef _USEGTK3_
-
 /* Use nroff */
 #undef _USENROFF_
