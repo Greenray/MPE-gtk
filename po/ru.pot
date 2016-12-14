@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MPE-gtk2-1.0.0\n"
-"POT-Creation-Date: 2016-12-13 09:30+0300\n"
+"POT-Creation-Date: 2016-12-14 14:51+0300\n"
 "PO-Revision-Date: 2016-12-09 09:53+0300\n"
 "Last-Translator: \n"
 "Language-Team: Victor Nabatov <grenray.spb@gmail.com>\n"
@@ -18,221 +18,188 @@ msgstr ""
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: callbacks.cpp:62 files.cpp:1125
-msgid "Yes"
-msgstr ""
-
-#: callbacks.cpp:63 callbacks.cpp:104 files.cpp:1126
-msgid "No"
-msgstr ""
-
-#: callbacks.cpp:77
+#: callbacks.cpp:70
 msgid "What Do You Want To Do?"
 msgstr ""
 
-#: callbacks.cpp:89
+#: callbacks.cpp:82
 #, c-format
 msgid "Save file %s before closing?"
 msgstr ""
 
-#: callbacks.cpp:102 files.cpp:212 guis.cpp:237
-msgid "Save"
-msgstr ""
-
-#: callbacks.cpp:103 callbacks.cpp:641 files.cpp:211 files.cpp:541
-#: files.cpp:624 files.cpp:877 files.cpp:1209 guis.cpp:134 guis.cpp:848
-msgid "Cancel"
-msgstr ""
-
-#: callbacks.cpp:120
+#: callbacks.cpp:103
 msgid "Warning: unsaved data!"
 msgstr ""
 
-#: callbacks.cpp:181
+#: callbacks.cpp:166
 msgid "Do you want to save?"
 msgstr ""
 
-#: callbacks.cpp:295 callbacks.cpp:297
+#: callbacks.cpp:283
 msgid "Check Spellling"
 msgstr ""
 
-#: callbacks.cpp:332 callbacks.cpp:335
+#: callbacks.cpp:316
 msgid "Spell Check Document"
 msgstr ""
 
-#: callbacks.cpp:345 callbacks.cpp:348
+#: callbacks.cpp:325
 msgid "Rename Section"
 msgstr ""
 
-#: callbacks.cpp:491
+#: callbacks.cpp:467
 msgid ""
 "Developer: K.D.Hedger <keithhedger@keithhedger.darktech.org> http://"
 "khapplications.darktech.org"
 msgstr ""
 
-#: callbacks.cpp:492
+#: callbacks.cpp:468
 msgid "Internationalization: Victor Nabatov <greenray.spb@gmail.com>"
 msgstr ""
 
-#: callbacks.cpp:493
+#: callbacks.cpp:469
 msgid ""
 "\n"
 "More by K.D.Hedger:\n"
 msgstr ""
 
-#: callbacks.cpp:503
+#: callbacks.cpp:479
 msgid ""
 "\n"
 "Development versions can be found here:\n"
 "http://github.com/KeithDHedger"
 msgstr ""
 
-#: callbacks.cpp:506
+#: callbacks.cpp:482
 msgid "Editor for linux manpages"
 msgstr ""
 
-#: callbacks.cpp:508
+#: callbacks.cpp:484
 msgid "Russian: Victor Nabatov <greenray.spb@gmail.com>"
 msgstr ""
 
-#: callbacks.cpp:520
+#: callbacks.cpp:496
 msgid "Manpage Editor Page"
 msgstr ""
 
-#: callbacks.cpp:634
+#: callbacks.cpp:608
 msgid "Set Properties"
 msgstr ""
 
-#: callbacks.cpp:654 guis.cpp:463
+#: callbacks.cpp:620
 msgid "Properties"
 msgstr ""
 
-#: callbacks.cpp:661 files.cpp:552
+#: callbacks.cpp:626 files.cpp:519
 msgid "Name\t"
 msgstr ""
 
-#: callbacks.cpp:671 files.cpp:560
+#: callbacks.cpp:637 files.cpp:527
 msgid "Section\t"
 msgstr ""
 
-#: callbacks.cpp:681 files.cpp:568
+#: callbacks.cpp:648 files.cpp:535
 msgid "Version\t"
 msgstr ""
 
-#: callbacks.cpp:691 files.cpp:576
+#: callbacks.cpp:659 files.cpp:543
 msgid "Author\t"
 msgstr ""
 
-#: callbacks.cpp:701 files.cpp:584
+#: callbacks.cpp:670 files.cpp:551
 msgid "Category\t"
 msgstr ""
 
-#: files.cpp:210 files.cpp:215 guis.cpp:240
+#: files.cpp:190 guis.cpp:212
 msgid "Save File"
 msgstr ""
 
-#: files.cpp:537
+#: files.cpp:508
 msgid "Create New Manpage"
 msgstr ""
 
-#: files.cpp:545
+#: files.cpp:512
 msgid "Details"
 msgstr ""
 
-#: files.cpp:620
+#: files.cpp:587
 msgid "Enter Section Name"
 msgstr ""
 
-#: files.cpp:628
+#: files.cpp:591
 msgid "Section"
 msgstr ""
 
-#: files.cpp:637
+#: files.cpp:601
 msgid "Make Subsection"
 msgstr ""
 
-#: files.cpp:785
+#: files.cpp:734
+msgid "Do you want to permanently delete"
+msgstr ""
+
+#: files.cpp:924
+msgid "Auto"
+msgstr ""
+
+#: files.cpp:925
+msgid "1 Executable programs or shell commands"
+msgstr ""
+
+#: files.cpp:926
+msgid "2 System calls (functions provided by the kernel)"
+msgstr ""
+
+#: files.cpp:927
+msgid "3 Library calls (functions within program libraries)"
+msgstr ""
+
+#: files.cpp:928
+msgid "4 Special files (usually found in /dev)"
+msgstr ""
+
+#: files.cpp:929
+msgid "5 File formats and conventions (e.g. /etc/passwd)"
+msgstr ""
+
+#: files.cpp:930
+msgid "6 Games"
+msgstr ""
+
+#: files.cpp:931
+msgid "7 Miscellaneous (e.g. man(7), groff(7))"
+msgstr ""
+
+#: files.cpp:932
+msgid "8 System administration commands (usually only for root)"
+msgstr ""
+
+#: files.cpp:933
+msgid "9 Kernel routines (non standard)"
+msgstr ""
+
+#: files.cpp:941
+msgid "Manpage Name"
+msgstr ""
+
+#: files.cpp:953
+msgid "Import System Manpage"
+msgstr ""
+
+#: files.cpp:996
 #, c-format
 msgid "File '%s' doesn't exist"
 msgstr ""
 
-#: files.cpp:810
+#: files.cpp:1021
 #, c-format
 msgid ""
-"File '%s' isn't a man page\n"
+"File '%s' isn't a ManPage Editor archive\n"
 "Try using 'Import' instead"
 msgstr ""
 
-#: files.cpp:867
-msgid "Man pages \"*.xz\""
-msgstr ""
-
-#: files.cpp:868
-msgid "All Files"
-msgstr ""
-
-#: files.cpp:876 files.cpp:882
-msgid "Open File"
-msgstr ""
-
-#: files.cpp:878 files.cpp:1210
-msgid "Open"
-msgstr ""
-
-#: files.cpp:912
-msgid "Do you want to permanently delete"
-msgstr ""
-
-#: files.cpp:1102
-msgid "Auto"
-msgstr ""
-
-#: files.cpp:1103
-msgid "1 Executable programs or shell commands"
-msgstr ""
-
-#: files.cpp:1104
-msgid "2 System calls (functions provided by the kernel)"
-msgstr ""
-
-#: files.cpp:1105
-msgid "3 Library calls (functions within program libraries)"
-msgstr ""
-
-#: files.cpp:1106
-msgid "4 Special files (usually found in /dev)"
-msgstr ""
-
-#: files.cpp:1107
-msgid "5 File formats and conventions (e.g. /etc/passwd)"
-msgstr ""
-
-#: files.cpp:1108
-msgid "6 Games"
-msgstr ""
-
-#: files.cpp:1109
-msgid "7 Miscellaneous (e.g. man(7), groff(7))"
-msgstr ""
-
-#: files.cpp:1110
-msgid "8 System administration commands (usually only for root)"
-msgstr ""
-
-#: files.cpp:1111
-msgid "9 Kernel routines (non standard)"
-msgstr ""
-
-#: files.cpp:1119
-msgid "Manpage Name"
-msgstr ""
-
-#: files.cpp:1139 guis.cpp:439 guis.cpp:442
-msgid "Import System Manpage"
-msgstr ""
-
-#: files.cpp:1208 files.cpp:1214 guis.cpp:428 guis.cpp:431
-msgid "Import Manpage"
+#: files.cpp:1113
+msgid "Open Manpage"
 msgstr ""
 
 #: guis.cpp:33
@@ -259,235 +226,139 @@ msgstr ""
 msgid "Show 'Live Search' in toolbar"
 msgstr ""
 
-#: guis.cpp:87
+#: guis.cpp:83
 msgid "Tab width: "
 msgstr ""
 
-#: guis.cpp:98
+#: guis.cpp:93
 msgid "Font And Size: "
 msgstr ""
 
-#: guis.cpp:108
+#: guis.cpp:102
 msgid "Terminal Command: "
 msgstr ""
 
-#: guis.cpp:125 guis.cpp:826
-msgid "Apply"
-msgstr ""
-
-#: guis.cpp:205
+#: guis.cpp:178
 msgid "Man Pages Editor MPE-GTK2"
 msgstr ""
 
-#: guis.cpp:230
+#: guis.cpp:202
 msgid "New"
 msgstr ""
 
-#: guis.cpp:233
+#: guis.cpp:205
 msgid "New File"
 msgstr ""
 
-#: guis.cpp:247 guis.cpp:250
+#: guis.cpp:209
+msgid "Save"
+msgstr ""
+
+#: guis.cpp:218 guis.cpp:221
 msgid "Cut"
 msgstr ""
 
-#: guis.cpp:254 guis.cpp:257
+#: guis.cpp:225 guis.cpp:228
 msgid "Copy"
 msgstr ""
 
-#: guis.cpp:261 guis.cpp:264
+#: guis.cpp:232 guis.cpp:235
 msgid "Paste"
 msgstr ""
 
-#: guis.cpp:270 guis.cpp:273
+#: guis.cpp:240 guis.cpp:243
 msgid "Undo"
 msgstr ""
 
-#: guis.cpp:277 guis.cpp:280
+#: guis.cpp:247 guis.cpp:250
 msgid "Redo"
 msgstr ""
 
-#: guis.cpp:285 guis.cpp:740
+#: guis.cpp:255 guis.cpp:539
 msgid "Find"
 msgstr ""
 
-#: guis.cpp:288 guis.cpp:714 guis.cpp:721
+#: guis.cpp:258 guis.cpp:520
 msgid "Find/Replace"
 msgstr ""
 
-#: guis.cpp:297
+#: guis.cpp:267
 msgid "Live Search"
 msgstr ""
 
-#: guis.cpp:302
+#: guis.cpp:272
 msgid "File"
 msgstr ""
 
-#: guis.cpp:309
-msgid "_New"
-msgstr ""
-
-#: guis.cpp:320 guis.cpp:322
+#: guis.cpp:285
 msgid "New Section"
 msgstr ""
 
-#: guis.cpp:332
-msgid "_Open"
-msgstr ""
-
-#: guis.cpp:345
+#: guis.cpp:302
 msgid "_Recent"
 msgstr ""
 
-#: guis.cpp:355 guis.cpp:357
-msgid "New From Template"
-msgstr ""
-
-#: guis.cpp:367 guis.cpp:369
+#: guis.cpp:310
 msgid "New Editor"
 msgstr ""
 
-#: guis.cpp:382
-msgid "_Save"
-msgstr ""
-
-#: guis.cpp:393
-msgid "Save As"
-msgstr ""
-
-#: guis.cpp:404 guis.cpp:407
-msgid "Export Man Page"
-msgstr ""
-
-#: guis.cpp:416 guis.cpp:419
-msgid "Export As"
-msgstr ""
-
-#: guis.cpp:451 guis.cpp:454
+#: guis.cpp:335
 msgid "Preview Page"
 msgstr ""
 
-#: guis.cpp:476 guis.cpp:479
+#: guis.cpp:352
 msgid "Print Manpage to LP"
 msgstr ""
 
-#: guis.cpp:488 guis.cpp:491
+#: guis.cpp:360
 msgid "Print Manpage To PDF"
 msgstr ""
 
-#: guis.cpp:503
-msgid "_Close"
-msgstr ""
-
-#: guis.cpp:514 guis.cpp:517
+#: guis.cpp:378
 msgid "Delete Section"
 msgstr ""
 
-#: guis.cpp:529
-msgid "_Quit"
-msgstr ""
-
-#: guis.cpp:539
+#: guis.cpp:395
 msgid "Edit"
 msgstr ""
 
-#: guis.cpp:546
-msgid "_Undo"
-msgstr ""
-
-#: guis.cpp:557
-msgid "_Redo"
-msgstr ""
-
-#: guis.cpp:571
-msgid "_Cut"
-msgstr ""
-
-#: guis.cpp:582
-msgid "_Copy"
-msgstr ""
-
-#: guis.cpp:593
-msgid "_Paste"
-msgstr ""
-
-#: guis.cpp:607
-msgid "_Find"
-msgstr ""
-
-#: guis.cpp:621
-msgid "_Preferences"
-msgstr ""
-
-#: guis.cpp:630
+#: guis.cpp:457
 msgid "Formating"
 msgstr ""
 
-#: guis.cpp:637
-msgid "_Bold"
-msgstr ""
-
-#: guis.cpp:648
-msgid "_Italic"
-msgstr ""
-
-#: guis.cpp:659
-msgid "_Clear"
-msgstr ""
-
-#: guis.cpp:669
+#: guis.cpp:484
 msgid "Help"
 msgstr ""
 
-#: guis.cpp:676
-msgid "_About"
-msgstr ""
-
-#: guis.cpp:686
-msgid "_Help"
-msgstr ""
-
-#: guis.cpp:715
-msgid "Forward"
-msgstr ""
-
-#: guis.cpp:716
-msgid "Back"
-msgstr ""
-
-#: guis.cpp:717 guis.cpp:728 searchcallbacks.cpp:198
+#: guis.cpp:527 searchcallbacks.cpp:156
 msgid "Replace"
 msgstr ""
 
-#: guis.cpp:749
+#: guis.cpp:548
 msgid "Replace With"
 msgstr ""
 
-#: guis.cpp:758
+#: guis.cpp:557
 msgid "Case insensitive"
 msgstr ""
 
-#: guis.cpp:764
+#: guis.cpp:563
 msgid "Wrap"
 msgstr ""
 
-#: guis.cpp:770 searchcallbacks.cpp:199
+#: guis.cpp:569 searchcallbacks.cpp:157
 msgid "Replace All"
 msgstr ""
 
-#: guis.cpp:806
+#: guis.cpp:602
 msgid "Spell check word"
 msgstr ""
 
-#: guis.cpp:814 spellcheck.cpp:62
+#: guis.cpp:607 spellcheck.cpp:62
 #, c-format
 msgid "Change <i><b>%s</b></i> to: "
 msgstr ""
 
-#: guis.cpp:833
+#: guis.cpp:623
 msgid "Ignore"
-msgstr ""
-
-#: guis.cpp:840
-msgid "Add"
 msgstr ""
