@@ -8,7 +8,7 @@ AM_CPPFLAGS =	-I$(top_srcdir) \
 		-DGTK_DISABLE_DEPRECATED \
 		-DGSEAL_ENABLE \
 		-DPREFIX=\""${prefix}\"" \
-		-DDATADIR=\""${pkgdatadir}"\" \
+		-DDATADIR=\""${datarootdir}"\" \
 		-DSYSCONFDIR=\""${sysconfdir}/${PACKAGE}"\" \
 		-DLIBDIR=\""${libdir}/${PACKAGE}"\" \
 		-DLOCALEDIR=\""${localedir}"\"
@@ -36,12 +36,6 @@ appfiles_DATA = ../resources/applications/*
 pixfilesdir = ${datarootdir}/pixmaps
 pixfiles_DATA = ../resources/pixmaps/*
 
-helpfilesdir = $(pkgdatadir)/help
-helpfiles_DATA = ../resources/help/*
-
-examplefilesdir = $(pkgdatadir)/examples
-examplefiles_DATA = ../resources/examples/*
-
 sizes = 256x256 128x128 64x64 48x48 32x32 22x22 16x16
 
 install-data-hook:
@@ -66,7 +60,4 @@ uninstall-hook:
 	rm $(DESTDIR)${prefix}/share/icons/large/mpe-gtk2.png||true
 	rm $(DESTDIR)${prefix}/share/icons/mini/mpe-gtk2.png||true
 
-install-exec-hook:
-
-uninstall-hook:
 	rm -r $(DESTDIR)${pkgdatadir}
