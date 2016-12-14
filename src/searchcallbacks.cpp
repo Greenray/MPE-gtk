@@ -32,9 +32,9 @@ void doFindReplace(GtkDialog *dialog, gint response_id, gpointer user_data) {
 
 	gtk_text_buffer_begin_user_action((GtkTextBuffer*)page->buffer);
 
-	if (insensitiveSearch == true)
+	if (insensitiveSearch == true) {
 		flags = (GtkSourceSearchFlags)(GTK_SOURCE_SEARCH_TEXT_ONLY | GTK_SOURCE_SEARCH_CASE_INSENSITIVE);
-
+    }
 	searchtext  = g_strcompress(gtk_entry_get_text((GtkEntry*)findBox));
 	replacetext = g_strcompress(gtk_entry_get_text((GtkEntry*)replaceBox));
 
@@ -50,14 +50,14 @@ void doFindReplace(GtkDialog *dialog, gint response_id, gpointer user_data) {
 			if (gtk_source_iter_forward_search(&page->match_end, searchtext, flags, &page->match_start, &page->match_end, NULL)) {
 				gtk_text_buffer_select_range((GtkTextBuffer*)page->buffer, &page->match_start, &page->match_end);
 				scrollToIterInPane(page, &page->match_start);
-				page->iter=page->match_end;
+				page->iter = page->match_end;
 			} else {
                 if (wrapSearch == true) {
                     gtk_text_buffer_get_start_iter((GtkTextBuffer*)page->buffer, &page->iter);
 					if (gtk_source_iter_forward_search(&page->iter, searchtext, flags, &page->match_start, &page->match_end, NULL)) {
 						gtk_text_buffer_select_range((GtkTextBuffer*)page->buffer, &page->match_start, &page->match_end);
 						scrollToIterInPane(page, &page->match_start);
-						page->iter=page->match_end;
+						page->iter = page->match_end;
 					}
 				}
 			}
@@ -71,14 +71,14 @@ void doFindReplace(GtkDialog *dialog, gint response_id, gpointer user_data) {
 			if (gtk_source_iter_backward_search(&page->match_start, searchtext, flags, &page->match_start, &page->match_end, NULL)) {
                 gtk_text_buffer_select_range((GtkTextBuffer*)page->buffer, &page->match_start, &page->match_end);
                 scrollToIterInPane(page,&page->match_start);
-                page->iter=page->match_start;
+                page->iter = page->match_start;
             } else {
 				if (wrapSearch == true) {
                     gtk_text_buffer_get_end_iter((GtkTextBuffer*)page->buffer, &page->iter);
 					if (gtk_source_iter_backward_search(&page->iter, searchtext, flags, &page->match_start, &page->match_end, NULL)) {
 						gtk_text_buffer_select_range((GtkTextBuffer*)page->buffer, &page->match_start, &page->match_end);
 						scrollToIterInPane(page, &page->match_start);
-						page->iter=page->match_start;
+						page->iter = page->match_start;
 					}
 				}
 			}
@@ -92,11 +92,12 @@ void doFindReplace(GtkDialog *dialog, gint response_id, gpointer user_data) {
 				gtk_text_buffer_get_start_iter((GtkTextBuffer*)page->buffer, &page->iter);
 				gtk_text_buffer_place_cursor(GTK_TEXT_BUFFER(page->buffer), &page->iter);
 				if (gtk_source_iter_forward_search(&page->iter, searchtext, flags, &page->match_start, &page->match_end, NULL)) {
-                    gtk_text_buffer_select_range((GtkTextBuffer*)page->buffer,&page->match_start,&page->match_end);
+                    gtk_text_buffer_select_range((GtkTextBuffer*)page->buffer, &page->match_start, &page->match_end);
                     scrollToIterInPane(page,&page->match_start);
-                    page->iter=page->match_end;
-                } else
+                    page->iter = page->match_end;
+                } else {
 					break;
+                }
             } else
 				replaceAllFlag = false;
 			    do {
@@ -104,19 +105,18 @@ void doFindReplace(GtkDialog *dialog, gint response_id, gpointer user_data) {
                         selectedtext=gtk_text_buffer_get_text((GtkTextBuffer*)page->buffer, &page->match_start, &page->match_end, false);
 						if ((insensitiveSearch == true  && strcasecmp(selectedtext, searchtext) == 0) ||
                             (insensitiveSearch == false && strcmp(selectedtext, searchtext) == 0)) {
-                                gtk_text_buffer_delete((GtkTextBuffer*)page->buffer,&page->match_start,&page->match_end);
-								gtk_text_buffer_insert((GtkTextBuffer*)page->buffer,&page->match_start,replacetext,-1);
-								gtk_text_buffer_get_iter_at_mark((GtkTextBuffer*)page->buffer,&page->iter,gtk_text_buffer_get_insert((GtkTextBuffer*)page->buffer));
+                                gtk_text_buffer_delete((GtkTextBuffer*)page->buffer, &page->match_start, &page->match_end);
+								gtk_text_buffer_insert((GtkTextBuffer*)page->buffer, &page->match_start, replacetext,-1);
+								gtk_text_buffer_get_iter_at_mark((GtkTextBuffer*)page->buffer, &page->iter, gtk_text_buffer_get_insert((GtkTextBuffer*)page->buffer));
 								if (gtk_source_iter_forward_search(&page->iter, searchtext, flags, &page->match_start, &page->match_end, NULL)) {
 									gtk_text_buffer_select_range((GtkTextBuffer*)page->buffer, &page->match_start, &page->match_end);
 									scrollToIterInPane(page, &page->match_start);
-									page->iter=page->match_end;
+									page->iter = page->match_end;
 								} else {
                                     replaceAllFlag = false;
                             }
                         }
-                        if (selectedtext != NULL)
-							g_free(selectedtext);
+                        if (selectedtext != NULL) g_free(selectedtext);
                     }
 				}
 			while (replaceAllFlag == true);
@@ -145,10 +145,10 @@ void doSearchPrefs(GtkWidget* widget, gpointer data) {
 	switch ((long)data) {
 		case 1:
 			insensitiveSearch = gtk_toggle_button_get_active((GtkToggleButton*)widget);
-			break;
+		break;
 		case 2:
 			wrapSearch = gtk_toggle_button_get_active((GtkToggleButton*)widget);
-			break;
+		break;
 		case 3:
 			replaceAll = gtk_toggle_button_get_active((GtkToggleButton*)widget);
 			button = gtk_dialog_get_widget_for_response((GtkDialog*)findReplaceDialog, 100);
@@ -199,7 +199,7 @@ void doLiveSearch(GtkWidget* widget, GdkEvent *event, gpointer data) {
 			if (gtk_source_iter_backward_search(&page->iter, searchtext, flags, &page->match_start, &page->match_end, NULL)) {
 				gtk_text_buffer_select_range((GtkTextBuffer*)page->buffer, &page->match_start, &page->match_end);
 				scrollToIterInPane(page, &page->match_start);
-				page->iter=page->match_start;
+				page->iter = page->match_start;
 			}
 		}
     }

@@ -82,7 +82,7 @@ void doPrefs(void) {
 	gtk_widget_set_name(item, "tabs");
 	gtk_box_pack_start(GTK_BOX(hbox), gtk_label_new(_("Tab width: ")), true, true, 0);
 	gtk_container_add(GTK_CONTAINER(hbox), item);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox,true,true, 0);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, true, true, 0);
 	g_signal_connect(G_OBJECT(item), "value-changed", G_CALLBACK(setPrefs), (void*)item);
 #endif // 1
 	//
@@ -90,7 +90,6 @@ void doPrefs(void) {
 	//
 	fontBox = gtk_entry_new();
 	hbox    = creatNewBox(NEWHBOX, true, 0);
-
 	gtk_box_pack_start(GTK_BOX(hbox), gtk_label_new(_("Font And Size: ")), true, true, 0);
 	gtk_container_add(GTK_CONTAINER(hbox), fontBox);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, true, true, 0);
@@ -99,8 +98,7 @@ void doPrefs(void) {
 	// Terminal command
 	//
 	terminalBox = gtk_entry_new();
-	hbox = creatNewBox(NEWHBOX, true, 0);
-
+	hbox        = creatNewBox(NEWHBOX, true, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), gtk_label_new(_("Terminal Command: ")), true, true, 0);
 	gtk_container_add(GTK_CONTAINER(hbox), terminalBox);
 	gtk_box_pack_start(GTK_BOX(vbox),hbox, true, true, 0);
@@ -110,16 +108,13 @@ void doPrefs(void) {
 	// Buttons
 	//
 	gtk_box_pack_start(GTK_BOX(vbox), gtk_hseparator_new(), true, true, 0);
-	hbox=creatNewBox(NEWHBOX, true, 4);
-
+	hbox = creatNewBox(NEWHBOX, true, 4);
 	item = gtk_button_new_from_stock(GTK_STOCK_APPLY);
-
 	gtk_box_pack_start(GTK_BOX(hbox), item, true, false, 2);
 	gtk_widget_set_name(item, "apply");
 	g_signal_connect(G_OBJECT(item), "clicked", G_CALLBACK(setPrefs), (void*)item);
 
 	item = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-
 	gtk_box_pack_start(GTK_BOX(hbox), item, true, false, 2);
 	gtk_widget_set_name(item, "cancel");
 	g_signal_connect(G_OBJECT(item), "clicked", G_CALLBACK(setPrefs), (void*)item);
@@ -136,12 +131,11 @@ GtkToolItem* makeNewToolItem(const char* stock, const char* label) {
 	GtkWidget*   image;
 
 	button = gtk_tool_button_new_from_stock(stock);
-
 	return(button);
 }
 
 void recentFileMenu(GtkRecentChooser *chooser, gpointer *data) {
-	gchar *uri=NULL;
+	gchar *uri = NULL;
 	char  *filename;
 
 	uri = gtk_recent_chooser_get_current_uri((GtkRecentChooser*)chooser);
@@ -164,12 +158,10 @@ void setupRecent(GtkMenuItem *menu) {
 	gtk_recent_chooser_set_local_only(GTK_RECENT_CHOOSER(recent), false);
 	gtk_recent_chooser_set_sort_type(GTK_RECENT_CHOOSER(recent), GTK_RECENT_SORT_MRU);
 	gtk_recent_chooser_set_limit(GTK_RECENT_CHOOSER(recent), 10);
-
 	filter = gtk_recent_filter_new();
 	gtk_recent_filter_add_mime_type (filter, "application/x-maneditdoc");
 	gtk_recent_chooser_set_filter(GTK_RECENT_CHOOSER(recent), filter);
 	g_signal_connect(recent, "item_activated", G_CALLBACK(recentFileMenu), NULL);
-
 	gtk_menu_item_set_submenu(menu, recent);
 }
 
@@ -185,9 +177,9 @@ void buildMainGui(void) {
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title((GtkWindow*)window, _("Man Pages Editor MPE-GTK2"));
 	gtk_window_set_default_size((GtkWindow*)window, windowWidth, windowHeight);
-	if (windowX != -1 && windowY != -1)
+	if (windowX != -1 && windowY != -1) {
 		gtk_window_move((GtkWindow *)window, windowX, windowY);
-
+    }
 	g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(doShutdown), NULL);
 	accgroup = gtk_accel_group_new();
 	gtk_window_add_accel_group((GtkWindow*)window, accgroup);
@@ -196,8 +188,7 @@ void buildMainGui(void) {
 	gtk_notebook_set_scrollable(notebook, true);
 	g_signal_connect(G_OBJECT(notebook), "page-reordered", G_CALLBACK(reorderDirty), NULL);
 
-	vbox = creatNewBox(NEWVBOX, false, 0);
-
+	vbox    = creatNewBox(NEWVBOX, false, 0);
 	menubar = gtk_menu_bar_new();
 	toolbar = gtk_toolbar_new();
 
@@ -217,9 +208,8 @@ void buildMainGui(void) {
 	//
 	saveButton = makeNewToolItem(GTK_STOCK_SAVE, _("Save"));
 	gtk_toolbar_insert((GtkToolbar*)toolbar, saveButton, -1);
-	g_signal_connect(G_OBJECT(saveButton), "clicked", G_CALLBACK(saveManpage), NULL);
+	g_signal_connect(G_OBJECT(saveButton), "clicked", G_CALLBACK(saveFile), NULL);
 	gtk_widget_set_tooltip_text((GtkWidget*)saveButton, _("Save File"));
-
 	gtk_toolbar_insert((GtkToolbar*)toolbar, gtk_separator_tool_item_new(), -1);
 	//
 	// Edit buttons
@@ -243,7 +233,6 @@ void buildMainGui(void) {
 	gtk_toolbar_insert((GtkToolbar*)toolbar, toolbutton, -1);
 	g_signal_connect(G_OBJECT(toolbutton), "clicked", G_CALLBACK(pasteFromClip), NULL);
 	gtk_widget_set_tooltip_text((GtkWidget*)toolbutton, _("Paste"));
-
 	gtk_toolbar_insert((GtkToolbar*)toolbar, gtk_separator_tool_item_new(), -1);
 	//
 	// Undo
@@ -270,8 +259,8 @@ void buildMainGui(void) {
 	//
 	// Live search
 	//
-	liveSearchWidget=gtk_entry_new();
-	toolbutton = gtk_tool_item_new();
+	liveSearchWidget = gtk_entry_new();
+	toolbutton       = gtk_tool_item_new();
 	gtk_container_add((GtkContainer *)toolbutton, liveSearchWidget);
 	gtk_toolbar_insert((GtkToolbar*)toolbar, toolbutton, -1);
 	g_signal_connect_after(G_OBJECT(liveSearchWidget), "key-release-event", G_CALLBACK(doLiveSearch), NULL);
@@ -296,7 +285,7 @@ void buildMainGui(void) {
 	menuitem = gtk_image_menu_item_new_with_label(_("New Section"));
 	image    = gtk_image_new_from_stock(GTK_STOCK_NEW, GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image((GtkImageMenuItem *)menuitem, image);
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu),menuitem);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(newSection), NULL);
 	//
 	// Open
@@ -305,7 +294,6 @@ void buildMainGui(void) {
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(openManpage), NULL);
 	gtk_widget_add_accelerator((GtkWidget *)menuitem, "activate", accgroup, 'O', GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-
 	menuitem = gtk_separator_menu_item_new();
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	//
@@ -314,17 +302,8 @@ void buildMainGui(void) {
 	menuitem = gtk_menu_item_new_with_mnemonic(_("_Recent"));
 	setupRecent((GtkMenuItem*)menuitem);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-
 	menuitem = gtk_separator_menu_item_new();
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-	//
-	// New template
-	//
-	menuitem = gtk_image_menu_item_new_with_label(_("New From Template"));
-	image    = gtk_image_new_from_stock(GTK_STOCK_NEW, GTK_ICON_SIZE_MENU);
-	gtk_image_menu_item_set_image((GtkImageMenuItem *)menuitem, image);
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu),menuitem);
-	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(openManpage), (void*)1);
 	//
 	// New editor
 	//
@@ -333,59 +312,26 @@ void buildMainGui(void) {
 	gtk_image_menu_item_set_image((GtkImageMenuItem *)menuitem, image);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(newEditor), NULL);
-
 	menuitem = gtk_separator_menu_item_new();
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	//
 	// Save
 	//
 	saveMenu = gtk_image_menu_item_new_from_stock(GTK_STOCK_SAVE,NULL);
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu),saveMenu);
-	g_signal_connect(G_OBJECT(saveMenu), "activate", G_CALLBACK(saveManpage), NULL);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), saveMenu);
+	g_signal_connect(G_OBJECT(saveMenu), "activate", G_CALLBACK(saveFile), NULL);
 	gtk_widget_add_accelerator((GtkWidget *)saveMenu, "activate", accgroup, 'S', GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 	//
 	// Save as
 	//
 	saveAsMenu = gtk_image_menu_item_new_from_stock(GTK_STOCK_SAVE_AS,NULL);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), saveAsMenu);
-	g_signal_connect(G_OBJECT(saveAsMenu), "activate", G_CALLBACK(saveAs), NULL);
+	g_signal_connect(G_OBJECT(saveAsMenu), "activate", G_CALLBACK(saveFile), (void*)1);
 	gtk_widget_set_sensitive((GtkWidget*)saveAsMenu, false);
-	//
-	// Export
-	//
-	image      = gtk_image_new_from_stock(GTK_STOCK_CONVERT, GTK_ICON_SIZE_MENU);
-	exportMenu = gtk_image_menu_item_new_with_label(_("Export Man Page"));
-	gtk_image_menu_item_set_image((GtkImageMenuItem *)exportMenu, image);
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu), exportMenu);
-	g_signal_connect(G_OBJECT(exportMenu), "activate", G_CALLBACK(exportFile), NULL);
-	//
-	// Export as
-	//
-	image = gtk_image_new_from_stock(GTK_STOCK_CONVERT, GTK_ICON_SIZE_MENU);
-	exportAsMenu = gtk_image_menu_item_new_with_label(_("Export As"));
-	gtk_image_menu_item_set_image((GtkImageMenuItem *)exportAsMenu, image);
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu), exportAsMenu);
-	g_signal_connect(G_OBJECT(exportAsMenu), "activate", G_CALLBACK(exportFile), (void*)1);
-	//
-	// Import
-	//
-	image    = gtk_image_new_from_stock(GTK_STOCK_OPEN, GTK_ICON_SIZE_MENU);
-	menuitem = gtk_image_menu_item_new_with_label(_("Import Manpage"));
-	gtk_image_menu_item_set_image((GtkImageMenuItem *)menuitem, image);
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu),menuitem);
-	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(importManpage), NULL);
-	//
-	// Import sysmanpage
-	//
-	image    = gtk_image_new_from_stock(GTK_STOCK_OPEN,GTK_ICON_SIZE_MENU);
-	menuitem = gtk_image_menu_item_new_with_label(_("Import System Manpage"));
-	gtk_image_menu_item_set_image((GtkImageMenuItem *)menuitem, image);
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(importManpage), (void*)1);
 	//
 	// Preview
 	//
-	image = gtk_image_new_from_stock(GTK_STOCK_FIND, GTK_ICON_SIZE_MENU);
+	image       = gtk_image_new_from_stock(GTK_STOCK_FIND, GTK_ICON_SIZE_MENU);
 	previewMenu = gtk_image_menu_item_new_with_label(_("Preview Page"));
 	gtk_image_menu_item_set_image((GtkImageMenuItem *)previewMenu, image);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), previewMenu);
@@ -440,7 +386,7 @@ void buildMainGui(void) {
 	// Quit
 	//
 	menuitem = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu),menuitem);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem),"activate",G_CALLBACK(doShutdown), NULL);
 	gtk_widget_add_accelerator((GtkWidget *)menuitem, "activate", accgroup, 'Q', GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 	//
@@ -463,9 +409,8 @@ void buildMainGui(void) {
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), redoMenu);
 	g_signal_connect(G_OBJECT(redoMenu), "activate", G_CALLBACK(redo), NULL);
 	gtk_widget_add_accelerator((GtkWidget *)redoMenu, "activate", accgroup, 'Z', (GdkModifierType)(GDK_SHIFT_MASK | GDK_CONTROL_MASK), GTK_ACCEL_VISIBLE);
-
-	menuitem=gtk_separator_menu_item_new();
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu),menuitem);
+	menuitem = gtk_separator_menu_item_new();
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	//
 	// Cut
 	//
@@ -477,7 +422,7 @@ void buildMainGui(void) {
 	// Copy
 	//
 	menuitem = gtk_image_menu_item_new_from_stock(GTK_STOCK_COPY,NULL);
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu) ,menuitem);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(copyToClip), NULL);
 	gtk_widget_add_accelerator((GtkWidget *)menuitem, "activate", accgroup, 'C', GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 	//
@@ -488,7 +433,7 @@ void buildMainGui(void) {
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(pasteFromClip), NULL);
 	gtk_widget_add_accelerator((GtkWidget *)menuitem, "activate", accgroup, 'V', GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 
-	menuitem=gtk_separator_menu_item_new();
+	menuitem = gtk_separator_menu_item_new();
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	//
 	// Find
@@ -499,7 +444,7 @@ void buildMainGui(void) {
 	gtk_widget_add_accelerator((GtkWidget *)menuitem, "activate", accgroup, 'F', GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 
 	menuitem = gtk_separator_menu_item_new();
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu),menuitem);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	//
 	// Prefs
 	//
@@ -515,7 +460,7 @@ void buildMainGui(void) {
 	//
 	// Bold
 	//
-	menuitem=gtk_image_menu_item_new_from_stock(GTK_STOCK_BOLD, NULL);
+	menuitem = gtk_image_menu_item_new_from_stock(GTK_STOCK_BOLD, NULL);
 	gtk_widget_add_accelerator((GtkWidget *)menuitem, "activate", accgroup, GDK_KEY_B, (GdkModifierType)GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(doFormat), (void*)BOLD);
@@ -524,14 +469,14 @@ void buildMainGui(void) {
 	//
 	menuitem = gtk_image_menu_item_new_from_stock(GTK_STOCK_ITALIC, NULL);
 	gtk_widget_add_accelerator((GtkWidget *)menuitem,"activate",accgroup,GDK_KEY_I, (GdkModifierType)GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu),menuitem);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem),"activate",G_CALLBACK(doFormat),(void*)ITALIC);
 	//
 	// Normal
 	//
 	menuitem = gtk_image_menu_item_new_from_stock(GTK_STOCK_CLEAR, NULL);
 	gtk_widget_add_accelerator((GtkWidget *)menuitem, "activate", accgroup, GDK_KEY_R, (GdkModifierType)GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu),menuitem);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem),"activate",G_CALLBACK(doFormat),(void*)NORMAL);
 	//
 	// Help

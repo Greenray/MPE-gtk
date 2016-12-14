@@ -38,7 +38,6 @@
 
 #define COPYRIGHT "Copyright \xc2\xa9 2013-2016 K.D.Hedger"
 
-void doOpenFile(GtkWidget* widget, gpointer data);
 void closeTab(GtkWidget* widget, gpointer data);
 void setSensitive(void);
 void copyToClip(GtkWidget* widget, gpointer data);
@@ -64,7 +63,7 @@ gboolean whatPane(GtkWidget *widget,GdkEvent *event, gpointer data);
 void newEditor(GtkWidget* widget, gpointer data);
 void doFormat(GtkWidget* widget, gpointer data);
 void redoProps(GtkWidget* widget, gpointer data);
-int yesNo(char* question, char* file);
+int  yesNo(char* question, char* file);
 void closePage(GtkWidget* widget, gpointer data);
 void previewPage(GtkWidget* widget, gpointer data);
 void reorderDirty(GtkNotebook *notebook, GtkWidget *child, guint page_num, gpointer user_data);

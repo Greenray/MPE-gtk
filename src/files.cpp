@@ -21,7 +21,6 @@
 #include <glib.h>
 #include <gtksourceview/gtksourceview.h>
 
-
 #include "callbacks.h"
 #include "script.h"
 
@@ -91,7 +90,6 @@ GtkWidget* makeNewTab(char* name, char* tooltip, pageStruct* page) {
 
 	gtk_box_pack_start(GTK_BOX(hbox), label, false, false, 0);
 	gtk_container_add(GTK_CONTAINER(evbox), hbox);
-
 	g_signal_connect(G_OBJECT(evbox), "button-press-event", G_CALLBACK(tabPopUp), (void*)page);
 
 	page->tabName = label;
@@ -158,13 +156,14 @@ void dropText(GtkWidget *widget,
 	if (dropTextFile == false) {
 		dropTextFile = true;
 
-		for(int j = 0; j < cnt; j++) {
+		for (int j = 0; j < cnt; j++) {
             str = g_string_new(NULL);
 			filename = g_filename_from_uri(array[j], NULL, NULL);
 			asprintf(&command, "cat %s", filename);
 			fp = popen(command, "r");
-			while(fgets(line, 1024, fp))
+			while (fgets(line, 1024, fp)) {
 				g_string_append_printf(str, "%s", line);
+            }
 			gtk_text_buffer_insert_at_cursor(GTK_TEXT_BUFFER(page->buffer), str->str, str->len);
 
 			mark = gtk_text_buffer_get_insert((GtkTextBuffer*)page->buffer);
@@ -173,18 +172,17 @@ void dropText(GtkWidget *widget,
 			gtk_text_buffer_place_cursor((GtkTextBuffer*)page->buffer, &iter);
 
 			g_free(command);
-			g_string_free(str,true);
+			g_string_free(str, true);
 			pclose(fp);
         }
-
 		g_strfreev(array);
-    } else
-		dropTextFile=false;
-
+    } else {
+		dropTextFile = false;
+    }
 	gtk_drag_finish (context, true, true, time);
 }
 
-bool getSaveFile(bool isExport) {
+bool getSaveFile(bool isSave) {
 	GtkWidget* dialog;
 	bool       retval = false;
 
@@ -199,21 +197,23 @@ bool getSaveFile(bool isExport) {
     );
 
 	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER (dialog), TRUE);
-	if ((isExport == false) && (saveFileName != NULL)) {
-        if (saveFilePath != NULL)
+	if ((isSave == false) && (saveFileName != NULL)) {
+        if (saveFilePath != NULL) {
 			gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), g_path_get_dirname(saveFilePath));
+        }
 		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), saveFileName);
-    } else if ((isExport == true) && (exportPath != NULL)) {
-        if(exportPath!=NULL)
-			gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), g_path_get_dirname(exportPath));
+    } else if ((isSave == true) && (savePath != NULL)) {
+        if (savePath!=NULL) {
+			gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), g_path_get_dirname(savePath));
+        }
 		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "Untitled.1");
-    } else
+    } else {
 		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "Untitled");
-
+    }
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		saveFilePath = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		saveFileName = g_path_get_basename(saveFilePath);
-		retval=true;
+		retval = true;
     }
 
 	gtk_widget_destroy(dialog);
@@ -230,7 +230,7 @@ char* doReplaceTags(char* str) {
 
     bool flag = true;
 
-	while(flag == true) {
+	while (flag == true) {
         tagstr = sliceInclude(newstr, (char*)"<apply_tag name=\"bold", (char*)"\">", true, true);
 		if (tagstr == NULL)
 			flag = false;
@@ -240,7 +240,7 @@ char* doReplaceTags(char* str) {
 
 	flag   = true;
 	tagstr = NULL;
-	while(flag == true) {
+	while (flag == true) {
 		tagstr = sliceInclude(newstr, (char*)"<apply_tag name=\"italic", (char*)"\">", true, true);
 		if (tagstr == NULL)
 			flag = false;
@@ -249,9 +249,9 @@ char* doReplaceTags(char* str) {
     }
 
 	replaceAllSlice(&newstr, (char*)"</apply_tag>", (char*)"\\fR");
-	for (int j = 0; j < 4; j++)
+	for (int j = 0; j < 4; j++) {
 		replaceAllSlice(&newstr, (char*)tagfrom[j], (char*)tagto[j]);
-
+    }
 	g_free(str);
 	return(newstr);
 }
@@ -274,7 +274,7 @@ char* loadToString(pageStruct* page) {
 	return(ptr);
 }
 
-void exportFile(GtkWidget* widget, gpointer data) {
+void saveFile(GtkWidget* widget, gpointer data) {
 	pageStruct* page;
 	GtkTextIter start, end;
 
@@ -290,22 +290,23 @@ void exportFile(GtkWidget* widget, gpointer data) {
 	GString* str = g_string_new(NULL);
 	char*    zipcommand = NULL;
 
-	if (exportPath == NULL || data != NULL) {
-		if (getSaveFile(true) == false)
+	if (savePath == NULL || data != NULL) {
+		if (getSaveFile(true) == false) {
 			return;
-		exportPath = strdup(saveFilePath);
+        }
+		savePath = strdup(saveFilePath);
     }
 
 	if (previewFile != NULL)
 		 fd = previewFile;
-	else fd = fopen(exportPath, "w");
+	else fd = fopen(savePath, "w");
 	if (fd != NULL) {
         fprintf(fd, ".TH \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"\n", manName, manSection, manVersion, manAuthor, manCategory);
 
         ptr = text;
 		startChar[1] = 0;
 
-        for(int loop = 0; loop < numpages; loop++) {
+        for (int loop = 0; loop < numpages; loop++) {
             page = getPageStructPtr(loop);
 			gtk_text_buffer_get_start_iter((GtkTextBuffer*)page->buffer, &start);
 			gtk_text_buffer_get_end_iter((GtkTextBuffer*)page->buffer, &end);
@@ -342,15 +343,14 @@ void exportFile(GtkWidget* widget, gpointer data) {
 					g_free(ptr);
 					ptr = holdPtr;
 
-					if (lastWasNL == false)
-                        fprintf(fd,"\n");
+					if (lastWasNL == false) fprintf(fd, "\n");
                     lastWasNL = true;
                 }
             }
         }
 		fclose(fd);
 		if (gzipPages == true) {
-            asprintf(&zipcommand, "gzip --force %s", exportPath);
+            asprintf(&zipcommand, "gzip --force %s", savePath);
 			system(zipcommand);
 			g_free(zipcommand);
         }
@@ -373,7 +373,7 @@ void saveConverted(pageStruct* page) {
 	fwrite(data, sizeof(guint8), length, output);
 	fclose(output);
 }
-
+/*
 void saveManpage(GtkWidget* widget, gpointer data) {
 	int   numpages = gtk_notebook_get_n_pages(notebook);
 	FILE* fd = NULL;
@@ -385,12 +385,13 @@ void saveManpage(GtkWidget* widget, gpointer data) {
     pageStruct*	page;
 
 	if (manFilePath == NULL) {
-        if (getSaveFile(false) == false)
+        if (getSaveFile(false) == false) {
             return;
-        if (g_str_has_suffix(saveFilePath, ".xz"))
+        }
+		if (g_str_has_suffix(saveFilePath, ".mpz"))
             manFilePath=strdup(saveFilePath);
         else
-            asprintf(&manFilePath, "%s.xz", saveFilePath);
+			asprintf(&manFilePath, "%s.mpz", saveFilePath);
     }
 
 	for (int loop = 0; loop < numpages; loop++) {
@@ -417,16 +418,16 @@ void saveManpage(GtkWidget* widget, gpointer data) {
     }
 	g_free(manifest);
 
-	asprintf(&manifest, "tar -cC %s -f %s .", manFilename, manFilePath);
+	// Creates archive
+	asprintf(&manifest, "xz -z %s -f %s .", manFilename, manFilePath);
 	system(manifest);
 	g_free(manifest);
 
-	if (exportPath != NULL)
-		g_free(exportPath);
+	if (savePath != NULL) g_free(savePath);
 
 	dirname   = g_path_get_dirname(manFilePath);
 	lowername = g_ascii_strdown(manName, -1);
-	asprintf(&exportPath, "%s/%s.%s", dirname, lowername, manSection);
+	asprintf(&savePath, "%s/%s.%s", dirname, lowername, manSection);
 	g_free(dirname);
 	g_free(lowername);
 	recenturi = g_filename_to_uri(manFilePath, NULL, NULL);
@@ -435,14 +436,14 @@ void saveManpage(GtkWidget* widget, gpointer data) {
 	dirty = false;
 	setSensitive();
 }
-
+*/
 void saveAs(GtkWidget* widget, gpointer data) {
 	if (manFilePath != NULL) {
         printf("%s\n", manFilePath);
 		g_free(manFilePath);
 		manFilePath = NULL;
     }
-	saveManpage(NULL, NULL);
+	saveFile(NULL, NULL);
 }
 
 pageStruct* makeNewPage(void) {
@@ -474,7 +475,7 @@ pageStruct* makeNewPage(void) {
 	page->isSplit = false;
 	page->lang    = NULL;
 	page->tabVbox = NULL;
-//dnd
+
 	gtk_drag_dest_set((GtkWidget*)page->view, GTK_DEST_DEFAULT_ALL, NULL , 0, GDK_ACTION_COPY);
 	gtk_drag_dest_add_uri_targets((GtkWidget*)page->view);
 	gtk_drag_dest_add_text_targets((GtkWidget*)page->view);
@@ -497,8 +498,7 @@ void newManpage(GtkWidget* widget, gpointer data) {
 
     gint result;
 
-	if (pageOpen == true)
-		closePage(NULL, NULL);
+	if (pageOpen == true) closePage(NULL, NULL);
 
 	dialog = gtk_message_dialog_new(
         GTK_WINDOW(window),
@@ -592,8 +592,9 @@ char* getNewSectionName(char* name) {
 
 	content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	entrybox     = gtk_entry_new();
-	if (name != NULL)
+	if (name != NULL) {
 		gtk_entry_set_text((GtkEntry*)entrybox, name);
+    }
 	gtk_entry_set_activates_default((GtkEntry*)entrybox, true);
 	gtk_dialog_set_default_response((GtkDialog*)dialog, GTK_RESPONSE_YES);
 	gtk_container_add(GTK_CONTAINER(content_area), entrybox);
@@ -623,9 +624,9 @@ void newSection(GtkWidget* widget, gpointer data) {
 	if (data == NULL) {
         isSubsection = false;
 		retval = getNewSectionName(NULL);
-    } else
+    } else {
         retval = strdup((char*)data);
-
+    }
 	if (retval != NULL) {
 		page = makeNewPage();
 		page->tabVbox = creatNewBox(NEWVBOX, true, 4);
@@ -656,15 +657,16 @@ void newSection(GtkWidget* widget, gpointer data) {
 		currentPage++;
 		gtk_widget_show_all((GtkWidget*)notebook);
 		page->isSubsection = isSubsection;
-		if (data != NULL)
-			importPage=page;
+		if (data != NULL) {
+			importPage = page;
+        }
 	}
 }
 
 void loadBuffer(pageStruct* page) {
 	GtkTextIter iter;
 
-	gchar*  buffer=NULL;
+	gchar*  buffer = NULL;
 	long    filelen;
 	GdkAtom atom = gtk_text_buffer_register_deserialize_tagset((GtkTextBuffer*)page->buffer, NULL);
 
@@ -688,8 +690,7 @@ void openConvertedFile(char* filepath) {
 	pageStruct* page;
 	char*       str = NULL;
 
-	if (!g_file_test(filepath, G_FILE_TEST_EXISTS))
-		return;
+	if (!g_file_test(filepath, G_FILE_TEST_EXISTS)) return;
 
 	page = makeNewPage();
 	page->tabVbox      = creatNewBox(NEWVBOX, true, 4);
@@ -725,145 +726,11 @@ void openConvertedFile(char* filepath) {
 	gtk_widget_show_all((GtkWidget*)notebook);
 }
 
-void doOpenManpage(char* file) {
-	char* command = NULL;
-	FILE* fp;
-	char  buffer[4096];
-	char  name[256];
-	char  strarg[256];
-	char* recenturi;
-	char* dirname;
-	char* lowername;
-	int   status;
-
-    GtkWidget* dialog;
-
-	if (!g_file_test(file, G_FILE_TEST_EXISTS)) {
-		dialog = gtk_message_dialog_new(
-            (GtkWindow*)window,
-            GTK_DIALOG_DESTROY_WITH_PARENT,
-            GTK_MESSAGE_ERROR,
-            GTK_BUTTONS_CLOSE,
-            _("File '%s' doesn't exist"),
-            file
-        );
-		gtk_dialog_run(GTK_DIALOG(dialog));
-		gtk_widget_destroy(dialog);
-		return;
-    }
-	if (manFilename != NULL) {
-        sprintf((char*)&buffer[0], "rm -r \"%s\"", manFilename);
-		system((char*)&buffer[0]);
-		manFilename=NULL;
-    }
-
-	sprintf(tFileName, "%s", "/tmp/mpe-gtk2XXXXXX");
-	manFilename = mkdtemp(tFileName);
-	g_mkdir_with_parents(manFilename, 493);
-	asprintf(&command, "tar -xC %s -f %s 2>/dev/null", manFilename, file);
-	status = system(command);
-	status = WEXITSTATUS(status);
-	if (status != 0) {
-        g_free(command);
-		dialog = gtk_message_dialog_new(
-            (GtkWindow*)window,
-            GTK_DIALOG_DESTROY_WITH_PARENT,
-            GTK_MESSAGE_ERROR,GTK_BUTTONS_CLOSE,
-            _("File '%s' isn't a man page\nTry using 'Import' instead"),
-            file
-        );
-		gtk_dialog_run(GTK_DIALOG(dialog));
-		gtk_widget_destroy(dialog);
-		return;
-    }
-
-	asprintf(&command, "%s/manifest", manFilename);
-	fp = fopen(command, "r");
-	while (fgets(buffer, 4096, fp)) {
-		strarg[0] = 0;
-        sscanf(buffer, "%s %" VALIDFILENAMECHARS "s", (char*)&name, (char*)&strarg);
-
-		if (strcasecmp(name, "manname")    == 0) manName     = strdup((char*)&strarg);
-		if (strcasecmp(name, "mansection") == 0) manSection  = strdup((char*)&strarg);
-		if (strcasecmp(name, "manversion") == 0) manVersion  = strdup((char*)&strarg);
-		if (strcasecmp(name, "manauthor")  == 0) manAuthor   = strdup((char*)&strarg);
-		if (strcasecmp(name, "mancategory")== 0) manCategory = strdup((char*)&strarg);
-		if (strcasecmp(name, "file") == 0) {
-            sprintf((char*)&buffer[0], "%s/%s", manFilename, (char*)&strarg[0]);
-			isSubsection = false;
-			openConvertedFile((char*)&buffer);
-		}
-		if (strcasecmp(name, "subsection") == 0) {
-			sprintf((char*)&buffer[0], "%s/%s", manFilename, (char*)&strarg[0]);
-			isSubsection = true;
-			openConvertedFile((char*)&buffer);
-        }
-    }
-
-	g_free(command);
-	fclose(fp);
-	if (manFilePath != NULL) g_free(manFilePath);
-	manFilePath = strdup(file);
-	if (exportPath != NULL)  g_free(exportPath);
-
-	dirname   = g_path_get_dirname(manFilePath);
-	lowername = g_ascii_strdown(manName, -1);
-	asprintf(&exportPath, "%s/%s.%s", dirname, lowername, manSection);
-	g_free(dirname);
-	g_free(lowername);
-	recenturi = g_filename_to_uri(manFilePath, NULL, NULL);
-	gtk_recent_manager_add_item(gtk_recent_manager_get_default(), recenturi);
-	pageOpen = true;
-	gtk_window_set_title((GtkWindow*)window, file);
-}
-
-void openManpage(GtkWidget* widget, gpointer data) {
-	GtkWidget* dialog;
-	char*      filename;
-
-	GtkFileFilter* filter    = gtk_file_filter_new();
-	GtkFileFilter* filterall = gtk_file_filter_new();
-
-	gtk_file_filter_add_pattern(filter, "*.xz");
-	gtk_file_filter_add_pattern(filterall, "*");
-	gtk_file_filter_set_name(filter, _("Man pages \"*.xz\""));
-	gtk_file_filter_set_name(filterall, _("All Files"));
-
-	if ((long)data == 1) {
-		closePage(NULL, NULL);
-        doOpenManpage((char*)DATADIR "/examples/template-1.xz");
-    } else {
-		dialog = gtk_file_chooser_dialog_new(
-            _("Open File"),
-            NULL,
-            GTK_FILE_CHOOSER_ACTION_OPEN,
-            GTK_STOCK_CANCEL,
-            GTK_RESPONSE_CANCEL,
-            GTK_STOCK_OPEN,
-            GTK_RESPONSE_ACCEPT,
-            NULL
-        );
-
-		gtk_file_chooser_add_filter((GtkFileChooser*)dialog, filter);
-		gtk_file_chooser_add_filter((GtkFileChooser*)dialog, filterall);
-		if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
-            filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-			closePage(NULL, NULL);
-			doOpenManpage(filename);
-			g_free(filename);
-        }
-        gtk_widget_destroy (dialog);
-    }
-	dirty = false;
-	setSensitive();
-	refreshMainWindow();
-}
-
 void deleteSection(GtkWidget* widget, gpointer data) {
 	pageStruct* page = getPageStructPtr(-1);
-	if (page == NULL)
+	if (page == NULL) {
 		return;
-
+    }
 	if (yesNo((char*) _("Do you want to permanently delete"), page->fileName) == GTK_RESPONSE_YES) {
 		unlink(page->filePath);
 		closeTab(NULL, (void*)1);
@@ -1026,9 +893,9 @@ char* cleanText(char* text) {
 	int          numSpaces = 0;
 
 	line = getLineFromString(srcstr->str);
-	while (line[numSpaces] == ' ')
+	while (line[numSpaces] == ' ') {
 		numSpaces++;
-
+    }
 	while (charpos<srcstr->len) {
         if (srcstr->str[charpos] == '\n') {
 			g_string_append(deststr, "\n");
@@ -1091,9 +958,9 @@ char* getManpageName(void) {
 	gtk_container_add(GTK_CONTAINER(content_area), entrybox);
 
 	drop = gtk_combo_box_text_new();
-	for (int j = 1; j < 10; j++)
+	for (int j = 1; j < 10; j++) {
 		gtk_combo_box_text_append_text((GtkComboBoxText*)drop, buffer[j]);
-
+    }
 	gtk_combo_box_set_active((GtkComboBox*)drop, 0);
 	gtk_container_add(GTK_CONTAINER(content_area), drop);
 	gtk_widget_show_all(content_area);
@@ -1107,7 +974,99 @@ char* getManpageName(void) {
 	return(manpage);
 }
 
-void importManpage(GtkWidget* widget, gpointer data) {
+void doOpenManpage(char* file) {
+	char* command = NULL;
+	FILE* fp;
+	char  buffer[4096];
+	char  name[256];
+	char  strarg[256];
+	char* recenturi;
+	char* dirname;
+	char* lowername;
+	int   status;
+
+	GtkWidget* dialog;
+
+	if (!g_file_test(file, G_FILE_TEST_EXISTS)) {
+		dialog = gtk_message_dialog_new(
+			(GtkWindow*)window,
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_MESSAGE_ERROR,
+			GTK_BUTTONS_CLOSE,
+			_("File '%s' doesn't exist"),
+			file
+		);
+		gtk_dialog_run(GTK_DIALOG(dialog));
+		gtk_widget_destroy(dialog);
+		return;
+	}
+	if (manFilename != NULL) {
+		sprintf((char*)&buffer[0], "rm -r \"%s\"", manFilename);
+		system((char*)&buffer[0]);
+		manFilename=NULL;
+	}
+
+	sprintf(tFileName, "%s", "/tmp/ManEditXXXXXX");
+	manFilename = mkdtemp(tFileName);
+	g_mkdir_with_parents(manFilename, 493);
+	asprintf(&command, "tar -xC %s -f %s 2>/dev/null", manFilename, file);
+	status = system(command);
+	status = WEXITSTATUS(status);
+	if (status != 0) {
+		g_free(command);
+		dialog = gtk_message_dialog_new(
+            (GtkWindow*)window,
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_MESSAGE_ERROR,GTK_BUTTONS_CLOSE,
+			_("File '%s' isn't a ManPage Editor archive\nTry using 'Import' instead"),
+			file
+		);
+		gtk_dialog_run(GTK_DIALOG(dialog));
+		gtk_widget_destroy(dialog);
+		return;
+	}
+
+	asprintf(&command, "%s/manifest", manFilename);
+	fp = fopen(command, "r");
+	while (fgets(buffer, 4096, fp)) {
+		strarg[0] = 0;
+		sscanf(buffer, "%s %"VALIDFILENAMECHARS"s", (char*)&name, (char*)&strarg);
+
+		if (strcasecmp(name, "manname")    == 0) manName     = strdup((char*)&strarg);
+		if (strcasecmp(name, "mansection") == 0) manSection  = strdup((char*)&strarg);
+		if (strcasecmp(name, "manversion") == 0) manVersion  = strdup((char*)&strarg);
+		if (strcasecmp(name, "manauthor")  == 0) manAuthor   = strdup((char*)&strarg);
+		if (strcasecmp(name, "mancategory")== 0) manCategory = strdup((char*)&strarg);
+		if (strcasecmp(name, "file") == 0) {
+			sprintf((char*)&buffer[0], "%s/%s", manFilename, (char*)&strarg[0]);
+			isSubsection = false;
+			openConvertedFile((char*)&buffer);
+		}
+		if (strcasecmp(name, "subsection") == 0) {
+			sprintf((char*)&buffer[0], "%s/%s", manFilename, (char*)&strarg[0]);
+			isSubsection = true;
+			openConvertedFile((char*)&buffer);
+		}
+	}
+
+	g_free(command);
+	fclose(fp);
+	if (manFilePath != NULL) g_free(manFilePath);
+	manFilePath = strdup(file);
+	if (savePath != NULL)  g_free(savePath);
+
+	dirname   = g_path_get_dirname(manFilePath);
+	lowername = g_ascii_strdown(manName, -1);
+	asprintf(&savePath, "%s/%s.%s", dirname, lowername, manSection);
+	g_free(dirname);
+	g_free(lowername);
+	recenturi = g_filename_to_uri(manFilePath, NULL, NULL);
+	gtk_recent_manager_add_item(gtk_recent_manager_get_default(), recenturi);
+	pageOpen = true;
+	gtk_window_set_title((GtkWindow*)window, file);
+}
+
+void openManpage(GtkWidget* widget, gpointer data) {
 	GtkWidget*  dialog   = NULL;
 	char*       filename = NULL;
 	char*       contents;
@@ -1131,9 +1090,9 @@ void importManpage(GtkWidget* widget, gpointer data) {
 
 	if ((long)data == 1) {
 		manname = getManpageName();
-        if (manname == NULL)
+        if (manname == NULL) {
 				return;
-
+        }
 		if (selectedSection==0)
 			 sprintf(commandBuffer, "man -w %s 2>/dev/null", manname);
 		else sprintf(commandBuffer, "man -w -s %i %s 2>/dev/null", selectedSection, manname);
@@ -1142,16 +1101,16 @@ void importManpage(GtkWidget* widget, gpointer data) {
 		if (fp != NULL) {
             fgets((char*)&buffer[0], 2048, fp);
 			pclose(fp);
-		} else
+		} else {
 			return;
-
-        if (strlen(buffer) == 0)
+        }
+        if (strlen(buffer) == 0) {
 			return;
-
+        }
 		filename = strndup((char*)&buffer[0], strlen((char*)&buffer[0]) - 1);
 	} else {
         dialog = gtk_file_chooser_dialog_new(
-            _("Import Manpage"),
+            _("Open Manpage"),
             NULL,
             GTK_FILE_CHOOSER_ACTION_OPEN,
             GTK_STOCK_CANCEL,
@@ -1183,7 +1142,7 @@ void importManpage(GtkWidget* widget, gpointer data) {
 		sprintf(commandBuffer, "gunzip --stdout %s|sed '1i\\.ll 100'|sed 's/^\\.S[Hh] \\(.*\\)$/@SECTION@ \\1\\n/g'|sed 's/^@SECTION@ \"\\(.*\\)\"/@SECTION@ \\1/g'|sed 's/^.IR \\(.*\\)/\\\\fI\\1\\\\fR/g;s/^.B \\(.*\\)/\\\\fB\\1\\\\fR/g;s/\\.PP/\\n/g;s/\\.IP/  \\n/g'|nroff|head -n -4", filename);
 #endif // _USENROFF_
 	} else {
-		sprintf(nameBuffer,"cat %s|sed -n /^.TH/p",filename);
+		sprintf(nameBuffer,"cat %s|sed -n /^.TH/p", filename);
 #ifndef _USENROFF_
 		sprintf(commandBuffer, "cat %s|sed 's/^\\(\\.S[Hh]\\)/\\1 @SECTION@/g;s/^\\(\\.S[Ss]\\)/\\1 @section@/g'|GROFF_SGR=1 MANWIDTH=2000 MAN_KEEP_FORMATTING=\"1\" man -l --no-justification --no-hyphenation -|head -n -4", filename);
 #else
@@ -1193,8 +1152,9 @@ void importManpage(GtkWidget* widget, gpointer data) {
 
 	fp = popen(commandBuffer, "r");
 	if (fp != NULL) {
-        while (fgets(buffer, 2048, fp))
+        while (fgets(buffer, 2048, fp)) {
 			g_string_append(str, buffer);
+        }
 		pclose(fp);
     }
     //
@@ -1231,16 +1191,16 @@ void importManpage(GtkWidget* widget, gpointer data) {
 		if (tsec == NULL) {
             tsec = strdup("");
             sec  = ' ';
-        } else
+        } else {
 			sec=tsec[strlen(tsec)-1];
-
+        }
         asprintf(&props, "\"%s\" \"%c\" \"%s\" \"\" \"\"", name, sec, date);
 		free(name);
 		free(date);
 		free(tsec);
-	} else
+	} else {
 		props = sliceBetween((char*)&buffer[0], (char*)".TH ", (char*)"\n");
-
+    }
 	contents = g_string_free(str, false);
 	if (g_utf8_validate(contents, -1, NULL) == false)
 		 strok = g_locale_to_utf8(contents, -1, NULL, NULL, NULL);
@@ -1289,14 +1249,14 @@ void importManpage(GtkWidget* widget, gpointer data) {
 
 	while (true) {
 		start = strcasestr(ptr, "@SECTION@");
-		if (start == NULL)
+		if (start == NULL) {
 			break;
-
+        }
 		end = strcasestr((char*)&start[9], "@SECTION@");
 
-		if(end==NULL)
+		if(end==NULL) {
 			sect = strdup(start);
-		else {
+		} else {
 			len  = (long)end - (long)start;
 			sect = strndup(start, len);
         }
@@ -1320,8 +1280,7 @@ void importManpage(GtkWidget* widget, gpointer data) {
 
         asprintf(&importPage->filePath, "%s/%s", manFilename, importPage->fileName);
 
-        if (end == NULL)
-            break;
+        if (end == NULL) break;
 
         ptr = end;
     }

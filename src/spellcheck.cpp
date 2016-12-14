@@ -28,9 +28,9 @@ bool cancelCheck=false;
 
 void doCancelCheck(GtkWidget* widget, gpointer data) {
 	gtk_widget_destroy(spellCheckWord);
-	if (badWord != NULL)
+	if (badWord != NULL) {
 		g_free(badWord);
-
+    }
 	if (spellCheckWord != NULL) {
 		gtk_widget_destroy(spellCheckWord);
         spellCheckWord = NULL;
@@ -45,7 +45,7 @@ void checkTheWord(char* word, int checkDoc) {
 	const char*	             suggestedword;
 
     int   correct;
-	int   wordcnt=0;
+	int   wordcnt = 0;
 	char* wordlist[100];
 	char* labeltext[512];
 
@@ -53,14 +53,14 @@ void checkTheWord(char* word, int checkDoc) {
 	if (!correct) {
         badWord     = word;
 		cancelCheck = false;
-		if (spellCheckWord == NULL)
+		if (spellCheckWord == NULL) {
 			buildWordCheck(checkDoc);
-		else {
+		} else {
 			for (int j = 0; j < numWords; j++)
 				gtk_combo_box_text_remove((GtkComboBoxText*)wordListDropbox, 0);
 
 				sprintf((char*)&labeltext, _("Change <i><b>%s</b></i> to: "), badWord);
-				gtk_label_set_text((GtkLabel*)badWordLabel,(char*)&labeltext);
+				gtk_label_set_text((GtkLabel*)badWordLabel, (char*)&labeltext);
 				gtk_label_set_use_markup((GtkLabel*)badWordLabel, true);
             }
 
@@ -81,12 +81,12 @@ void checkTheWord(char* word, int checkDoc) {
 }
 
 void checkWord(GtkWidget* widget,gpointer data) {
-	pageStruct* page=getPageStructPtr(-1);
+	pageStruct* page = getPageStructPtr(-1);
 	GtkTextIter start;
 	GtkTextIter end;
 	char*       selection = NULL;
 
-	if (gtk_text_buffer_get_selection_bounds((GtkTextBuffer*)page->buffer,&start,&end)) {
+	if (gtk_text_buffer_get_selection_bounds((GtkTextBuffer*)page->buffer, &start, &end)) {
 		selection = gtk_text_buffer_get_text((GtkTextBuffer*)page->buffer, &start, &end, false);
         if (selection == NULL)
 		   return;
@@ -110,34 +110,33 @@ void doChangeWord(GtkWidget* widget, gpointer data) {
 	if ((long)data == 0) {
 		if (gtk_text_buffer_get_selection_bounds((GtkTextBuffer*)page->buffer, &start, &end)) {
 			badWord=gtk_text_buffer_get_text((GtkTextBuffer*)page->buffer, &start, &end, false);
-			if (badWord == NULL)
+			if (badWord == NULL) {
 				return;
+            }
         }
 		goodWord=gtk_combo_box_text_get_active_text((GtkComboBoxText*)wordListDropbox);
 		gtk_text_buffer_delete((GtkTextBuffer*)page->buffer, &start, &end);
 		gtk_text_buffer_insert((GtkTextBuffer*)page->buffer, &start, goodWord, -1);
 		g_free(goodWord);
-	} else
+	} else {
 		goodWord = gtk_combo_box_text_get_active_text((GtkComboBoxText*)wordListDropbox);
-
+    }
 	aspell_speller_store_replacement(spellChecker, badWord, -1, goodWord, -1);
 	gtk_dialog_response((GtkDialog*)spellCheckWord, 0);
 
-	if (badWord != NULL)
-		g_free(badWord);
+	if (badWord != NULL) g_free(badWord);
 }
 
 void doAddIgnoreWord(GtkWidget* widget, gpointer data) {
-	if ((long)data == 1)
+	if ((long)data == 1) {
 		aspell_speller_add_to_session(spellChecker, badWord, -1);
-	else {
+	} else {
 		aspell_speller_add_to_personal(spellChecker, badWord, -1);
 		aspell_speller_save_all_word_lists(spellChecker);
     }
 	gtk_dialog_response((GtkDialog*)spellCheckWord, 0);
 
-	if (badWord != NULL)
-		g_free(badWord);
+	if (badWord != NULL) g_free(badWord);
 }
 
 void doSpellCheckDoc(GtkWidget* widget, gpointer data) {
@@ -195,7 +194,7 @@ void doSpellCheckDoc(GtkWidget* widget, gpointer data) {
 	delete_aspell_document_checker(checker);
 
 	gtk_text_buffer_get_bounds((GtkTextBuffer*)page->buffer,  &start, &end);
-	gtk_text_buffer_select_range((GtkTextBuffer*)page->buffer,&start, &end);
+	gtk_text_buffer_select_range((GtkTextBuffer*)page->buffer, &start, &end);
 	gtk_text_buffer_delete_selection((GtkTextBuffer*)page->buffer, true, true);
 	gtk_text_buffer_get_start_iter((GtkTextBuffer*)page->buffer, &start);
 	gtk_text_buffer_insert((GtkTextBuffer*)page->buffer, &start, line, -1);

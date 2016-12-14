@@ -117,14 +117,15 @@ void setSensitive(void) {
 	//
 	// Menu
 	//
+	gtk_widget_set_sensitive((GtkWidget*)saveMenu,    pageOpen);
+	gtk_widget_set_sensitive((GtkWidget*)saveAsMenu,  pageOpen);
+	gtk_widget_set_sensitive((GtkWidget*)previewMenu, pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuprint,   pageOpen);
+
+    gtk_widget_set_sensitive((GtkWidget*)closeSectionMenu, pageOpen);
+
 	gtk_widget_set_sensitive((GtkWidget*)undoMenu, dirty);
 	gtk_widget_set_sensitive((GtkWidget*)redoMenu, dirty);
-	gtk_widget_set_sensitive((GtkWidget*)saveMenu, dirty);
-
-	gtk_widget_set_sensitive((GtkWidget*)saveAsMenu,   pageOpen);
-	gtk_widget_set_sensitive((GtkWidget*)exportMenu,   pageOpen);
-	gtk_widget_set_sensitive((GtkWidget*)exportAsMenu, pageOpen);
-	gtk_widget_set_sensitive((GtkWidget*)previewMenu,  pageOpen);
 
 	refreshMainWindow();
 }
@@ -138,9 +139,9 @@ void closeTab(GtkWidget* widget, gpointer data) {
 	else thispage = gtk_notebook_get_current_page(notebook);
 
 	page = getPageStructPtr(thispage);
-	if (page == NULL)
+	if (page == NULL) {
 		return;
-
+    }
 	if (page->filePath != NULL) g_free(page->filePath);
 	if (page->fileName != NULL) g_free(page->fileName);
 	if (page != NULL)           g_free(page);
@@ -152,8 +153,9 @@ void closeTab(GtkWidget* widget, gpointer data) {
 
 void closeAllTabs(GtkWidget* widget, gpointer data) {
 	int	numtabs = gtk_notebook_get_n_pages(notebook);
-	for (int loop = 0; loop < numtabs; loop++)
+	for (int loop = 0; loop < numtabs; loop++) {
 		closeTab(NULL, 0);
+    }
 }
 
 void closePage(GtkWidget* widget, gpointer data) {
@@ -162,8 +164,9 @@ void closePage(GtkWidget* widget, gpointer data) {
 
 	if (checkForDirty() == true) {
         retval = yesNo((char*) _("Do you want to save?"), manName);
-		if (retval == GTK_RESPONSE_YES)
-			saveManpage(NULL, NULL);
+		if (retval == GTK_RESPONSE_YES) {
+			saveFile(NULL, NULL);
+        }
     }
 
 	closeAllTabs(NULL, NULL);
@@ -180,14 +183,14 @@ void closePage(GtkWidget* widget, gpointer data) {
 	if (manVersion  != NULL) g_free(manVersion);
 	if (manAuthor   != NULL) g_free(manAuthor);
 	if (manFilePath != NULL) g_free(manFilePath);
-	if (exportPath  != NULL) g_free(exportPath);
+	if (savePath    != NULL) g_free(savePath);
 
 	manName     = NULL;
 	manSection  = NULL;
 	manVersion  = NULL;
 	manAuthor   = NULL;
 	manFilePath = NULL;
-	exportPath  = NULL;
+	savePath    = NULL;
 	manFilename = NULL;
 
 	pageOpen = false;
@@ -197,32 +200,35 @@ void closePage(GtkWidget* widget, gpointer data) {
 
 void copyToClip(GtkWidget* widget, gpointer data) {
 	pageStruct*	page = getPageStructPtr(-1);
-	if (page == NULL)
+	if (page == NULL) {
 		return;
+    }
 	gtk_text_buffer_copy_clipboard((GtkTextBuffer*)page->buffer, gtk_clipboard_get(GDK_SELECTION_CLIPBOARD));
 }
 
 void cutToClip(GtkWidget* widget, gpointer data) {
 	pageStruct* page = getPageStructPtr(-1);
-	if (page == NULL)
+	if (page == NULL) {
 		return;
+    }
 	gtk_text_buffer_cut_clipboard((GtkTextBuffer*)page->buffer, gtk_clipboard_get(GDK_SELECTION_CLIPBOARD), true);
 	setSensitive();
 }
 
 void pasteFromClip(GtkWidget* widget, gpointer data) {
 	pageStruct* page = getPageStructPtr(-1);
-	if (page == NULL)
+	if (page == NULL) {
 		return;
+    }
 	gtk_text_buffer_paste_clipboard((GtkTextBuffer*)page->buffer, gtk_clipboard_get(GDK_SELECTION_CLIPBOARD), NULL, true);
 	setSensitive();
 }
 
 void undo(GtkWidget* widget, gpointer data) {
 	pageStruct*	page = getPageStructPtr(-1);
-	if (page == NULL)
+	if (page == NULL) {
 		return;
-
+    }
 	if (gtk_source_buffer_can_undo(page->buffer)) {
         gtk_source_buffer_undo(page->buffer);
 		page->isFirst = true;
@@ -232,9 +238,9 @@ void undo(GtkWidget* widget, gpointer data) {
 
 void redo(GtkWidget* widget, gpointer data) {
 	pageStruct* page = getPageStructPtr(-1);
-	if (page == NULL)
+	if (page == NULL) {
 		return;
-
+    }
 	if (gtk_source_buffer_can_redo(page->buffer)) {
 		gtk_source_buffer_redo(page->buffer);
 		page->isFirst = true;
@@ -244,7 +250,7 @@ void redo(GtkWidget* widget, gpointer data) {
 
 void openHelp(GtkWidget* widget, gpointer data) {
 	char* runhelp;
-	asprintf(&runhelp, "xdg-open %s/help/help.html", DATADIR);
+	asprintf(&runhelp, "xdg-open %s/doc/%s/help.html", DATADIR, PACKAGE);
 	system(runhelp);
 }
 
@@ -291,7 +297,6 @@ gboolean whatPane(GtkWidget *widget, GdkEvent *event, gpointer data) {
 	if ((long)data == 1)
 		 page->inTop = true;
 	else page->inTop = false;
-
 	return(false);
 }
 
@@ -357,7 +362,7 @@ void writeExitData(void) {
 void writeConfig(void) {
 	GtkAllocation alloc;
 
-	FILE* fd=NULL;
+	FILE* fd = NULL;
 	char* filename;
 
 	int winx;
@@ -398,10 +403,10 @@ void doShutdown(GtkWidget* widget, gpointer data) {
 
 		switch(result) {
 			case GTK_RESPONSE_YES:
-				saveManpage(NULL, NULL);
-				break;
+				saveFile(NULL, NULL);
+			break;
 			case GTK_RESPONSE_NO:
-				break;
+			break;
 			default:
 				return;
 			break;
@@ -478,7 +483,7 @@ void doAbout(GtkWidget* widget, gpointer data) {
 	char*       license;
 	const char* translators    = _("Russian: Victor Nabatov <greenray.spb@gmail.com>");
 
-	g_file_get_contents(DATADIR "/docs/gpl-3.0.txt", &license, NULL, NULL);
+	g_file_get_contents(DATADIR "/docs/" PACKAGE "/COPYING", &license, NULL, NULL);
 
 	gtk_show_about_dialog(
         NULL,
@@ -492,10 +497,8 @@ void doAbout(GtkWidget* widget, gpointer data) {
         "logo-icon-name",     "mpe-gtk2",
 		"license",            license,
 		"translator-credits", translators,
-		"wrap-license",       true,
-        NULL
+		"wrap-license",       true
     );
-
 	g_free(license);
 }
 
@@ -504,28 +507,28 @@ void printFile(GtkWidget* widget, gpointer data) {
 	char* command;
 	bool  holdgzipages = gzipPages;
 
-	holdpath  = exportPath;
+	holdpath  = savePath;
 	gzipPages = false;
 
 	if ((long)data == 1) {
-		exportPath = (char*)"/tmp/printexportfile";
-		exportFile(NULL, NULL);
-		system("cat /tmp/printexportfile | groff -man -Tps|ps2pdf - |lp");
+		savePath = (char*)"/tmp/savefile";
+		saveFile(NULL, NULL);
+		system("cat /tmp/savefile | groff -man -Tps|ps2pdf - |lp");
 	} else {
-		exportPath = NULL;
-		exportFile(NULL, NULL);
-		if (exportPath != NULL) {
-            asprintf(&command, "cat %s | groff -man -Tps|ps2pdf - > \"%s\".pdf", exportPath, exportPath);
+		savePath = NULL;
+		saveFile(NULL, NULL);
+		if (savePath != NULL) {
+            asprintf(&command, "cat %s | groff -man -Tps|ps2pdf - > \"%s\".pdf", savePath, savePath);
 			system(command);
 			g_free(command);
-			unlink(exportPath);
-			g_free(exportPath);
+			unlink(savePath);
+			g_free(savePath);
         }
     }
 
-	unlink("/tmp/printexportfile");
-	exportPath = holdpath;
-	gzipPages  = holdgzipages;
+	unlink("/tmp/savefile");
+	savePath  = holdpath;
+	gzipPages = holdgzipages;
 }
 
 void newEditor(GtkWidget* widget, gpointer data) {
@@ -618,14 +621,14 @@ void redoProps(GtkWidget* widget, gpointer data) {
 
 	content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
-	hbox = creatNewBox(NEWHBOX, false, 0);
-
+	hbox    = creatNewBox(NEWHBOX, false, 0);
 	nameBox = gtk_entry_new();
 	label   = gtk_label_new(_("Name\t"));
 	gtk_box_pack_start(GTK_BOX(hbox), label,   true, true, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), nameBox, true, true, 0);
-	if (manName != NULL)
+	if (manName != NULL) {
 		gtk_entry_set_text((GtkEntry*)nameBox, manName);
+    }
 	gtk_container_add(GTK_CONTAINER(content_area), hbox);
 
 	hbox = creatNewBox(NEWHBOX, false, 0);
@@ -634,8 +637,9 @@ void redoProps(GtkWidget* widget, gpointer data) {
 	label      = gtk_label_new(_("Section\t"));
 	gtk_box_pack_start(GTK_BOX(hbox), label,      true, true, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), sectionBox, true, true, 0);
-	if (manSection != NULL)
+	if (manSection != NULL) {
 		gtk_entry_set_text((GtkEntry*)sectionBox , manSection);
+    }
 	gtk_container_add(GTK_CONTAINER(content_area), hbox);
 
 	hbox = creatNewBox(NEWHBOX, false, 0);
@@ -644,8 +648,9 @@ void redoProps(GtkWidget* widget, gpointer data) {
 	label      = gtk_label_new(_("Version\t"));
 	gtk_box_pack_start(GTK_BOX(hbox), label,      true, true, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), versionBox, true, true, 0);
-	if (manVersion != NULL)
+	if (manVersion != NULL) {
 		gtk_entry_set_text((GtkEntry*)versionBox, manVersion);
+    }
 	gtk_container_add(GTK_CONTAINER(content_area), hbox);
 
 	hbox = creatNewBox(NEWHBOX,false,0);
@@ -654,8 +659,9 @@ void redoProps(GtkWidget* widget, gpointer data) {
 	label     = gtk_label_new(_("Author\t"));
 	gtk_box_pack_start(GTK_BOX(hbox), label,     true, true, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), authorBox, true, true, 0);
-	if (manAuthor != NULL)
+	if (manAuthor != NULL) {
 		gtk_entry_set_text((GtkEntry*)authorBox, manAuthor);
+    }
 	gtk_container_add(GTK_CONTAINER(content_area), hbox);
 
 	hbox = creatNewBox(NEWHBOX, false, 0);
@@ -664,10 +670,10 @@ void redoProps(GtkWidget* widget, gpointer data) {
 	label       = gtk_label_new(_("Category\t"));
 	gtk_box_pack_start(GTK_BOX(hbox), label,       true, true, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), categoryBox, true, true, 0);
-	if (manCategory != NULL)
+	if (manCategory != NULL) {
 		gtk_entry_set_text((GtkEntry*)categoryBox, manCategory);
+    }
 	gtk_container_add(GTK_CONTAINER(content_area), hbox);
-
 
 	gtk_widget_show_all(content_area);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -686,7 +692,7 @@ void redoProps(GtkWidget* widget, gpointer data) {
 
 void previewPage(GtkWidget* widget, gpointer data) {
 	char  *command;
-	char* holdpath = exportPath;
+	char* holdpath = savePath;
 	char  tplate[] = "/tmp/mpprevXXXXXX";
 	int   gotopen  = -1;
 
@@ -694,14 +700,14 @@ void previewPage(GtkWidget* widget, gpointer data) {
 	if (gotopen != -1) {
 		previewFile = fdopen(gotopen, "w");
 		if (previewFile != NULL) {
-            exportPath = tplate;
-			exportFile(NULL, NULL);
+            savePath = tplate;
+			saveFile(NULL, NULL);
 			if (gzipPages == true)
 				 asprintf(&command, "%s man %s.gz", terminalCommand, tplate);
 			else asprintf(&command, "%s man %s",    terminalCommand, tplate);
 
 			system(command);
-			exportPath = holdpath;
+			savePath = holdpath;
         }
 		previewFile = NULL;
 		free(command);

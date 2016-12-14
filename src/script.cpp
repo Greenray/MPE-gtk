@@ -32,12 +32,12 @@ char* slice(char* srcstring, int tmpstartchar, int tmpendchar) {
 	int   startchar = tmpstartchar;
 	int   endchar   = tmpendchar;
 
-	if (tmpstartchar < 0)
+	if (tmpstartchar < 0) {
 		startchar = 0;
-
-	if ((tmpendchar < 0) || (tmpendchar > (int)strlen(srcstring)))
+    }
+	if ((tmpendchar < 0) || (tmpendchar > (int)strlen(srcstring))) {
 		endchar = strlen(srcstring) - 1;
-
+    }
 	strsize = endchar - startchar + 1;
 
 	dest= (char*)malloc(strsize + 1);
@@ -54,13 +54,15 @@ char* sliceBetween(char* srcstring, char* startstr, char* endstr) {
 	char* dest = NULL;
 
 	ptr = strstr(srcstring, startstr);
-	if (ptr == NULL)
+	if (ptr == NULL) {
 		return(NULL);
+    }
 	startchar = (int)(long)ptr + strlen(startstr) - (long)srcstring;
 
 	ptr = strstr((char*)&srcstring[startchar], endstr);
-	if (ptr == NULL)
+	if (ptr == NULL) {
 		return(NULL);
+    }
 	endchar = (int)(long)ptr - (long)srcstring - 1;
 
 	dest = slice(srcstring, startchar, endchar);
@@ -73,12 +75,12 @@ char* sliceLen(char* srcstring, int tmpstartchar, int len) {
 	int   startchar = tmpstartchar;
 	int   endchar   = len;
 
-	if (tmpstartchar < 0)
+	if (tmpstartchar < 0) {
 		startchar = 0;
-
-	if ((len < 0) || (len + startchar > (int)strlen(srcstring)))
+    }
+	if ((len < 0) || (len + startchar > (int)strlen(srcstring))) {
 		endchar = strlen(srcstring) - startchar;
-
+    }
 	strsize = endchar;
 
 	dest = (char*)malloc(strsize + 1);
@@ -93,8 +95,9 @@ char* sliceStrLen(char* srcstring, char* startstr, int len) {
 	int   startchar;
 
 	ptr = strstr(srcstring, startstr);
-	if (ptr == NULL)
+	if (ptr == NULL) {
 		return(NULL);
+    }
 	startchar = (int)(long)ptr + strlen(startstr) - (long)srcstring;
 	printf("%i\n", startchar);
 	return(sliceLen(srcstring, startchar, len));
@@ -119,17 +122,17 @@ char* sliceInclude(char* srcstring, char* startstr, char* endstr, bool includeFi
 	char*    tptr;
 
 	ptr = strstr(srcstring, startstr);
-	if (ptr == NULL)
+	if (ptr == NULL) {
 		return(NULL);
-
+    }
 	if (includeFirst == true)
 		 startchar = 0;
 	else startchar = strlen(startstr);
 
 	ptr = strstr((char*)srcstring, startstr);
-	if (ptr == NULL)
+	if (ptr == NULL) {
 		return(NULL);
-
+    }
 	tptr = (char*)(long)ptr + strlen(startstr);
 	ptrend = strstr((char*)tptr, endstr);
 
@@ -153,17 +156,17 @@ char* sliceCaseInclude(char* srcstring, char* startstr, char* endstr, bool inclu
 	char*    tptr;
 
 	ptr = strcasestr(srcstring, startstr);
-	if (ptr == NULL)
+	if (ptr == NULL) {
 		return(NULL);
-
+    }
 	if (includeFirst == true)
 		 startchar = 0;
 	else startchar = strlen(startstr);
 
 	ptr = strcasestr((char*)srcstring, startstr);
-	if (ptr == NULL)
+	if (ptr == NULL) {
 		return(NULL);
-
+    }
 	tptr = (char*)(long)ptr + strlen(startstr);
 	ptrend=strcasestr((char*)tptr, endstr);
 
@@ -185,11 +188,11 @@ void replaceAllSlice(char** srcstr, char* findstr, char* replacestr) {
 	g_free(*srcstr);
 	found = strstr(deststr->str,findstr);
 	while (found != NULL) {
-			startchar = (int)(long)found - (long)deststr->str;
-			g_string_erase(deststr, startchar, strlen(findstr));
-			g_string_insert(deststr, startchar, replacestr);
-			found=strstr(deststr->str, findstr);
-		}
+		startchar = (int)(long)found - (long)deststr->str;
+        g_string_erase(deststr, startchar, strlen(findstr));
+		g_string_insert(deststr, startchar, replacestr);
+		found = strstr(deststr->str, findstr);
+	}
 	*srcstr = g_string_free(deststr, false);
 }
 
@@ -200,12 +203,12 @@ void replaceAllCaseSlice(char** srcstr, char* findstr, char* replacestr) {
 
 	g_free(*srcstr);
 	found = strcasestr(deststr->str, findstr);
-	while(found != NULL) {
-			startchar = (int)(long)found - (long)deststr->str;
-			g_string_erase(deststr, startchar, strlen(findstr));
-			g_string_insert(deststr, startchar, replacestr);
-			found = strstr(deststr->str, findstr);
-		}
+	while (found != NULL) {
+		startchar = (int)(long)found - (long)deststr->str;
+		g_string_erase(deststr, startchar, strlen(findstr));
+		g_string_insert(deststr, startchar, replacestr);
+		found = strstr(deststr->str, findstr);
+	}
 	*srcstr = g_string_free(deststr, false);
 }
 
@@ -217,10 +220,10 @@ void replaceFirstSlice(char** srcstr, char* findstr, char* replacestr) {
 	g_free(*srcstr);
 	found = strstr(deststr->str, findstr);
 	if (found != NULL) {
-			startchar = (int)(long)found - (long)deststr->str;
-			g_string_erase(deststr, startchar, strlen(findstr));
-			g_string_insert(deststr, startchar, replacestr);
-			found=strstr(deststr->str, findstr);
-		}
+		startchar = (int)(long)found - (long)deststr->str;
+		g_string_erase(deststr, startchar, strlen(findstr));
+		g_string_insert(deststr, startchar, replacestr);
+		found = strstr(deststr->str, findstr);
+	}
 	*srcstr=g_string_free(deststr, false);
 }

@@ -59,8 +59,8 @@
 #define NORMALESC2 "\e[24m"
 #define NORMALESC3 "\e[22m"
 
-enum {NEWVBOX=0,NEWHBOX};
-enum {BOLD=0,ITALIC,NORMAL};
+enum {NEWVBOX = 0, NEWHBOX};
+enum {BOLD = 0, ITALIC, NORMAL};
 
 struct pageStruct {
 	GtkWidget*			pane;
@@ -96,7 +96,7 @@ extern char*		manFilePath;
 
 extern bool			pageOpen;
 extern bool			dirty;
-extern char*		exportPath;
+extern char*		savePath;
 extern FILE			*previewFile;
 
 extern GtkWidget*	nameBox;
@@ -119,8 +119,8 @@ extern GtkWidget*	menuclose;
 extern GtkWidget*	redoMenu;
 extern GtkWidget*	undoMenu;
 extern GtkWidget*	saveMenu;
-extern GtkWidget*	exportMenu;
-extern GtkWidget*	exportAsMenu;
+extern GtkWidget*	saveMenu;
+extern GtkWidget*	saveAsMenu;
 extern GtkWidget*	previewMenu;
 extern GtkWidget*	saveAsMenu;
 extern GtkWidget*	closeSectionMenu;
@@ -180,15 +180,15 @@ extern char*		badWord;
 extern char*		goodWord;
 
 #ifdef _ASPELL_
-extern AspellConfig*	aspellConfig;
-extern AspellSpeller*	spellChecker;
-extern int				numWords;
-extern GtkWidget*		badWordLabel;
+extern AspellConfig*  aspellConfig;
+extern AspellSpeller* spellChecker;
+extern int            numWords;
+extern GtkWidget*     badWordLabel;
 #endif
 
 pageStruct* getPageStructPtr(int pagenum);
-void scrollToIterInPane(pageStruct* page,GtkTextIter* iter);
+void scrollToIterInPane(pageStruct* page, GtkTextIter* iter);
 bool checkForDirty(void);
-GtkWidget* creatNewBox(int orient,bool homog,int spacing);
+GtkWidget* creatNewBox(int orient, bool homog, int spacing);
 
 #endif // _GLOBALS_

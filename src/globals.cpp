@@ -24,106 +24,104 @@
 //
 // Manpage
 //
-char*			manFilename=NULL;
-char*			manName=NULL;
-char*			manSection=NULL;
-char*			manVersion=NULL;
-char*			manAuthor=NULL;
-char*			manCategory=NULL;
-char*			manFilePath=NULL;
-bool			pageOpen=false;
-bool			dirty=false;
-char*			exportPath=NULL;
-FILE			*previewFile=NULL;
+char* manFilename = NULL;
+char* manName     = NULL;
+char* manSection  = NULL;
+char* manVersion  = NULL;
+char* manAuthor   = NULL;
+char* manCategory = NULL;
+char* manFilePath = NULL;
+bool  pageOpen    = false;
+bool  dirty       = false;
+char* savePath    = NULL;
+FILE *previewFile = NULL;
 
-GtkWidget*		nameBox;
-GtkWidget*		sectionBox;
-GtkWidget*		versionBox;
-GtkWidget*		authorBox;
-GtkWidget*		categoryBox;
+GtkWidget*   nameBox;
+GtkWidget*   sectionBox;
+GtkWidget*   versionBox;
+GtkWidget*   authorBox;
+GtkWidget*   categoryBox;
 
-GtkWidget*		window=NULL;
-GtkNotebook*	notebook=NULL;
-GtkWidget*		menubar=NULL;
-GtkWidget*		menufile;
-GtkWidget*		menuedit;
-GtkWidget*		menuformat;
-GtkWidget*		menuhelp;
-GtkWidget*		menuprint;
-GtkWidget*		menuclose;
+GtkWidget*   window   = NULL;
+GtkNotebook* notebook = NULL;
+GtkWidget*   menubar  = NULL;
+GtkWidget*   menufile;
+GtkWidget*   menuedit;
+GtkWidget*   menuformat;
+GtkWidget*   menuhelp;
+GtkWidget*   menuprint;
+GtkWidget*   menuclose;
 
-GtkWidget*		redoMenu;
-GtkWidget*		undoMenu;
-GtkWidget*		saveMenu;
-GtkWidget*		exportMenu;
-GtkWidget*		exportAsMenu;
-GtkWidget*		previewMenu;
-GtkWidget*		saveAsMenu;
-GtkWidget*		closeSectionMenu;
+GtkWidget*   redoMenu;
+GtkWidget*   undoMenu;
+GtkWidget*   saveMenu;
+GtkWidget*   saveAsMenu;
+GtkWidget*   previewMenu;
+GtkWidget*   closeSectionMenu;
 
-GtkWidget*		liveSearchWidget;
+GtkWidget*   liveSearchWidget;
 
-int				currentPage=0;
-int				currentTabNumber;
+int currentPage=0;
+int currentTabNumber;
 //
 // Prefs
 //
-GtkWidget*		prefswin;
-GtkWidget*		fontBox;
-GtkWidget*		terminalBox;
+GtkWidget* prefswin;
+GtkWidget* fontBox;
+GtkWidget* terminalBox;
 
-bool			gzipPages;
-bool			lineWrap;
-bool			highLight;
-int				tabWidth;
-char*			fontAndSize;
-char*			terminalCommand;
-bool			showLiveSearch;
-bool			useUnderline;
-bool			tmpGzipPages;
-bool			tmpLineWrap;
-bool			tmpHighLight;
-int				tmpTabWidth;
-bool			tmpShowLiveSearch;
-bool			tmpUseUnderline;
+bool  gzipPages;
+bool  lineWrap;
+bool  highLight;
+int   tabWidth;
+char* fontAndSize;
+char* terminalCommand;
+bool  showLiveSearch;
+bool  useUnderline;
+bool  tmpGzipPages;
+bool  tmpLineWrap;
+bool  tmpHighLight;
+int   tmpTabWidth;
+bool  tmpShowLiveSearch;
+bool  tmpUseUnderline;
 
-int				windowWidth;
-int				windowHeight;
-int				windowX=-1;
-int				windowY=-1;
-bool			wrapSearch;
-bool			insensitiveSearch;
-bool			replaceAll;
+int   windowWidth;
+int   windowHeight;
+int   windowX = -1;
+int   windowY = -1;
+bool  wrapSearch;
+bool  insensitiveSearch;
+bool  replaceAll;
 //
 // Toolbar
 //
-GtkToolItem*	newButton;
-GtkToolItem*	openButton;
-GtkToolItem*	saveButton;
-GtkToolItem*	closeButton;
-GtkToolItem*	redoButton;
-GtkToolItem*	undoButton;
+GtkToolItem* newButton;
+GtkToolItem* openButton;
+GtkToolItem* saveButton;
+GtkToolItem* closeButton;
+GtkToolItem* redoButton;
+GtkToolItem* undoButton;
 //
 // Find replace
 //
-GtkWidget*		findReplaceDialog;
-GtkWidget*		findBox;
-GtkWidget*		replaceBox;
+GtkWidget* findReplaceDialog;
+GtkWidget* findBox;
+GtkWidget* replaceBox;
 
-char*			thePage=NULL;
+char* thePage = NULL;
 //
 // Spellcheck
 //
-GtkWidget*		spellCheckWord=NULL;
-GtkWidget*		wordListDropbox;
-char*			badWord=NULL;
-char*			goodWord=NULL;
+GtkWidget* spellCheckWord = NULL;
+GtkWidget* wordListDropbox;
+char*      badWord  = NULL;
+char*      goodWord = NULL;
 
 #ifdef _ASPELL_
-AspellConfig*	aspellConfig;
-AspellSpeller*	spellChecker=0;
-int				numWords=0;
-GtkWidget*		badWordLabel=NULL;
+AspellConfig*  aspellConfig;
+AspellSpeller* spellChecker=0;
+int            numWords=0;
+GtkWidget*     badWordLabel=NULL;
 #endif // _ASPELL_
 
 void scrollToIterInPane(pageStruct* page, GtkTextIter* iter) {
@@ -137,8 +135,8 @@ pageStruct* getPageStructPtr(int pagenum) {
 	GtkWidget* pageBox;
 
 	if (pagenum == -1)
-		 thispage=gtk_notebook_get_current_page(notebook);
-	else thispage=pagenum;
+		 thispage = gtk_notebook_get_current_page(notebook);
+	else thispage = pagenum;
 
 	pageBox = gtk_notebook_get_nth_page(notebook, thispage);
 	if (pageBox == NULL)
@@ -159,18 +157,10 @@ bool checkForDirty(void) {
 }
 
 GtkWidget* creatNewBox(int orient, bool homog, int spacing) {
-	GtkWidget *retwidg = NULL;
+    GtkWidget *retwidg = NULL;
 
-#ifdef _USEGTK3_
-	if (orient == NEWVBOX)
-		 retwidg = gtk_box_new(GTK_ORIENTATION_VERTICAL,   spacing);
-	else retwidg = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, spacing);
-	gtk_box_set_homogeneous((GtkBox*)retwidg, homog);
-#else // not _USEGTK3_
-	if (orient == NEWVBOX)
-		 retwidg = gtk_vbox_new(homog, spacing);
-	else retwidg = gtk_hbox_new(homog, spacing);
-#endif // _USEGTK3_
-
-	return(retwidg);
+    if (orient == NEWVBOX)
+         retwidg = gtk_vbox_new(homog, spacing);
+    else retwidg = gtk_hbox_new(homog, spacing);
+    return(retwidg);
 }

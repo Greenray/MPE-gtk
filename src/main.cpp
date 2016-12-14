@@ -82,13 +82,13 @@ void init(void) {
 	highLight    = true;
 	useUnderline = true;
 
-	tabWidth = 4;
-	fontAndSize     = strdup("mono 10");
-	terminalCommand = strdup("xterm -e");
-	windowWidth  = 800;
-	windowHeight = 400;
-	windowX      = -1;
-	windowY      = -1;
+	tabWidth          = 4;
+	fontAndSize       = strdup("mono 10");
+	terminalCommand   = strdup("xterm -e");
+	windowWidth       = 800;
+	windowHeight      = 400;
+	windowX           = -1;
+	windowY           = -1;
 	wrapSearch        = true;
 	insensitiveSearch = true;
 	replaceAll        = false;
@@ -117,7 +117,6 @@ void init(void) {
 	else
 		spellChecker = to_aspell_speller(possible_err);
 #endif // _ASPELL_
-
 }
 
 int main(int argc, char **argv) {
@@ -133,9 +132,9 @@ int main(int argc, char **argv) {
 	buildMainGui();
 	buildFindReplace();
 
-	if (argc > 1)
+	if (argc > 1) {
 		doOpenManpage(argv[1]);
-
+    }
 	dirty = false;
 	setSensitive();
 	refreshMainWindow();
