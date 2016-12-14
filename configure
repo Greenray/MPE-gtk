@@ -596,7 +596,6 @@ LIBINTL
 INTLLIBS
 LTLIBICONV
 LIBICONV
-INTL_MACOSX_LIBS
 host_os
 host_vendor
 host_cpu
@@ -721,7 +720,6 @@ ac_user_opts='
 enable_option_checking
 enable_silent_rules
 enable_dependency_tracking
-enable_gtk3
 enable_aspell
 enable_nroff
 enable_nls
@@ -1373,7 +1371,6 @@ Optional Features:
                           do not reject slow dependency extractors
   --disable-dependency-tracking
                           speeds up one-time build
---enable-gtk3 Use GTK3.
 --enable-aspell Include spellchecker.
   --disable-nroff         Format using nroff instead of man
   --disable-nls           do not use Native Language Support
@@ -4462,27 +4459,8 @@ $as_echo "#define STDC_HEADERS 1" >>confdefs.h
 fi
 
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking Whether to use gtk3" >&5
-$as_echo_n "checking Whether to use gtk3... " >&6; }
-# Check whether --enable-gtk3 was given.
-if test "${enable_gtk3+set}" = set; then :
-  enableval=$enable_gtk3; enable_gtk3=$enableval
-else
-  enable_gtk3="no"
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_gtk3" >&5
-$as_echo "$enable_gtk3" >&6; }
-if test "$enable_gtk3" = "yes"; then
-
-$as_echo "#define _USEGTK3_ /**/" >>confdefs.h
-
-	GTK_MODULES="gtk+-3.0 >= 3.10.0"
-	GTKSRC_MODULES="gtksourceview-3.0 >= 3.10.0"
-else
-	GTK_MODULES="gtk+-2.0 >= 2.24.0"
-	GTKSRC_MODULES="gtksourceview-2.0 >= 2.9.9"
-fi
+GTK_MODULES="gtk+-2.0 >= 2.24.0"
+GTKSRC_MODULES="gtksourceview-2.0 >= 2.9.9"
 
 
 
@@ -6028,81 +6006,7 @@ fi
 
 
 
-
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for CFPreferencesCopyAppValue" >&5
-$as_echo_n "checking for CFPreferencesCopyAppValue... " >&6; }
-if ${gt_cv_func_CFPreferencesCopyAppValue+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  gt_save_LIBS="$LIBS"
-     LIBS="$LIBS -Wl,-framework -Wl,CoreFoundation"
-     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <CoreFoundation/CFPreferences.h>
-int
-main ()
-{
-CFPreferencesCopyAppValue(NULL, NULL)
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  gt_cv_func_CFPreferencesCopyAppValue=yes
-else
-  gt_cv_func_CFPreferencesCopyAppValue=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-     LIBS="$gt_save_LIBS"
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gt_cv_func_CFPreferencesCopyAppValue" >&5
-$as_echo "$gt_cv_func_CFPreferencesCopyAppValue" >&6; }
-  if test $gt_cv_func_CFPreferencesCopyAppValue = yes; then
-
-$as_echo "#define HAVE_CFPREFERENCESCOPYAPPVALUE 1" >>confdefs.h
-
-  fi
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for CFLocaleCopyCurrent" >&5
-$as_echo_n "checking for CFLocaleCopyCurrent... " >&6; }
-if ${gt_cv_func_CFLocaleCopyCurrent+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  gt_save_LIBS="$LIBS"
-     LIBS="$LIBS -Wl,-framework -Wl,CoreFoundation"
-     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <CoreFoundation/CFLocale.h>
-int
-main ()
-{
-CFLocaleCopyCurrent();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  gt_cv_func_CFLocaleCopyCurrent=yes
-else
-  gt_cv_func_CFLocaleCopyCurrent=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-     LIBS="$gt_save_LIBS"
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gt_cv_func_CFLocaleCopyCurrent" >&5
-$as_echo "$gt_cv_func_CFLocaleCopyCurrent" >&6; }
-  if test $gt_cv_func_CFLocaleCopyCurrent = yes; then
-
-$as_echo "#define HAVE_CFLOCALECOPYCURRENT 1" >>confdefs.h
-
-  fi
-  INTL_MACOSX_LIBS=
-  if test $gt_cv_func_CFPreferencesCopyAppValue = yes || test $gt_cv_func_CFLocaleCopyCurrent = yes; then
-    INTL_MACOSX_LIBS="-Wl,-framework -Wl,CoreFoundation"
-  fi
-
-
+    gt_INTL_MACOSX
 
 
 

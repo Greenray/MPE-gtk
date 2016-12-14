@@ -7,17 +7,8 @@ AC_PROG_INSTALL
 
 AC_HEADER_STDC
 
-AC_MSG_CHECKING([Whether to use gtk3])
-AC_ARG_ENABLE(gtk3, [--enable-gtk3 Use GTK3.], enable_gtk3=$enableval, enable_gtk3="no")
-AC_MSG_RESULT($enable_gtk3)
-if test "$enable_gtk3" = "yes"; then
-	AC_DEFINE(_USEGTK3_, , [Use GTK3 and gtksourceview3])
-	GTK_MODULES="gtk+-3.0 >= 3.10.0"
-	GTKSRC_MODULES="gtksourceview-3.0 >= 3.10.0"
-else
-	GTK_MODULES="gtk+-2.0 >= 2.24.0"
-	GTKSRC_MODULES="gtksourceview-2.0 >= 2.9.9"
-fi
+GTK_MODULES="gtk+-2.0 >= 2.24.0"
+GTKSRC_MODULES="gtksourceview-2.0 >= 2.9.9"
 
 PKG_CHECK_MODULES(GTK, $GTK_MODULES)
 AC_SUBST(GTK_CFLAGS)
