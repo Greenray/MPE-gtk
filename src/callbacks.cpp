@@ -67,7 +67,7 @@ int yesNo(char* question, char* file) {
          NULL
     );
 
-	gtk_window_set_title(GTK_WINDOW(dialog), _("What Do You Want To Do?"));
+	gtk_window_set_title(GTK_WINDOW(dialog), _("Warning: Page changed"));
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_destroy(dialog);
 
@@ -163,7 +163,7 @@ void closePage(GtkWidget* widget, gpointer data) {
 	char* command;
 
 	if (checkForDirty() == true) {
-        retval = yesNo((char*) _("Do you want to save?"), manName);
+        retval = yesNo((char*) _("Do you want to save"), strcat(manName, "?"));
 		if (retval == GTK_RESPONSE_YES) {
 			saveFile(NULL, NULL);
         }
@@ -177,23 +177,32 @@ void closePage(GtkWidget* widget, gpointer data) {
 		g_free(command);
 		manFilename = NULL;
     }
-
-	if (manName     != NULL) g_free(manName);
-	if (manSection  != NULL) g_free(manSection);
-	if (manVersion  != NULL) g_free(manVersion);
-	if (manAuthor   != NULL) g_free(manAuthor);
-	if (manFilePath != NULL) g_free(manFilePath);
-	if (savePath    != NULL) g_free(savePath);
-
-	manName     = NULL;
-	manSection  = NULL;
-	manVersion  = NULL;
-	manAuthor   = NULL;
-	manFilePath = NULL;
-	savePath    = NULL;
-	manFilename = NULL;
-
+	if (manName != NULL) {
+        g_free(manName);
+        manName = NULL;
+    }
+	if (manSection != NULL) {
+        g_free(manSection);
+        manSection = NULL;
+	}
+    if (manVersion != NULL) {
+        g_free(manVersion);
+        manVersion = NULL;
+    }
+	if (manAuthor != NULL) {
+        g_free(manAuthor);
+        manAuthor = NULL;
+    }
+	if (manFilePath != NULL) {
+        g_free(manFilePath);
+        manFilePath = NULL;
+	}
+    if (savePath != NULL) {
+        g_free(savePath);
+        savePath = NULL;
+    }
 	pageOpen = false;
+    // Turns off non-activated menu items
 	dirty    = false;
 	setSensitive();
 }
@@ -497,7 +506,8 @@ void doAbout(GtkWidget* widget, gpointer data) {
         "logo-icon-name",     "mpe-gtk2",
 		"license",            license,
 		"translator-credits", translators,
-		"wrap-license",       true
+		"wrap-license",       true,
+        NULL
     );
 	g_free(license);
 }

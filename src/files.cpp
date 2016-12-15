@@ -24,6 +24,7 @@
 #include "callbacks.h"
 #include "script.h"
 
+char  tFileName[]  = "/tmp/mpe-gtk2XXXXXX";
 char* saveFileName = NULL;
 char* saveFilePath = NULL;
 bool  dropTextFile = false;
@@ -487,8 +488,6 @@ pageStruct* makeNewPage(void) {
 
 	return(page);
 }
-
-char tFileName[] = "/tmp/mpe-gtk2XXXXXX";
 
 void newManpage(GtkWidget* widget, gpointer data) {
 	GtkWidget* dialog;
@@ -983,7 +982,6 @@ void doOpenManpage(char* file) {
 	char* recenturi;
 	char* dirname;
 	char* lowername;
-	int   status;
 
 	GtkWidget* dialog;
 
@@ -1003,29 +1001,12 @@ void doOpenManpage(char* file) {
 	if (manFilename != NULL) {
 		sprintf((char*)&buffer[0], "rm -r \"%s\"", manFilename);
 		system((char*)&buffer[0]);
-		manFilename=NULL;
+		manFilename = NULL;
 	}
 
-	sprintf(tFileName, "%s", "/tmp/ManEditXXXXXX");
+	sprintf(tFileName, "%s", "/tmp/mpe-gtk2XXXXXX");
 	manFilename = mkdtemp(tFileName);
 	g_mkdir_with_parents(manFilename, 493);
-	asprintf(&command, "tar -xC %s -f %s 2>/dev/null", manFilename, file);
-	status = system(command);
-	status = WEXITSTATUS(status);
-	if (status != 0) {
-		g_free(command);
-		dialog = gtk_message_dialog_new(
-            (GtkWindow*)window,
-			GTK_DIALOG_DESTROY_WITH_PARENT,
-			GTK_MESSAGE_ERROR,GTK_BUTTONS_CLOSE,
-			_("File '%s' isn't a ManPage Editor archive\nTry using 'Import' instead"),
-			file
-		);
-		gtk_dialog_run(GTK_DIALOG(dialog));
-		gtk_widget_destroy(dialog);
-		return;
-	}
-
 	asprintf(&command, "%s/manifest", manFilename);
 	fp = fopen(command, "r");
 	while (fgets(buffer, 4096, fp)) {
@@ -1069,7 +1050,53 @@ void doOpenManpage(char* file) {
 void openManpage(GtkWidget* widget, gpointer data) {
 	GtkWidget*  dialog   = NULL;
 	char*       filename = NULL;
-	char*       contents;
+
+    GtkFileFilter*	filterZipped = gtk_file_filter_new();
+	GtkFileFilter*	filterPlain  = gtk_file_filter_new();
+
+	gtk_file_filter_add_pattern(filterZipped, "*.xz");
+    gtk_file_filter_add_pattern(filterZipped, "*.gz");
+    gtk_file_filter_set_name(filterZipped, "Copmressed man pages \"*.xz,*.gz\"");
+        
+    gtk_file_filter_add_pattern(filterPlain, "*.1");
+    gtk_file_filter_add_pattern(filterPlain, "*.2");
+    gtk_file_filter_add_pattern(filterPlain, "*.3");
+    gtk_file_filter_add_pattern(filterPlain, "*.4");
+    gtk_file_filter_add_pattern(filterPlain, "*.5");
+    gtk_file_filter_add_pattern(filterPlain, "*.6");
+    gtk_file_filter_add_pattern(filterPlain, "*.7");
+    gtk_file_filter_add_pattern(filterPlain, "*.8");
+    gtk_file_filter_add_pattern(filterPlain, "*.9");
+    gtk_file_filter_set_name(filterPlain,"Plain man pages");
+
+    dialog = gtk_file_chooser_dialog_new(
+        _("Open Manpage"),
+        NULL,
+        GTK_FILE_CHOOSER_ACTION_OPEN,
+        GTK_STOCK_CANCEL,
+        GTK_RESPONSE_CANCEL,
+        GTK_STOCK_OPEN,
+        GTK_RESPONSE_ACCEPT,
+        NULL
+    );
+
+    gtk_file_chooser_add_filter((GtkFileChooser*)dialog, filterZipped);
+    gtk_file_chooser_add_filter((GtkFileChooser*)dialog, filterPlain);
+
+    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+	} else {
+		gtk_widget_destroy(dialog);
+		return;
+    }
+
+	closePage(NULL, NULL);
+    openFile(filename);
+    if (dialog != NULL) gtk_widget_destroy (dialog);
+}
+
+void openFile(char* file) {
+    char*       contents;
 	char*       start = NULL;
 	char*       end   = NULL;
 	long        len;
@@ -1084,69 +1111,57 @@ void openManpage(GtkWidget* widget, gpointer data) {
 	char*       recenturi;
 	int         numprops;
 	char**      propargs;
-	char*       manname = NULL;
 	char*       strok   = NULL;
 	GString*    str = g_string_new(NULL);
-
-	if ((long)data == 1) {
-		manname = getManpageName();
-        if (manname == NULL) {
-				return;
-        }
-		if (selectedSection==0)
-			 sprintf(commandBuffer, "man -w %s 2>/dev/null", manname);
-		else sprintf(commandBuffer, "man -w -s %i %s 2>/dev/null", selectedSection, manname);
-
-		fp = popen(commandBuffer, "r");
-		if (fp != NULL) {
-            fgets((char*)&buffer[0], 2048, fp);
-			pclose(fp);
-		} else {
-			return;
-        }
-        if (strlen(buffer) == 0) {
-			return;
-        }
-		filename = strndup((char*)&buffer[0], strlen((char*)&buffer[0]) - 1);
-	} else {
-        dialog = gtk_file_chooser_dialog_new(
-            _("Open Manpage"),
-            NULL,
-            GTK_FILE_CHOOSER_ACTION_OPEN,
-            GTK_STOCK_CANCEL,
-            GTK_RESPONSE_CANCEL,
-            GTK_STOCK_OPEN,
-            GTK_RESPONSE_ACCEPT,
-            NULL
-        );
-
- 	    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
-			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		} else {
-			gtk_widget_destroy(dialog);
-			return;
-        }
-    }
-
-	closePage(NULL, NULL);
 
 	sprintf(tFileName, "%s", "/tmp/mpe-gtk2XXXXXX");
 	manFilename = mkdtemp(tFileName);
 	g_mkdir_with_parents(manFilename, 493);
 
-	if (g_str_has_suffix(filename, ".gz")) {
-		sprintf(nameBuffer, "gunzip --stdout %s|sed -n /^.TH/p", filename);
+	if (g_str_has_suffix(file, ".xz")) {
+		sprintf(nameBuffer, "xz -dck %s|sed -n /^.TH/p", file);
 #ifndef _USENROFF_
-		sprintf(commandBuffer, "gunzip --stdout %s|sed 's/^\\(\\.S[Hh]\\)/\\1 @SECTION@/g;s/^\\(\\.S[Ss]\\)/\\1 @section@/g'|GROFF_SGR=1 MANWIDTH=2000 MAN_KEEP_FORMATTING=\"1\" man -l --no-justification --no-hyphenation -|head -n -4", filename);
+		sprintf(
+            commandBuffer,
+            "xz -dck %s|sed 's/^\\(\\.S[Hh]\\)/\\1 @SECTION@/g;s/^\\(\\.S[Ss]\\)/\\1 @section@/g'|GROFF_SGR=1 MANWIDTH=2000 MAN_KEEP_FORMATTING=\"1\" man -l --no-justification --no-hyphenation -|head -n -4",
+            file
+        );
 #else
-		sprintf(commandBuffer, "gunzip --stdout %s|sed '1i\\.ll 100'|sed 's/^\\.S[Hh] \\(.*\\)$/@SECTION@ \\1\\n/g'|sed 's/^@SECTION@ \"\\(.*\\)\"/@SECTION@ \\1/g'|sed 's/^.IR \\(.*\\)/\\\\fI\\1\\\\fR/g;s/^.B \\(.*\\)/\\\\fB\\1\\\\fR/g;s/\\.PP/\\n/g;s/\\.IP/  \\n/g'|nroff|head -n -4", filename);
+		sprintf(
+            commandBuffer,
+            "gunzip --stdout %s|sed '1i\\.ll 100'|sed 's/^\\.S[Hh] \\(.*\\)$/@SECTION@ \\1\\n/g'|sed 's/^@SECTION@ \"\\(.*\\)\"/@SECTION@ \\1/g'|sed 's/^.IR \\(.*\\)/\\\\fI\\1\\\\fR/g;s/^.B \\(.*\\)/\\\\fB\\1\\\\fR/g;s/\\.PP/\\n/g;s/\\.IP/  \\n/g'|nroff|head -n -4",
+            file
+        );
 #endif // _USENROFF_
-	} else {
-		sprintf(nameBuffer,"cat %s|sed -n /^.TH/p", filename);
+	} else if (g_str_has_suffix(file, ".gz")) {
+        sprintf(nameBuffer, "gunzip --stdout %s|sed -n /^.TH/p", file);
 #ifndef _USENROFF_
-		sprintf(commandBuffer, "cat %s|sed 's/^\\(\\.S[Hh]\\)/\\1 @SECTION@/g;s/^\\(\\.S[Ss]\\)/\\1 @section@/g'|GROFF_SGR=1 MANWIDTH=2000 MAN_KEEP_FORMATTING=\"1\" man -l --no-justification --no-hyphenation -|head -n -4", filename);
+		sprintf(
+            commandBuffer,
+            "gunzip --stdout %s|sed 's/^\\(\\.S[Hh]\\)/\\1 @SECTION@/g;s/^\\(\\.S[Ss]\\)/\\1 @section@/g'|GROFF_SGR=1 MANWIDTH=2000 MAN_KEEP_FORMATTING=\"1\" man -l --no-justification --no-hyphenation -|head -n -4",
+            file
+        );
 #else
-		sprintf(commandBuffer, "cat %s|sed '1i\\.ll 100'|sed 's/^\\.S[Hh] \\(.*\\)$/@SECTION@ \\1\\n/g'|sed 's/^@SECTION@ \"\\(.*\\)\"/@SECTION@ \\1/g'|sed 's/^.IR \\(.*\\)/\\\\fI\\1\\\\fR/g;s/^.B \\(.*\\)/\\\\fB\\1\\\\fR/g;s/\\.PP/\\n/g;s/\\.IP/  \\n/g'|nroff|head -n -4", filename);
+		sprintf(
+            commandBuffer,
+            "gunzip --stdout %s|sed '1i\\.ll 100'|sed 's/^\\.S[Hh] \\(.*\\)$/@SECTION@ \\1\\n/g'|sed 's/^@SECTION@ \"\\(.*\\)\"/@SECTION@ \\1/g'|sed 's/^.IR \\(.*\\)/\\\\fI\\1\\\\fR/g;s/^.B \\(.*\\)/\\\\fB\\1\\\\fR/g;s/\\.PP/\\n/g;s/\\.IP/  \\n/g'|nroff|head -n -4",
+            file
+        );
+#endif // _USENROFF_
+    } else {
+		sprintf(nameBuffer,"cat %s|sed -n /^.TH/p", file);
+#ifndef _USENROFF_
+		sprintf(
+            commandBuffer,
+            "cat %s|sed 's/^\\(\\.S[Hh]\\)/\\1 @SECTION@/g;s/^\\(\\.S[Ss]\\)/\\1 @section@/g'|GROFF_SGR=1 MANWIDTH=2000 MAN_KEEP_FORMATTING=\"1\" man -l --no-justification --no-hyphenation -|head -n -4",
+            file
+        );
+#else
+		sprintf(
+            commandBuffer,
+            "cat %s|sed '1i\\.ll 100'|sed 's/^\\.S[Hh] \\(.*\\)$/@SECTION@ \\1\\n/g'|sed 's/^@SECTION@ \"\\(.*\\)\"/@SECTION@ \\1/g'|sed 's/^.IR \\(.*\\)/\\\\fI\\1\\\\fR/g;s/^.B \\(.*\\)/\\\\fB\\1\\\\fR/g;s/\\.PP/\\n/g;s/\\.IP/  \\n/g'|nroff|head -n -4",
+            file
+        );
 #endif // _USENROFF_
     }
 
@@ -1171,14 +1186,16 @@ void openManpage(GtkWidget* widget, gpointer data) {
 		char *name = NULL, *date = NULL, *tsec = NULL;
 		char sec;
 
-        if(g_str_has_suffix(filename, ".gz"))
-			 sprintf(nameBuffer, "gunzip --stdout %s", filename);
-		else sprintf(nameBuffer, "cat %s", filename);
+        if (g_str_has_suffix(file, ".xz"))
+			 sprintf(nameBuffer, "xz -dck %s", file);
+        else if (g_str_has_suffix(file, ".gz"))
+             sprintf(nameBuffer, "gunzip --stdout %s", file);
+		else sprintf(nameBuffer, "cat %s", file);
 
         buffer[0] = 0;
 		fp = popen(nameBuffer, "r");
 		if (fp != NULL) {
-			while(fgets(buffer, 2048, fp)) {
+			while (fgets(buffer, 2048, fp)) {
                 if (name == NULL) name = sliceBetween((char*)&buffer[0], (char*)".Dt ", (char*)" ");
 				if (date == NULL) date = sliceBetween((char*)&buffer[0], (char*)".Dd ", (char*)"\n");
 				if (tsec == NULL) tsec = sliceBetween((char*)&buffer[0], (char*)".Dt ", (char*)"\n");
@@ -1192,7 +1209,7 @@ void openManpage(GtkWidget* widget, gpointer data) {
             tsec = strdup("");
             sec  = ' ';
         } else {
-			sec=tsec[strlen(tsec)-1];
+			sec = tsec[strlen(tsec)-1];
         }
         asprintf(&props, "\"%s\" \"%c\" \"%s\" \"\" \"\"", name, sec, date);
 		free(name);
@@ -1211,9 +1228,9 @@ void openManpage(GtkWidget* widget, gpointer data) {
 	//
 	// Clean bold/italic tags
 	//
-	replaceAllSlice(&contents, (char*)"\x1b\[22m", (char*)"\x1b\[0m");
-	replaceAllSlice(&contents, (char*)"\x1b\[24m", (char*)"\x1b\[0m");
-	replaceAllSlice(&contents, (char*)"\x1b\[4m\x1b\[22m", (char*)"\x1b\[22m\x1b\[4m");
+	replaceAllSlice(&contents, (char*)"\x1b[22m", (char*)"\x1b[0m");
+	replaceAllSlice(&contents, (char*)"\x1b[24m", (char*)"\x1b[0m");
+	replaceAllSlice(&contents, (char*)"\x1b[4m\x1b[22m", (char*)"\x1b[22m\x1b[4m");
 
 	ptr = contents;
 	if (props != NULL) {
@@ -1254,7 +1271,7 @@ void openManpage(GtkWidget* widget, gpointer data) {
         }
 		end = strcasestr((char*)&start[9], "@SECTION@");
 
-		if(end==NULL) {
+		if(end == NULL) {
 			sect = strdup(start);
 		} else {
 			len  = (long)end - (long)start;
@@ -1285,12 +1302,12 @@ void openManpage(GtkWidget* widget, gpointer data) {
         ptr = end;
     }
 
-	recenturi = g_filename_to_uri(filename, NULL, NULL);
+	recenturi = g_filename_to_uri(file, NULL, NULL);
 	gtk_recent_manager_add_item(gtk_recent_manager_get_default(), recenturi);
 	g_free(recenturi);
-	gtk_window_set_title((GtkWindow*)window, filename);
+	gtk_window_set_title((GtkWindow*)window, file);
 
-	g_free(filename);
+	g_free(file);
 	g_free(contents);
 	free(props);
 
@@ -1298,6 +1315,4 @@ void openManpage(GtkWidget* widget, gpointer data) {
 	dirty    = false;
 	setSensitive();
 	refreshMainWindow();
-
-	if (dialog != NULL) gtk_widget_destroy (dialog);
 }

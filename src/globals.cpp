@@ -61,7 +61,7 @@ GtkWidget*   closeSectionMenu;
 
 GtkWidget*   liveSearchWidget;
 
-int currentPage=0;
+int currentPage = 0;
 int currentTabNumber;
 //
 // Prefs
@@ -119,9 +119,9 @@ char*      goodWord = NULL;
 
 #ifdef _ASPELL_
 AspellConfig*  aspellConfig;
-AspellSpeller* spellChecker=0;
-int            numWords=0;
-GtkWidget*     badWordLabel=NULL;
+AspellSpeller* spellChecker = 0;
+int            numWords     = 0;
+GtkWidget*     badWordLabel = NULL;
 #endif // _ASPELL_
 
 void scrollToIterInPane(pageStruct* page, GtkTextIter* iter) {

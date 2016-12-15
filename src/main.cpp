@@ -119,7 +119,15 @@ void init(void) {
 #endif // _ASPELL_
 }
 
-int main(int argc, char **argv) {
+/**
+ * Running application.
+ *
+ * @param  int    argc Number of params
+ * @param  char** argv Manpage name
+ */
+int main(int argc, char** argv) {
+
+    // Gettext initialization
     setlocale(LC_ALL, "");
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
@@ -133,8 +141,9 @@ int main(int argc, char **argv) {
 	buildFindReplace();
 
 	if (argc > 1) {
-		doOpenManpage(argv[1]);
+		openFile(argv[1]);
     }
+    // Turns on non-activated menu items
 	dirty = false;
 	setSensitive();
 	refreshMainWindow();
