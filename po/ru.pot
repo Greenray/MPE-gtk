@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MPE-gtk2-1.0.0\n"
-"POT-Creation-Date: 2016-12-14 14:51+0300\n"
+"POT-Creation-Date: 2016-12-15 00:30+0300\n"
 "PO-Revision-Date: 2016-12-09 09:53+0300\n"
 "Last-Translator: \n"
 "Language-Team: Victor Nabatov <grenray.spb@gmail.com>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: callbacks.cpp:70
-msgid "What Do You Want To Do?"
+msgid "Warning: Page changed"
 msgstr ""
 
 #: callbacks.cpp:82
@@ -32,81 +32,81 @@ msgid "Warning: unsaved data!"
 msgstr ""
 
 #: callbacks.cpp:166
-msgid "Do you want to save?"
+msgid "Do you want to save"
 msgstr ""
 
-#: callbacks.cpp:283
+#: callbacks.cpp:284
 msgid "Check Spellling"
 msgstr ""
 
-#: callbacks.cpp:316
+#: callbacks.cpp:317
 msgid "Spell Check Document"
 msgstr ""
 
-#: callbacks.cpp:325
+#: callbacks.cpp:326
 msgid "Rename Section"
 msgstr ""
 
-#: callbacks.cpp:467
+#: callbacks.cpp:468
 msgid ""
 "Developer: K.D.Hedger <keithhedger@keithhedger.darktech.org> http://"
 "khapplications.darktech.org"
 msgstr ""
 
-#: callbacks.cpp:468
+#: callbacks.cpp:469
 msgid "Internationalization: Victor Nabatov <greenray.spb@gmail.com>"
 msgstr ""
 
-#: callbacks.cpp:469
+#: callbacks.cpp:470
 msgid ""
 "\n"
 "More by K.D.Hedger:\n"
 msgstr ""
 
-#: callbacks.cpp:479
+#: callbacks.cpp:480
 msgid ""
 "\n"
 "Development versions can be found here:\n"
 "http://github.com/KeithDHedger"
 msgstr ""
 
-#: callbacks.cpp:482
+#: callbacks.cpp:483
 msgid "Editor for linux manpages"
 msgstr ""
 
-#: callbacks.cpp:484
+#: callbacks.cpp:485
 msgid "Russian: Victor Nabatov <greenray.spb@gmail.com>"
 msgstr ""
 
-#: callbacks.cpp:496
+#: callbacks.cpp:497
 msgid "Manpage Editor Page"
 msgstr ""
 
-#: callbacks.cpp:608
+#: callbacks.cpp:609
 msgid "Set Properties"
 msgstr ""
 
-#: callbacks.cpp:620
+#: callbacks.cpp:621
 msgid "Properties"
 msgstr ""
 
-#: callbacks.cpp:626 files.cpp:519
+#: callbacks.cpp:627 files.cpp:519
 msgid "Name\t"
 msgstr ""
 
-#: callbacks.cpp:637 files.cpp:527
+#: callbacks.cpp:638 files.cpp:527
 msgid "Section\t"
 msgstr ""
 
-#: callbacks.cpp:648 files.cpp:535
+#: callbacks.cpp:649 files.cpp:535
 msgid "Version\t"
 msgstr ""
 
-#: callbacks.cpp:659 files.cpp:543
+#: callbacks.cpp:660 files.cpp:543
 msgid "Author\t"
 msgstr ""
 
-#: callbacks.cpp:670 files.cpp:551
+#: callbacks.cpp:671 files.cpp:551
 msgid "Category\t"
 msgstr ""
 
@@ -193,9 +193,7 @@ msgstr ""
 
 #: files.cpp:1021
 #, c-format
-msgid ""
-"File '%s' isn't a ManPage Editor archive\n"
-"Try using 'Import' instead"
+msgid "Error: File '%s' isn't a manpage"
 msgstr ""
 
 #: files.cpp:1113
