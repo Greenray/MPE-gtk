@@ -1,5 +1,5 @@
 /* 
- * Создаем элементы HTML5 для IE
+ * Create HTML5 elements for IE
  * Reference: http://ejohn.org/blog/html5-shiv/
  * Reference: http://remysharp.com/2009/01/07/html5-enabling-script/
  */

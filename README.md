@@ -5,9 +5,9 @@ This is the fork of the K.D.Hedger's ManPageEditor.
 
 #### VERSION / ВЕРСИЯ
 
-0.1.2 original - see branch master.
-1.0.0 mpe-gtk2 - see branch mpe-gtk2.
-1.0.0 mpe-gtk3 - see branch mpe-gtk3.
+* 0.1.2 original - see branch master.
+* 1.0.0 mpe-gtk2 - see branch mpe-gtk2.
+* 1.0.0 mpe-gtk3 - see branch mpe-gtk3.
 
 #### DESCRIPTION / ОПИСАНИЕ
 
@@ -31,6 +31,7 @@ nroff, aspell
 - Text formatting.
 - Search/Replace.
 - Page preview.
+
 
 - Создание/Редактирование справочных страниц.
 - Отдельная вкладка для каждого раздела/подраздела.
