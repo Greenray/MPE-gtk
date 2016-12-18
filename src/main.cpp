@@ -64,7 +64,14 @@ void readConfig(void) {
 			fgets(buffer, 1024, fd);
 			sscanf(buffer, "%s %s", (char*)&name, (char*)&strarg);
 			if (strcasecmp(name, "windowsize") == 0)
-				sscanf(buffer, "%*s %i %i %i %i", (int*)&windowWidth, (int*)&windowHeight, (int*)&windowX, (int*)&windowY);
+				sscanf(
+                    buffer,
+                    "%*s %i %i %i %i",
+                    (int*)&windowWidth,
+                    (int*)&windowHeight,
+                    (int*)&windowX,
+                    (int*)&windowY
+                );
 			}
 		fclose(fd);
 	}
@@ -73,15 +80,9 @@ void readConfig(void) {
 
 void init(void) {
 	char* filename;
-
 #ifdef _ASPELL_
 	AspellCanHaveError* possible_err;
 #endif
-
-	lineWrap     = true;
-	highLight    = true;
-	useUnderline = true;
-
 	tabWidth          = 4;
 	fontAndSize       = strdup("mono 10");
 	terminalCommand   = strdup("xterm -e");
@@ -89,10 +90,13 @@ void init(void) {
 	windowHeight      = 400;
 	windowX           = -1;
 	windowY           = -1;
+    highLight         = true;
+    lineWrap          = true;
 	wrapSearch        = true;
 	insensitiveSearch = true;
-	replaceAll        = false;
 	showLiveSearch    = true;
+    useUnderline      = true;
+    replaceAll        = false;
 	gzipPages         = false;
 
 	asprintf(&filename, "%s/.config/mpe-gtk2", getenv("HOME"));
@@ -113,37 +117,26 @@ void init(void) {
 	possible_err = new_aspell_speller(aspellConfig);
 
 	if (aspell_error_number(possible_err) != 0)
-		puts(aspell_error_message(possible_err));
-	else
-		spellChecker = to_aspell_speller(possible_err);
+		 puts(aspell_error_message(possible_err));
+	else spellChecker = to_aspell_speller(possible_err);
 #endif // _ASPELL_
 }
 
-/**
- * Running application.
- *
- * @param  int    argc Number of params
- * @param  char** argv Manpage name
- */
-int main(int argc, char** argv) {
-
+int main(int argc, char **argv) {
+#ifdef ENABLE_NLS
     // Gettext initialization
     setlocale(LC_ALL, "");
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
     bind_textdomain_codeset(PACKAGE, "UTF-8");
-
-	gtk_init(&argc, &argv);
-
+#endif
+	gtk_init(NULL, NULL);
+    // Set default params and read configuration.
 	init();
 
 	buildMainGui();
 	buildFindReplace();
-
-	if (argc > 1) {
-		openFile(argv[1]);
-    }
-    // Turns on non-activated menu items
+    // Turns off non-activated menu items.
 	dirty = false;
 	setSensitive();
 	refreshMainWindow();

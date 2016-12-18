@@ -40,9 +40,9 @@
 
 void closeTab(GtkWidget* widget, gpointer data);
 void setSensitive(void);
-void copyToClip(GtkWidget* widget, gpointer data);
-void cutToClip(GtkWidget* widget, gpointer data);
-void pasteFromClip(GtkWidget* widget, gpointer data);
+void copyToClipboard(GtkWidget* widget, gpointer data);
+void cutToClipboard(GtkWidget* widget, gpointer data);
+void pasteFromClipboard(GtkWidget* widget, gpointer data);
 void undo(GtkWidget* widget, gpointer data);
 void redo(GtkWidget* widget, gpointer data);
 
@@ -52,9 +52,9 @@ void printFile(GtkWidget* widget, gpointer data);
 void populatePopupMenu(GtkTextView *entry,GtkMenu *menu, gpointer user_data);
 bool tabPopUp(GtkWidget *my_widget, GdkEventButton *event, gpointer user_data);
 
-void doShutdown(GtkWidget* widget, gpointer data);
+void shutDown(GtkWidget* widget, gpointer data);
 void setPrefs(GtkWidget* widget, gpointer data);
-void doAbout(GtkWidget* widget, gpointer data);
+void about(GtkWidget* widget, gpointer data);
 void writeExitData(void);
 void closeAllTabs(GtkWidget* widget, gpointer data);
 void showHideWidget(GtkWidget* widget, bool show);

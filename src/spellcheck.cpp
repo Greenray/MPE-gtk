@@ -24,7 +24,7 @@
 
 #ifdef _ASPELL_
 
-bool cancelCheck=false;
+bool cancelCheck = false;
 
 void doCancelCheck(GtkWidget* widget, gpointer data) {
 	gtk_widget_destroy(spellCheckWord);
@@ -58,12 +58,10 @@ void checkTheWord(char* word, int checkDoc) {
 		} else {
 			for (int j = 0; j < numWords; j++)
 				gtk_combo_box_text_remove((GtkComboBoxText*)wordListDropbox, 0);
-
 				sprintf((char*)&labeltext, _("Change <i><b>%s</b></i> to: "), badWord);
 				gtk_label_set_text((GtkLabel*)badWordLabel, (char*)&labeltext);
 				gtk_label_set_use_markup((GtkLabel*)badWordLabel, true);
             }
-
 			suggestions = (AspellWordList*)aspell_speller_suggest(spellChecker, word, -1);
 			elements    = aspell_word_list_elements(suggestions);
 			while ((suggestedword = aspell_string_enumeration_next(elements)) != NULL) {

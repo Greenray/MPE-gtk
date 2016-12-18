@@ -44,20 +44,31 @@ GtkWidget*   categoryBox;
 
 GtkWidget*   window   = NULL;
 GtkNotebook* notebook = NULL;
-GtkWidget*   menubar  = NULL;
-GtkWidget*   menufile;
-GtkWidget*   menuedit;
-GtkWidget*   menuformat;
-GtkWidget*   menuhelp;
-GtkWidget*   menuprint;
-GtkWidget*   menuclose;
 
-GtkWidget*   redoMenu;
-GtkWidget*   undoMenu;
-GtkWidget*   saveMenu;
-GtkWidget*   saveAsMenu;
-GtkWidget*   previewMenu;
-GtkWidget*   closeSectionMenu;
+GtkWidget*   menuBar  = NULL;
+GtkWidget*   menuFile;
+GtkWidget*   menuEdit;
+GtkWidget*   menuFormat;
+GtkWidget*   menuHelp;
+GtkWidget*   menuNewSection;
+GtkWidget*   menuClose;
+GtkWidget*   menuUndo;
+GtkWidget*   menuRedo;
+GtkWidget*   menuSave;
+GtkWidget*   menuSaveAs;
+GtkWidget*   menuPreview;
+GtkWidget*   menuProperties;
+GtkWidget*   menuPrint;
+GtkWidget*   menuPdf;
+GtkWidget*   menuCut;
+GtkWidget*   menuCopy;
+GtkWidget*   menuPaste;
+GtkWidget*   menuFind;
+GtkWidget*   menuBold;
+GtkWidget*   menuItalic;
+GtkWidget*   menuNormal;
+
+GtkWidget*   menuCloseSection;
 
 GtkWidget*   liveSearchWidget;
 
@@ -73,18 +84,15 @@ GtkWidget* terminalBox;
 bool  gzipPages;
 bool  lineWrap;
 bool  highLight;
-int   tabWidth;
-char* fontAndSize;
-char* terminalCommand;
 bool  showLiveSearch;
 bool  useUnderline;
 bool  tmpGzipPages;
 bool  tmpLineWrap;
 bool  tmpHighLight;
-int   tmpTabWidth;
 bool  tmpShowLiveSearch;
 bool  tmpUseUnderline;
-
+int   tabWidth;
+int   tmpTabWidth;
 int   windowWidth;
 int   windowHeight;
 int   windowX = -1;
@@ -92,6 +100,9 @@ int   windowY = -1;
 bool  wrapSearch;
 bool  insensitiveSearch;
 bool  replaceAll;
+char* fontAndSize;
+char* terminalCommand;
+char* thePage = NULL;
 //
 // Toolbar
 //
@@ -101,14 +112,16 @@ GtkToolItem* saveButton;
 GtkToolItem* closeButton;
 GtkToolItem* redoButton;
 GtkToolItem* undoButton;
+GtkToolItem* cutButton;
+GtkToolItem* copyButton;
+GtkToolItem* pasteButton;
+GtkToolItem* findButton;
 //
 // Find replace
 //
 GtkWidget* findReplaceDialog;
 GtkWidget* findBox;
 GtkWidget* replaceBox;
-
-char* thePage = NULL;
 //
 // Spellcheck
 //

@@ -74,7 +74,7 @@ int yesNo(char* question, char* file) {
 	return(result);
 }
 
-int show_question(char* filename) {
+int showQuestion(char* filename) {
 	GtkWidget* dialog;
 	gint       result;
 	char*      message;
@@ -111,21 +111,36 @@ void setSensitive(void) {
 	//
 	// Toolbar
 	//
-	gtk_widget_set_sensitive((GtkWidget*)undoButton, dirty);
-	gtk_widget_set_sensitive((GtkWidget*)redoButton, dirty);
-	gtk_widget_set_sensitive((GtkWidget*)saveButton, dirty);
+	gtk_widget_set_sensitive((GtkWidget*)undoButton,  dirty);
+	gtk_widget_set_sensitive((GtkWidget*)redoButton,  dirty);
+	gtk_widget_set_sensitive((GtkWidget*)saveButton,  dirty);
+    gtk_widget_set_sensitive((GtkWidget*)cutButton,   dirty);
+    gtk_widget_set_sensitive((GtkWidget*)copyButton,  dirty);
+    gtk_widget_set_sensitive((GtkWidget*)pasteButton, dirty);
+    gtk_widget_set_sensitive((GtkWidget*)findButton,  dirty);
 	//
 	// Menu
 	//
-	gtk_widget_set_sensitive((GtkWidget*)saveMenu,    pageOpen);
-	gtk_widget_set_sensitive((GtkWidget*)saveAsMenu,  pageOpen);
-	gtk_widget_set_sensitive((GtkWidget*)previewMenu, pageOpen);
-    gtk_widget_set_sensitive((GtkWidget*)menuprint,   pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuNewSection, pageOpen);
+	gtk_widget_set_sensitive((GtkWidget*)menuSave,       pageOpen);
+	gtk_widget_set_sensitive((GtkWidget*)menuSaveAs,     pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuClose,      pageOpen);
+	gtk_widget_set_sensitive((GtkWidget*)menuPreview,    pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuProperties, pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuPrint,      pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuPdf,        pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuCut,        pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuCopy,       pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuPaste,      pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuFind,       pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuBold,       pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuItalic,     pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuNormal,     pageOpen);
 
-    gtk_widget_set_sensitive((GtkWidget*)closeSectionMenu, pageOpen);
+    gtk_widget_set_sensitive((GtkWidget*)menuCloseSection, pageOpen);
 
-	gtk_widget_set_sensitive((GtkWidget*)undoMenu, dirty);
-	gtk_widget_set_sensitive((GtkWidget*)redoMenu, dirty);
+	gtk_widget_set_sensitive((GtkWidget*)menuUndo, dirty);
+	gtk_widget_set_sensitive((GtkWidget*)menuRedo, dirty);
 
 	refreshMainWindow();
 }
@@ -207,7 +222,7 @@ void closePage(GtkWidget* widget, gpointer data) {
 	setSensitive();
 }
 
-void copyToClip(GtkWidget* widget, gpointer data) {
+void copyToClipboard(GtkWidget* widget, gpointer data) {
 	pageStruct*	page = getPageStructPtr(-1);
 	if (page == NULL) {
 		return;
@@ -215,7 +230,7 @@ void copyToClip(GtkWidget* widget, gpointer data) {
 	gtk_text_buffer_copy_clipboard((GtkTextBuffer*)page->buffer, gtk_clipboard_get(GDK_SELECTION_CLIPBOARD));
 }
 
-void cutToClip(GtkWidget* widget, gpointer data) {
+void cutToClipboard(GtkWidget* widget, gpointer data) {
 	pageStruct* page = getPageStructPtr(-1);
 	if (page == NULL) {
 		return;
@@ -224,7 +239,7 @@ void cutToClip(GtkWidget* widget, gpointer data) {
 	setSensitive();
 }
 
-void pasteFromClip(GtkWidget* widget, gpointer data) {
+void pasteFromClipboard(GtkWidget* widget, gpointer data) {
 	pageStruct* page = getPageStructPtr(-1);
 	if (page == NULL) {
 		return;
@@ -261,11 +276,6 @@ void openHelp(GtkWidget* widget, gpointer data) {
 	char* runhelp;
 	asprintf(&runhelp, "xdg-open %s/doc/%s/help.html", DATADIR, PACKAGE);
 	system(runhelp);
-}
-
-void copyToClipboard(GtkWidget* widget, gpointer data) {
-	GtkClipboard* clipboard = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
-	gtk_clipboard_set_text(clipboard, (char*)data,-1);
 }
 
 void populatePopupMenu(GtkTextView *entry, GtkMenu *menu, gpointer user_data) {
@@ -401,21 +411,21 @@ void writeConfig(void) {
 	g_free(filename);
 }
 
-void doShutdown(GtkWidget* widget, gpointer data) {
+void shutDown(GtkWidget* widget, gpointer data) {
 	char* command;
 	int   result;
 
 	if (dirty == true) {
 		if (manFilePath != NULL)
-			 result = show_question(g_path_get_basename(manFilePath));
-		else result = show_question((char*)"manpage");
+			 result = showQuestion(g_path_get_basename(manFilePath));
+		else result = showQuestion((char*)"manpage");
 
 		switch(result) {
 			case GTK_RESPONSE_YES:
 				saveFile(NULL, NULL);
-			break;
+                break;
 			case GTK_RESPONSE_NO:
-			break;
+                break;
 			default:
 				return;
 			break;
@@ -471,7 +481,7 @@ void setPrefs(GtkWidget* widget, gpointer data) {
     }
 }
 
-void doAbout(GtkWidget* widget, gpointer data) {
+void about(GtkWidget* widget, gpointer data) {
     const char* authors[] = {
         _("Developer: K.D.Hedger <keithhedger@keithhedger.darktech.org> http://khapplications.darktech.org"),
         _("Internationalization: Victor Nabatov <greenray.spb@gmail.com>"),
@@ -489,8 +499,8 @@ void doAbout(GtkWidget* widget, gpointer data) {
     };
 	const char* copyright      = COPYRIGHT "\n" MYEMAIL;
 	const char* aboutboxstring = _("Editor for linux manpages");
-	char*       license;
 	const char* translators    = _("Russian: Victor Nabatov <greenray.spb@gmail.com>");
+    char*       license;
 
 	g_file_get_contents(DATADIR "/docs/" PACKAGE "/COPYING", &license, NULL, NULL);
 
@@ -505,7 +515,9 @@ void doAbout(GtkWidget* widget, gpointer data) {
         "website-label",      _("Manpage Editor Page"),
         "logo-icon-name",     "mpe-gtk2",
 		"license",            license,
+#ifdef ENABLE_NLS
 		"translator-credits", translators,
+#endif
 		"wrap-license",       true,
         NULL
     );
@@ -570,7 +582,13 @@ void doFormat(GtkWidget* widget, gpointer data) {
 				sprintf((char*)&tagname, "bold-%i", boldnum);
 				tag = gtk_text_tag_table_lookup(tagtable, tagname);
             }
-			tag = gtk_text_buffer_create_tag((GtkTextBuffer*)page->buffer, tagname, "weight", PANGO_WEIGHT_BOLD, NULL);
+			tag = gtk_text_buffer_create_tag(
+                (GtkTextBuffer*)page->buffer,
+                tagname,
+                "weight",
+                PANGO_WEIGHT_BOLD,
+                NULL
+            );
 			gtk_text_buffer_get_selection_bounds((GtkTextBuffer*)page->buffer, &start, &end);
 			gtk_text_buffer_apply_tag((GtkTextBuffer*)page->buffer, tag, &start, &end);
 			break;
@@ -605,10 +623,10 @@ void doFormat(GtkWidget* widget, gpointer data) {
 
 void redoProps(GtkWidget* widget, gpointer data) {
 	GtkWidget* dialog;
-	gint       result;
 	GtkWidget* content_area;
 	GtkWidget* label;
 	GtkWidget* hbox;
+    gint       result;
 
 	dialog = gtk_message_dialog_new(
         GTK_WINDOW(window),
@@ -701,7 +719,7 @@ void redoProps(GtkWidget* widget, gpointer data) {
 }
 
 void previewPage(GtkWidget* widget, gpointer data) {
-	char  *command;
+	char* command;
 	char* holdpath = savePath;
 	char  tplate[] = "/tmp/mpprevXXXXXX";
 	int   gotopen  = -1;

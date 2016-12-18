@@ -63,102 +63,79 @@ enum {NEWVBOX = 0, NEWHBOX};
 enum {BOLD = 0, ITALIC, NORMAL};
 
 struct pageStruct {
-	GtkWidget*			pane;
-	GtkScrolledWindow*	pageWindow;
-	GtkScrolledWindow*	pageWindow2;
-	GtkSourceBuffer*	buffer;
-	GtkSourceView*		view;
-	GtkSourceView*		view2;
-	char*				filePath;
-	GtkWidget*			tabName;
-	GtkTextIter			iter;
-	GtkTextIter			match_start;
-	GtkTextIter			match_end;
-	bool				isFirst;
-	char*				fileName;
-	bool				itsMe;
-	bool				inTop;
-	bool				isSplit;
-	const char*			lang;
-	GtkWidget*			tabVbox;
-	bool				isSubsection;
+	GtkScrolledWindow* pageWindow;
+	GtkScrolledWindow* pageWindow2;
+
+	GtkSourceBuffer*   buffer;
+
+	GtkSourceView* view;
+	GtkSourceView* view2;
+
+    GtkWidget*  pane;
+	GtkWidget*  tabName;
+    GtkWidget*  tabVbox;
+
+	GtkTextIter iter;
+	GtkTextIter match_start;
+	GtkTextIter match_end;
+	const char* lang;
+
+    char* filePath;
+	char* fileName;
+
+    bool  isFirst;
+	bool  itsMe;
+	bool  inTop;
+	bool  isSplit;
+	bool  isSubsection;
 };
 //
 // Manpage stuff
 //
-extern char*		manFilename;
-extern char*		manName;
-extern char*		manSection;
-extern char*		manVersion;
-extern char*		manAuthor;
-extern char*		manCategory;
-extern char*		manFilePath;
-
-extern bool			pageOpen;
-extern bool			dirty;
-extern char*		savePath;
-extern FILE			*previewFile;
+extern FILE*        previewFile;
 
 extern GtkWidget*	nameBox;
 extern GtkWidget*	sectionBox;
 extern GtkWidget*	versionBox;
 extern GtkWidget*	authorBox;
 extern GtkWidget*	categoryBox;
-
 extern GtkWidget*	window;
 extern GtkNotebook*	notebook;
 
-extern GtkWidget*	menubar;
-extern GtkWidget*	menufile;
-extern GtkWidget*	menuedit;
-extern GtkWidget*	menuformat;
-extern GtkWidget*	menuhelp;
-extern GtkWidget*	menuprint;
-extern GtkWidget*	menuclose;
+extern GtkWidget*	menuBar;
+extern GtkWidget*	menuFile;
+extern GtkWidget*	menuEdit;
+extern GtkWidget*	menuFormat;
+extern GtkWidget*	menuHelp;
+extern GtkWidget*	menuNewSection;
+extern GtkWidget*	menuClose;
+extern GtkWidget*	menuUndo;
+extern GtkWidget*	menuRedo;
+extern GtkWidget*	menuSave;
+extern GtkWidget*	menuSaveAs;
+extern GtkWidget*	menuPreview;
+extern GtkWidget*	menuProperties;
+extern GtkWidget*	menuPrint;
+extern GtkWidget*	menuPdf;
+extern GtkWidget*   menuCut;
+extern GtkWidget*   menuCopy;
+extern GtkWidget*   menuPaste;
+extern GtkWidget*   menuFind;
+extern GtkWidget*   menuBold;
+extern GtkWidget*   menuItalic;
+extern GtkWidget*   menuNormal;
+extern GtkWidget*	menuCloseSection;
 
-extern GtkWidget*	redoMenu;
-extern GtkWidget*	undoMenu;
-extern GtkWidget*	saveMenu;
-extern GtkWidget*	saveMenu;
-extern GtkWidget*	saveAsMenu;
-extern GtkWidget*	previewMenu;
-extern GtkWidget*	saveAsMenu;
-extern GtkWidget*	closeSectionMenu;
+extern GtkWidget*	terminalBox;
+extern GtkWidget*	fontBox;
+extern GtkWidget*	findReplaceDialog;
+extern GtkWidget*	findBox;
+extern GtkWidget*	replaceBox;
+extern GtkWidget*	spellCheckWord;
+extern GtkWidget*	wordListDropbox;
 
 extern GtkWidget*	liveSearchWidget;
-extern int			currentPage;
-
 extern GtkWidget*	prefswin;
-extern GtkWidget*	terminalBox;
-
-extern bool			gzipPages;
-extern bool			lineWrap;
-extern bool			highLight;
-extern int			tabWidth;
-extern char*		fontAndSize;
-extern char*		terminalCommand;
-extern bool			showLiveSearch;
-extern bool			useUnderline;
-
-extern GtkWidget*	fontBox;
-
-extern bool			tmpGzipPages;
-extern bool			tmpLineWrap;
-extern bool			tmpHighLight;
-extern int			tmpTabWidth;
-extern bool			tmpShowLiveSearch;
-extern bool			tmpUseUnderline;
-
-extern int			windowWidth;
-extern int			windowHeight;
-extern int			windowX;
-extern int			windowY;
-
-extern bool			wrapSearch;
-extern bool			insensitiveSearch;
-extern bool			replaceAll;
-
-extern int			currentTabNumber;
 
 extern GtkToolItem*	newButton;
 extern GtkToolItem*	openButton;
@@ -166,18 +143,51 @@ extern GtkToolItem*	saveButton;
 extern GtkToolItem*	closeButton;
 extern GtkToolItem*	redoButton;
 extern GtkToolItem*	undoButton;
+extern GtkToolItem*	cutButton;
+extern GtkToolItem*	copyButton;
+extern GtkToolItem*	pasteButton;
+extern GtkToolItem*	findButton;
 
-extern GtkWidget*	findReplaceDialog;
-extern GtkWidget*	findBox;
-extern GtkWidget*	replaceBox;
+extern char* manFilename;
+extern char* manName;
+extern char* manSection;
+extern char* manVersion;
+extern char* manAuthor;
+extern char* manCategory;
+extern char* manFilePath;
 
-extern char*		thePage;
+extern char* savePath;
+extern char* fontAndSize;
+extern char* terminalCommand;
+extern char* thePage;
+extern char* badWord;
+extern char* goodWord;
 
-extern GtkWidget*	spellCheckWord;
-extern GtkWidget*	wordListDropbox;
+extern bool  pageOpen;
+extern bool  dirty;
+extern bool  gzipPages;
+extern bool  lineWrap;
+extern bool  highLight;
+extern bool  showLiveSearch;
+extern bool  useUnderline;
+extern bool  wrapSearch;
+extern bool  insensitiveSearch;
+extern bool  replaceAll;
 
-extern char*		badWord;
-extern char*		goodWord;
+extern bool  tmpGzipPages;
+extern bool  tmpLineWrap;
+extern bool  tmpHighLight;
+extern bool  tmpShowLiveSearch;
+extern bool  tmpUseUnderline;
+extern int   tmpTabWidth;
+
+extern int   windowWidth;
+extern int   windowHeight;
+extern int   windowX;
+extern int   windowY;
+extern int   currentPage;
+extern int   tabWidth;
+extern int   currentTabNumber;
 
 #ifdef _ASPELL_
 extern AspellConfig*  aspellConfig;

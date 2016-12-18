@@ -114,12 +114,12 @@ char* deleteSlice(char* srcstring, char* delstr) {
 
 char* sliceInclude(char* srcstring, char* startstr, char* endstr, bool includeFirst, bool includeLast) {
 	int      startchar;
-	char*    ptr;
-	char*    ptrend;
 	int      endoffset = 0;
 	int      numchars;
-	GString* gstr;
+    char*    ptr;
+	char*    ptrend;
 	char*    tptr;
+    GString* gstr;
 
 	ptr = strstr(srcstring, startstr);
 	if (ptr == NULL) {
@@ -148,12 +148,12 @@ char* sliceInclude(char* srcstring, char* startstr, char* endstr, bool includeFi
 
 char* sliceCaseInclude(char* srcstring, char* startstr, char* endstr, bool includeFirst, bool includeLast) {
 	int      startchar;
-	char*    ptr;
-	char*    ptrend;
 	int      endoffset=0;
 	int      numchars;
-	GString* gstr;
+	char*    ptr;
+	char*    ptrend;
 	char*    tptr;
+    GString* gstr;
 
 	ptr = strcasestr(srcstring, startstr);
 	if (ptr == NULL) {
@@ -225,5 +225,5 @@ void replaceFirstSlice(char** srcstr, char* findstr, char* replacestr) {
 		g_string_insert(deststr, startchar, replacestr);
 		found = strstr(deststr->str, findstr);
 	}
-	*srcstr=g_string_free(deststr, false);
+	*srcstr = g_string_free(deststr, false);
 }
